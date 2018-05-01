@@ -7,6 +7,7 @@ import wtlcompiler.AST.ASTPrinter;
 import wtlcompiler.AST.node.ProgNode;
 import wtlcompiler.utility.*;
 import org.antlr.v4.runtime.*;
+import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.tree.*;
 import Parser.Parser.*;
 import Parser.*;
