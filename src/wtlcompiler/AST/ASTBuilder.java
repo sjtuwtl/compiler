@@ -266,7 +266,7 @@ public class ASTBuilder extends tryBaseListener{
         Type type;
         if(ctx.classname() != null)
             type = new Type(ctx.classname().ID().getText(), 1);
-        else type = new Type(ctx.typename().getText(), 1);
+        else type = new Type(ctx.basetype().getText(), 1);
         List<ExprNode> exprs = new ArrayList<>();
         for(tryParser.ExprContext item : ctx.expr())
             exprs.add((ExprNode)map.get(item));
@@ -328,9 +328,9 @@ public class ASTBuilder extends tryBaseListener{
     @Override
     public void exitMemberExpr(tryParser.MemberExprContext ctx) {
         MemberExprNode memberExprNode;
-        if(ctx.funname() != null)
+        if(ctx.functionCall() != null)
             memberExprNode = new MemberExprNode(new location(ctx.getStart().getLine(), 0),
-                    getExpr(ctx.expr()), (CallExprNode)map.get(ctx.funname()));
+                    getExpr(ctx.expr()), (CallExprNode)map.get(ctx.functionCall()));
         else
             memberExprNode = new MemberExprNode(new location(ctx.getStart().getLine(), 0),
                     getExpr(ctx.expr()), ctx.ID().getText());
@@ -452,6 +452,21 @@ public class ASTBuilder extends tryBaseListener{
 
     @Override
     public void exitCallExpr(tryParser.CallExprContext ctx) {
+        List<ExprNode> params = new ArrayList<>();
+        if(ctx.exprs() != null)
+        {
+            for (tryParser.ExprContext item : ctx.exprs().expr())
+            {
+                params.add((ExprNode) map.get(item));
+            }
+        }
+        map.put(ctx, new CallExprNode(new location(ctx.getStart().getLine(), 0), ctx.funname().getText(),
+                new ExprListNode(new location(ctx.getStart().getLine(), 0), params)));
+    }
+
+    @Override
+    public void exitFunctionCall(tryParser.FunctionCallContext ctx)
+    {
         List<ExprNode> params = new ArrayList<>();
         if(ctx.exprs() != null)
         {

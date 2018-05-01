@@ -333,4 +333,11 @@ public class tryBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements tr
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public T visitArrayCreator(tryParser.ArrayCreatorContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitFunctionCall(tryParser.FunctionCallContext ctx) { return visitChildren(ctx); }
 }

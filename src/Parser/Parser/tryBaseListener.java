@@ -563,6 +563,18 @@ public class tryBaseListener implements tryListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitArrayCreator(tryParser.ArrayCreatorContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterFunctionCall(tryParser.FunctionCallContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitFunctionCall(tryParser.FunctionCallContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

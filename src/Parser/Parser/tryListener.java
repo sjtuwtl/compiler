@@ -527,4 +527,14 @@ public interface tryListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitArrayCreator(tryParser.ArrayCreatorContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link tryParser#functionCall}.
+	 * @param ctx the parse tree
+	 */
+	void enterFunctionCall(tryParser.FunctionCallContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link tryParser#functionCall}.
+	 * @param ctx the parse tree
+	 */
+	void exitFunctionCall(tryParser.FunctionCallContext ctx);
 }

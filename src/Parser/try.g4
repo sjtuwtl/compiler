@@ -68,7 +68,7 @@ expr    :   funname '(' exprs? ')'                                              
         |   expr '[' expr ']'                                                   #arrayExpr
         |   '(' expr ')'                                                        #subExpr
 //      |   expr op = '.' expr
-        |   expr '.' (ID | funname '(' exprs? ')')                              #memberExpr
+        |   expr '.' (ID | functionCall )                                       #memberExpr
         |   op = ('++' | '--') expr                                             #prefixExpr
         |   op = ('-' | '!' | '~'| '+' ) expr                                   #prefixExpr
         |   expr op =('++'  | '--')                                             #suffixExpr
@@ -91,11 +91,13 @@ expr    :   funname '(' exprs? ')'                                              
         |   'this'                                                              #thisExpr
         ;
 creator :   classname                                                           #nonArrayCreator
-        |   (classname | typename) ('[' expr ']')+ ('[' ']')+('[' expr ']')+    #wrongCreator
-        |   (classname | typename) ('[' expr ']')+ ('[' ']')*                   #arrayCreator
+        |   (classname | basetype) ('[' expr ']')* ('[' ']')+('[' expr ']')+    #wrongCreator
+        |   (classname | basetype) ('[' expr ']')* ('[' ']')*                   #arrayCreator
         ;
 
 //lexxer
+
+functionCall : funname '(' exprs? ')' ;
 
 STR  : '"' ('\\"' | '\\\\'|.)*? '"' ;
 

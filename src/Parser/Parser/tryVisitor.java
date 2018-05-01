@@ -316,4 +316,10 @@ public interface tryVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitArrayCreator(tryParser.ArrayCreatorContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link tryParser#functionCall}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFunctionCall(tryParser.FunctionCallContext ctx);
 }
