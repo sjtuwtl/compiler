@@ -72,15 +72,15 @@ expr    :   funname '(' exprs? ')'                                              
         |   op = ('++' | '--') expr                                             #prefixExpr
         |   op = ('-' | '!' | '~'| '+' ) expr                                   #prefixExpr
         |   expr op =('++'  | '--')                                             #suffixExpr
-        |   expr ('*' | '/' | '%') expr                                         #binaryExpr
+        |   expr op=('*' | '/' | '%') expr                                      #binaryExpr
         |   expr op=('+' |'-' ) expr                                            #binaryExpr
-        |   expr ('>>' | '<<') expr                                             #binaryExpr
-        |   expr '&' expr                                                       #binaryExpr
-        |   expr '^' expr                                                       #binaryExpr
-        |   expr '|' expr                                                       #binaryExpr
-        |   expr  op = ('>' | '<' | '>=' | '<=' | '==' | '!=') expr             #binaryExpr
-        |   expr  op = '&&' expr                                                #andExpr
-        |   expr  op ='||' expr                                                 #orExpr
+        |   expr op=('>>' | '<<') expr                                          #binaryExpr
+        |   expr op='&' expr                                                    #binaryExpr
+        |   expr op='^' expr                                                    #binaryExpr
+        |   expr op='|' expr                                                    #binaryExpr
+        |   expr op = ('>' | '<' | '>=' | '<=' | '==' | '!=') expr              #binaryExpr
+        |   expr op = '&&' expr                                                 #andExpr
+        |   expr op ='||' expr                                                  #orExpr
 //      |   expr '?' expr ':' expr
         |   varname                                                             #idExpr
         |   NUM                                                                 #intConstExpr

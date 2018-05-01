@@ -2059,9 +2059,10 @@ public class tryParser extends Parser {
 						setState(216);
 						if (!(precpred(_ctx, 16))) throw new FailedPredicateException(this, "precpred(_ctx, 16)");
 						setState(217);
+						((BinaryExprContext)_localctx).op = _input.LT(1);
 						_la = _input.LA(1);
 						if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__29) | (1L << T__30) | (1L << T__31))) != 0)) ) {
-						_errHandler.recoverInline(this);
+							((BinaryExprContext)_localctx).op = (Token)_errHandler.recoverInline(this);
 						}
 						else {
 							if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
@@ -2100,9 +2101,10 @@ public class tryParser extends Parser {
 						setState(222);
 						if (!(precpred(_ctx, 14))) throw new FailedPredicateException(this, "precpred(_ctx, 14)");
 						setState(223);
+						((BinaryExprContext)_localctx).op = _input.LT(1);
 						_la = _input.LA(1);
 						if ( !(_la==T__32 || _la==T__33) ) {
-						_errHandler.recoverInline(this);
+							((BinaryExprContext)_localctx).op = (Token)_errHandler.recoverInline(this);
 						}
 						else {
 							if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
@@ -2120,7 +2122,7 @@ public class tryParser extends Parser {
 						setState(225);
 						if (!(precpred(_ctx, 13))) throw new FailedPredicateException(this, "precpred(_ctx, 13)");
 						setState(226);
-						match(T__34);
+						((BinaryExprContext)_localctx).op = match(T__34);
 						setState(227);
 						expr(14);
 						}
@@ -2132,7 +2134,7 @@ public class tryParser extends Parser {
 						setState(228);
 						if (!(precpred(_ctx, 12))) throw new FailedPredicateException(this, "precpred(_ctx, 12)");
 						setState(229);
-						match(T__35);
+						((BinaryExprContext)_localctx).op = match(T__35);
 						setState(230);
 						expr(13);
 						}
@@ -2144,7 +2146,7 @@ public class tryParser extends Parser {
 						setState(231);
 						if (!(precpred(_ctx, 11))) throw new FailedPredicateException(this, "precpred(_ctx, 11)");
 						setState(232);
-						match(T__36);
+						((BinaryExprContext)_localctx).op = match(T__36);
 						setState(233);
 						expr(12);
 						}

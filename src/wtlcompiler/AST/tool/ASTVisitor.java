@@ -26,8 +26,6 @@ public interface ASTVisitor {
     // Expressions
     void visit(ExprNode node);
 
-    void visit(ExprStatNode node);
-
     void visit(ExprListNode node);
 
     void visit(BinaryExprNode node);
@@ -79,6 +77,8 @@ public interface ASTVisitor {
     void visit(ReturnNode node);
 
     void visit(ContinueNode node);
+
+    void visit(ExprStatNode node);
 
     void visit(Type type) throws Exception;
 }

@@ -108,7 +108,8 @@ public class Semantic implements ASTVisitor {
 
     @Override public void visit(FuncParamNode node) { }
 
-    @Override public void visit(ExprNode node) {
+    @Override
+    public void visit(ExprNode node) {
         if(node == null) return;
         node.accept(this);
     }

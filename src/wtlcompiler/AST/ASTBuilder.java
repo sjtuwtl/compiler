@@ -240,9 +240,9 @@ public class ASTBuilder extends tryBaseListener{
 
     //Maybe it need to be changed
     @Override
-    public void exitParams(tryParser.ParamsContext ctx) {
+    public void exitExprs(tryParser.ExprsContext ctx) {
         List<ExprNode> exprNodes = new ArrayList<>();
-        for (tryParser.ParamContext item : ctx.param())
+        for (tryParser.ExprContext item : ctx.expr())
         {
             exprNodes.add((ExprNode) map.get(item));
         }
