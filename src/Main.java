@@ -33,8 +33,8 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
  //     InputStream is = System.in;
-//        InputStream is = new FileInputStream("Test/TestSemantic/text.txt");
-        InputStream is = new FileInputStream("program.txt");
+//       InputStream is = new FileInputStream("Test/TestSemantic/text.txt");
+         InputStream is = new FileInputStream("program.txt");
         ANTLRInputStream input = new ANTLRInputStream(is);
         tryLexer lexer = new tryLexer(input);
 //        lexer.addErrorListener(tryErrorListener.INSTANCE);
@@ -47,7 +47,7 @@ public class Main {
         ASTBuilder constructor = new ASTBuilder();
         walker.walk(constructor, tree);
 
-//        printAST(constructor.getProgram());
+        printAST(constructor.getProgram());
 
         checkSemantic(constructor.getProgram());
     }

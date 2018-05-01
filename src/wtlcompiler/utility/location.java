@@ -43,6 +43,11 @@ public class location {
         return line;
     }
 
+    public final String getInfor() {
+        String infor = "line " + line;
+        return infor;
+    }
+
     @Override
     public String toString() {
         return "line:" + String.valueOf(line) + "column:" + String.valueOf(column);

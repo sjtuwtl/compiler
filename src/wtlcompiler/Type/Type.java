@@ -24,7 +24,7 @@ public class Type {
     }
 
     public static boolean equal(Type a, Type b) {
-        return (a.getTypeName() == b.getTypeName());
-      //return (a.getTypeName() == b.getTypeName()) || (!(a instanceof BuiltInType) && b.getTypeName() == Name.getName("null"));
+      // return (a.getTypeName() == b.getTypeName());
+         return (a.getTypeName() == b.getTypeName()) || (!(a instanceof BuiltInType) && b.getTypeName() == Name.getName("null"));
     }
 }

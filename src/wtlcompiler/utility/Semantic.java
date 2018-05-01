@@ -147,8 +147,6 @@ public class Semantic implements ASTVisitor {
             errorHandle.addError(node.getLocation(),
                     "'[]' can not be applied to non-array element");
         node.setExprType(((ArrayType)node.getArray().getExprType()).getBasicType());
-        //TODO set Expr type
-        node.setExprType(node.getArray().getExprType());
     }
 
     @Override
@@ -162,11 +160,12 @@ public class Semantic implements ASTVisitor {
         if(node.getRight().getExprType().getTypeName() != Name.getName("null")) {
             if(node.getLeft().getExprType() instanceof ArrayType) {
                 if(!(node.getRight().getExprType() instanceof ArrayType))
-                    errorHandle.addError(node.getLocation(), "type mismatch");
+                    errorHandle.addError(node.getLocation(), "type mismatch1");
                 else if(node.getRight().getExprType().getTypeName() != node.getLeft().getExprType().getTypeName())
-                    errorHandle.addError(node.getLocation(), "type mismatch");
+                    errorHandle.addError(node.getLocation(), "type mismatch2");
                 else if(((ArrayType) node.getLeft().getExprType()).getDimension() != ((ArrayType) node.getRight().getExprType()).getDimension())
-                    errorHandle.addError(node.getLocation(), "type mismatch");
+                    errorHandle.addError(node.getLocation(), "type mismatch3 " + ((ArrayType) node.getLeft().getExprType()).getDimension()
+                                                                                      + ((ArrayType) node.getRight().getExprType()).getDimension());
             }
             else if (node.getLeft().getExprType().getTypeName() != node.getRight().getExprType().getTypeName())
                 errorHandle.addError(node.getLocation(), "cannot cast from "

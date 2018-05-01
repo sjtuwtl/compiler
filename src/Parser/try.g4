@@ -86,10 +86,12 @@ expr    :   funname '(' exprs? ')'                                              
         |   NUM                                                                 #intConstExpr
         |   STR                                                                 #stringConstExpr
         |   ('NULL' | 'null')                                                   #nullExpr
-        |   (TRUE | FALSE)                               #boolConstExpr
+        |   TRUE                                                                #boolConstExpr
+        |   FALSE                                                               #boolConstExpr
         |   <assoc=right> expr '=' expr                                         #assignExpr
         |   'this'                                                              #thisExpr
         ;
+
 creator :   classname                                                           #nonArrayCreator
         |   (classname | basetype) ('[' expr ']')* ('[' ']')+('[' expr ']')+    #wrongCreator
         |   (classname | basetype) ('[' expr ']')* ('[' ']')*                   #arrayCreator
@@ -100,10 +102,6 @@ creator :   classname                                                           
 functionCall : funname '(' exprs? ')' ;
 
 STR  : '"' ('\\"' | '\\\\'|.)*? '"' ;
-
-ID
-    :	[a-zA-Z_] [a-zA-Z_0-9]*
-    ;
 
 NUM :  [1-9] [0-9]* | '0' ;
 
@@ -117,6 +115,10 @@ LINE_COMMENT
     : '//' ~[\r\n]* -> skip
     ;
 
-TRUE    : ('true' | 'TRUE');
+TRUE    : 'true' | 'TRUE' ;
 
-FALSE   : ('false'|'FALSE');
+FALSE   : 'false'| 'FALSE';
+
+ID
+    :	[a-zA-Z_] [a-zA-Z_0-9]*
+    ;

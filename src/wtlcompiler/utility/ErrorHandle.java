@@ -10,6 +10,6 @@ public class ErrorHandle {
 
     public void addError(location pos, String reason) {
         error.add(new Pair<>(pos, reason));
-        throw new RuntimeException("Line " + pos.getLine() + ":" + reason);
+        throw new RuntimeException(pos.getInfor() + ":" + reason);
     }
 }
