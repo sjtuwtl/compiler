@@ -23,7 +23,7 @@ public class MemberExprNode extends ExprNode {
         express = expr;
         identifier = id;
         setIsLeftvalue(true);
-        isFunctionCall = true;
+        isFunctionCall = false;
     }
 
     public ExprNode getExpress() {
