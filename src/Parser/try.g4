@@ -17,7 +17,7 @@ classdef:   'class' ID '{'
 //functiondefinition
 funname :   ID;
 
-fundef   :   type ID '(' params ')' block ;
+fundef   :   type? ID '(' params ')' block ;
 
 //variabledefinition
 varname :   ID;
