@@ -492,18 +492,6 @@ public interface tryListener extends ParseTreeListener {
 	 */
 	void exitAndExpr(tryParser.AndExprContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code nonArrayCreator}
-	 * labeled alternative in {@link tryParser#creator}.
-	 * @param ctx the parse tree
-	 */
-	void enterNonArrayCreator(tryParser.NonArrayCreatorContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code nonArrayCreator}
-	 * labeled alternative in {@link tryParser#creator}.
-	 * @param ctx the parse tree
-	 */
-	void exitNonArrayCreator(tryParser.NonArrayCreatorContext ctx);
-	/**
 	 * Enter a parse tree produced by the {@code wrongCreator}
 	 * labeled alternative in {@link tryParser#creator}.
 	 * @param ctx the parse tree
@@ -527,6 +515,18 @@ public interface tryListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitArrayCreator(tryParser.ArrayCreatorContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code nonArrayCreator}
+	 * labeled alternative in {@link tryParser#creator}.
+	 * @param ctx the parse tree
+	 */
+	void enterNonArrayCreator(tryParser.NonArrayCreatorContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code nonArrayCreator}
+	 * labeled alternative in {@link tryParser#creator}.
+	 * @param ctx the parse tree
+	 */
+	void exitNonArrayCreator(tryParser.NonArrayCreatorContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link tryParser#functionCall}.
 	 * @param ctx the parse tree

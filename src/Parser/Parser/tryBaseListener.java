@@ -532,18 +532,6 @@ public class tryBaseListener implements tryListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterNonArrayCreator(tryParser.NonArrayCreatorContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitNonArrayCreator(tryParser.NonArrayCreatorContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterWrongCreator(tryParser.WrongCreatorContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -563,6 +551,18 @@ public class tryBaseListener implements tryListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitArrayCreator(tryParser.ArrayCreatorContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterNonArrayCreator(tryParser.NonArrayCreatorContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitNonArrayCreator(tryParser.NonArrayCreatorContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

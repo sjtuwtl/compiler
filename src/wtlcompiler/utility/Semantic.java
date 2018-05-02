@@ -145,7 +145,7 @@ public class Semantic implements ASTVisitor {
                     + ", finding " + node.getIndex().getExprType().getTypeName().toString());
         if(!(node.getArray().getExprType() instanceof ArrayType))
             errorHandle.addError(node.getLocation(),
-                    "'[]' can not be applied to non-array element");
+                    "'[]' can not be applied to non-array element" + node.getArray().getExprType().getTypeName().toString());
         node.setExprType(((ArrayType)node.getArray().getExprType()).getBasicType());
     }
 

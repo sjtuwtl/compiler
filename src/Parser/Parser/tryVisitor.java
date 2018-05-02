@@ -296,13 +296,6 @@ public interface tryVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitAndExpr(tryParser.AndExprContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code nonArrayCreator}
-	 * labeled alternative in {@link tryParser#creator}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitNonArrayCreator(tryParser.NonArrayCreatorContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code wrongCreator}
 	 * labeled alternative in {@link tryParser#creator}.
 	 * @param ctx the parse tree
@@ -316,6 +309,13 @@ public interface tryVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitArrayCreator(tryParser.ArrayCreatorContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code nonArrayCreator}
+	 * labeled alternative in {@link tryParser#creator}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNonArrayCreator(tryParser.NonArrayCreatorContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link tryParser#functionCall}.
 	 * @param ctx the parse tree

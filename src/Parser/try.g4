@@ -63,8 +63,8 @@ stmt
 exprs   :   expr(',' expr)* ;
 
 expr    :   funname '(' exprs? ')'                                              #callExpr
-        |   'new' creator                                                       #newExpr
 //      |   expr (opcom = '[' expr ']')+
+        |   NEW creator                                                             #newExpr
         |   expr '[' expr ']'                                                   #arrayExpr
         |   '(' expr ')'                                                        #subExpr
 //      |   expr op = '.' expr
@@ -92,16 +92,18 @@ expr    :   funname '(' exprs? ')'                                              
         |   'this'                                                              #thisExpr
         ;
 
-creator :   classname                                                           #nonArrayCreator
-        |   (classname | basetype) ('[' expr ']')* ('[' ']')+('[' expr ']')+    #wrongCreator
-        |   (classname | basetype) ('[' expr ']')* ('[' ']')*                   #arrayCreator
-        ;
+creator :    (classname | basetype) ('[' expr ']')* ('[' ']')+('[' expr ']')+   #wrongCreator
+         |   (classname | basetype) ('[' expr ']')+ ('[' ']')*                  #arrayCreator
+         |   classname                                                          #nonArrayCreator
+         ;
 
 //lexxer
 
 functionCall : funname '(' exprs? ')' ;
 
-STR  : '"' ('\\"' | '\\\\'|.)*? '"' ;
+
+
+STR : '"' ('\\"' | '\\\\'|.)*? '"' ;
 
 NUM :  [1-9] [0-9]* | '0' ;
 
@@ -118,6 +120,8 @@ LINE_COMMENT
 TRUE    : 'true' | 'TRUE' ;
 
 FALSE   : 'false'| 'FALSE';
+
+NEW : 'new';
 
 ID
     :	[a-zA-Z_] [a-zA-Z_0-9]*
