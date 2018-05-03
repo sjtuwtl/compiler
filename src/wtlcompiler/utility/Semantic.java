@@ -167,6 +167,9 @@ public class Semantic implements ASTVisitor {
                     errorHandle.addError(node.getLocation(), "type mismatch3 " + ((ArrayType) node.getLeft().getExprType()).getDimension()
                                                                                       + ((ArrayType) node.getRight().getExprType()).getDimension());
             }
+            else if (node.getRight().getExprType() instanceof ArrayType){
+                errorHandle.addError(node.getLocation(), "cannot cast from var to array");
+            }
             else if (node.getLeft().getExprType().getTypeName() != node.getRight().getExprType().getTypeName())
                 errorHandle.addError(node.getLocation(), "cannot cast from "
                         + node.getLeft().getExprType().getTypeName().toString() + " to "

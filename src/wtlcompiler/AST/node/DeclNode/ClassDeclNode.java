@@ -13,6 +13,7 @@ public class ClassDeclNode extends DeclNode{
     private List<FuncDeclNode> memFunction;
     private List<VarDeclNode> memVarible;
     private Scope internalScope, externalScope;
+    private int size;
 
     public ClassDeclNode(location pos, ClassType ty, List<FuncDeclNode> func, List<VarDeclNode> var) {
         super(pos);
