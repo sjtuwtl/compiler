@@ -184,7 +184,7 @@ public class Semantic implements ASTVisitor {
         visit(node.getL());
         visit(node.getR());
         if(node.getL().getExprType().getTypeName() != node.getR().getExprType().getTypeName()) {
-            if(!(node.getOp() == BinaryOp.EQU &&
+            if(!((node.getOp() == BinaryOp.EQU || node.getOp() == BinaryOp.NEQ)&&
                     (node.getL().getExprType().getTypeName() == Name.getName("null")
                             || node.getR().getExprType().getTypeName() == Name.getName("null"))))
                 errorHandle.addError(node.getLocation(), "cannot operate with type "
