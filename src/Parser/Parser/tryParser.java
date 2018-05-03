@@ -2382,7 +2382,6 @@ public class tryParser extends Parser {
 	public final CreatorContext creator() throws RecognitionException {
 		CreatorContext _localctx = new CreatorContext(_ctx, getState());
 		enterRule(_localctx, 36, RULE_creator);
-		int _la;
 		try {
 			int _alt;
 			setState(320);
@@ -2556,20 +2555,20 @@ public class tryParser extends Parser {
 				{
 				setState(313);
 				classname();
-				setState(314);
-				match(T__3);
-				setState(316);
+				setState(318);
 				_errHandler.sync(this);
-				_la = _input.LA(1);
-				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__3) | (1L << T__22) | (1L << T__23) | (1L << T__24) | (1L << T__25) | (1L << T__26) | (1L << T__27) | (1L << T__44) | (1L << T__45) | (1L << STR) | (1L << NUM) | (1L << TRUE) | (1L << FALSE) | (1L << NEW) | (1L << ID))) != 0)) {
+				switch ( getInterpreter().adaptivePredict(_input,34,_ctx) ) {
+				case 1:
 					{
+					setState(314);
+					match(T__3);
 					setState(315);
 					exprs();
+					setState(316);
+					match(T__4);
 					}
+					break;
 				}
-
-				setState(318);
-				match(T__4);
 				}
 				break;
 			}
@@ -2712,7 +2711,7 @@ public class tryParser extends Parser {
 		"\6\24\u011d\n\24\r\24\16\24\u011e\3\24\3\24\3\24\3\24\6\24\u0125\n\24"+
 		"\r\24\16\24\u0126\3\24\3\24\5\24\u012b\n\24\3\24\3\24\3\24\3\24\6\24\u0131"+
 		"\n\24\r\24\16\24\u0132\3\24\3\24\7\24\u0137\n\24\f\24\16\24\u013a\13\24"+
-		"\3\24\3\24\3\24\5\24\u013f\n\24\3\24\3\24\5\24\u0143\n\24\3\25\3\25\3"+
+		"\3\24\3\24\3\24\3\24\3\24\5\24\u0141\n\24\5\24\u0143\n\24\3\25\3\25\3"+
 		"\25\5\25\u0148\n\25\3\25\3\25\3\25\2\3$\26\2\4\6\b\n\f\16\20\22\24\26"+
 		"\30\32\34\36 \"$&(\2\t\3\2\13\16\3\2\31\32\3\2\33\36\3\2\37!\4\2\33\33"+
 		"\36\36\3\2\"#\3\2\',\2\u017c\2/\3\2\2\2\4\64\3\2\2\2\6\66\3\2\2\2\bB\3"+
@@ -2802,14 +2801,14 @@ public class tryParser extends Parser {
 		"\u0130\3\2\2\2\u0132\u0133\3\2\2\2\u0133\u0138\3\2\2\2\u0134\u0135\7\17"+
 		"\2\2\u0135\u0137\7\20\2\2\u0136\u0134\3\2\2\2\u0137\u013a\3\2\2\2\u0138"+
 		"\u0136\3\2\2\2\u0138\u0139\3\2\2\2\u0139\u0143\3\2\2\2\u013a\u0138\3\2"+
-		"\2\2\u013b\u013c\5\4\3\2\u013c\u013e\7\6\2\2\u013d\u013f\5\"\22\2\u013e"+
-		"\u013d\3\2\2\2\u013e\u013f\3\2\2\2\u013f\u0140\3\2\2\2\u0140\u0141\7\7"+
+		"\2\2\u013b\u0140\5\4\3\2\u013c\u013d\7\6\2\2\u013d\u013e\5\"\22\2\u013e"+
+		"\u013f\7\7\2\2\u013f\u0141\3\2\2\2\u0140\u013c\3\2\2\2\u0140\u0141\3\2"+
 		"\2\2\u0141\u0143\3\2\2\2\u0142\u010f\3\2\2\2\u0142\u012a\3\2\2\2\u0142"+
 		"\u013b\3\2\2\2\u0143\'\3\2\2\2\u0144\u0145\5\b\5\2\u0145\u0147\7\6\2\2"+
 		"\u0146\u0148\5\"\22\2\u0147\u0146\3\2\2\2\u0147\u0148\3\2\2\2\u0148\u0149"+
 		"\3\2\2\2\u0149\u014a\7\7\2\2\u014a)\3\2\2\2\'-/;=ES[beksy\177\u0085\u0093"+
 		"\u0098\u009c\u00a0\u00a7\u00ad\u00b8\u00bf\u00c6\u00db\u0104\u0108\u010a"+
-		"\u010f\u0117\u011e\u0126\u012a\u0132\u0138\u013e\u0142\u0147";
+		"\u010f\u0117\u011e\u0126\u012a\u0132\u0138\u0140\u0142\u0147";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

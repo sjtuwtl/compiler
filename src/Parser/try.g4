@@ -94,7 +94,7 @@ expr    :   funname '(' exprs? ')'                                              
 
 creator :    (classname | basetype) ('[' expr ']')* ('[' ']')+('[' expr ']')+   #wrongCreator
          |   (classname | basetype) ('[' expr ']')+ ('[' ']')*                  #arrayCreator
-         |   classname  '(' exprs? ')'                                          #nonArrayCreator
+         |   classname  ('(' exprs ')' )?                                       #nonArrayCreator
          ;
 
 //lexxer
