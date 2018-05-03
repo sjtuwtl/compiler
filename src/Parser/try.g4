@@ -64,7 +64,7 @@ exprs   :   expr(',' expr)* ;
 
 expr    :   funname '(' exprs? ')'                                              #callExpr
 //      |   expr (opcom = '[' expr ']')+
-        |   NEW creator                                                             #newExpr
+        |   NEW creator                                                         #newExpr
         |   expr '[' expr ']'                                                   #arrayExpr
         |   '(' expr ')'                                                        #subExpr
 //      |   expr op = '.' expr
@@ -85,7 +85,7 @@ expr    :   funname '(' exprs? ')'                                              
         |   varname                                                             #idExpr
         |   NUM                                                                 #intConstExpr
         |   STR                                                                 #stringConstExpr
-        |   ('NULL' | 'null')                                                   #nullExpr
+        |   'null'                                                              #nullExpr
         |   TRUE                                                                #boolConstExpr
         |   FALSE                                                               #boolConstExpr
         |   <assoc=right> expr '=' expr                                         #assignExpr
@@ -94,7 +94,7 @@ expr    :   funname '(' exprs? ')'                                              
 
 creator :    (classname | basetype) ('[' expr ']')* ('[' ']')+('[' expr ']')+   #wrongCreator
          |   (classname | basetype) ('[' expr ']')+ ('[' ']')*                  #arrayCreator
-         |   classname                                                          #nonArrayCreator
+         |   classname  '(' exprs? ')'                                          #nonArrayCreator
          ;
 
 //lexxer
