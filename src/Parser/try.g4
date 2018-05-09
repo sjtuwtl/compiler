@@ -94,7 +94,7 @@ expr    :   funname '(' exprs? ')'                                              
 
 creator :    (classname | basetype) ('[' expr ']')* ('[' ']')+('[' expr ']')+   #wrongCreator
          |   (classname | basetype) ('[' expr ']')+ ('[' ']')*                  #arrayCreator
-         |   classname  ('(' exprs ')' )?                                       #nonArrayCreator
+         |   (classname | basetype) ('(' exprs ')' )?                           #nonArrayCreator
          ;
 
 //lexxer
@@ -124,5 +124,5 @@ FALSE   : 'false'| 'FALSE';
 NEW : 'new';
 
 ID
-    :	[a-zA-Z_] [a-zA-Z_0-9]*
+    :	[a-zA-Z] [a-zA-Z_0-9]*
     ;

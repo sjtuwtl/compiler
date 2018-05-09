@@ -92,6 +92,7 @@ public class ASTBuilder extends tryBaseListener{
     @Override
     public void exitVarsdef(tryParser.VarsdefContext ctx) {
         location pos = new location(ctx.getStart().getLine(), 0);
+        int dimension = getBracketNumber(ctx.getText());
         Type type = (Type)map.get(ctx.type());
         String id = ctx.ID().getText();
         ExprNode expr = (ExprNode) map.get(ctx.expr());
@@ -276,7 +277,13 @@ public class ASTBuilder extends tryBaseListener{
 
     @Override
     public void exitNonArrayCreator(tryParser.NonArrayCreatorContext ctx) {
-        Type type = new Type(ctx.classname().ID().getText(), 1);
+        Type type;
+        if (ctx.classname() != null) {
+            type = new Type(ctx.classname().ID().getText(), 1);
+        }
+        else {
+            type = new Type(ctx.basetype().getText(), 1);
+        }
         map.put(ctx, new CreatorExprNode(new location(ctx.getStart().getLine(), 0), type, new ArrayList<>(), 0));
     }
 
