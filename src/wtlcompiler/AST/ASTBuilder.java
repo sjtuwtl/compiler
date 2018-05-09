@@ -277,13 +277,14 @@ public class ASTBuilder extends tryBaseListener{
 
     @Override
     public void exitNonArrayCreator(tryParser.NonArrayCreatorContext ctx) {
-        Type type;
+/*        Type type;
         if (ctx.classname() != null) {
             type = new Type(ctx.classname().ID().getText(), 1);
         }
         else {
             type = new Type(ctx.basetype().getText(), 1);
-        }
+        }*/
+        Type type = new Type(ctx.classname().ID().getText(), 1);
         map.put(ctx, new CreatorExprNode(new location(ctx.getStart().getLine(), 0), type, new ArrayList<>(), 0));
     }
 
