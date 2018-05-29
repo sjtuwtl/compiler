@@ -1,6 +1,7 @@
 package wtlcompiler.AST.node;
 
 import wtlcompiler.AST.tool.*;
+import wtlcompiler.IR.IRBase.IRTraversal;
 import wtlcompiler.utility.location;
 
 public abstract class ASTNode {
@@ -18,5 +19,7 @@ public abstract class ASTNode {
     }
 
     public abstract void accept(ASTVisitor visitor);
+
+    public abstract Object accept(IRTraversal visitor);
 
 }

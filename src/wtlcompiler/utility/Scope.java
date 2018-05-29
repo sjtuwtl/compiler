@@ -3,6 +3,7 @@ package wtlcompiler.utility;
 import org.antlr.v4.codegen.model.decl.Decl;
 import wtlcompiler.AST.node.DeclNode.*;
 import wtlcompiler.AST.object.*;
+import wtlcompiler.IR.IRBase.IRScope;
 import wtlcompiler.utility.location;
 import wtlcompiler.utility.Name;
 import wtlcompiler.Type.*;
@@ -20,12 +21,16 @@ public class Scope {
     private boolean isLoop;
     private boolean isClass;
 
+    private IRScope irScope;
+
     public Scope(boolean top) {
         isTop = top;
         isFunction = false;
         isLoop = false;
         parent = this;
         isClass = false;
+
+        irScope = new IRScope(top);
     }
 
     public Scope(Scope s) {
@@ -34,6 +39,8 @@ public class Scope {
         isFunction = false;
         isLoop = false;
         isClass = false;
+
+        this.irScope = new IRScope(s.getIrScope());
     }
 
     public void addNode(DeclNode node) throws RuntimeException {
@@ -101,6 +108,10 @@ public class Scope {
         else return this.parent;
     }
 
+    public IRScope getIrScope() {
+        return irScope;
+    }
+
     public void setFunction(boolean function) {
         isFunction = function;
     }
@@ -121,6 +132,10 @@ public class Scope {
         return isLoop;
     }
 
+    public Map<Name, DeclNode> getScopeNodes() {
+        return scopeNodes;
+    }
+
     public boolean isTop() {
         return isTop;
     }
@@ -137,43 +152,43 @@ public class Scope {
     }
 
     public void InitializeBuiltInFunction() {
-        addNode(new FuncDeclNode(new location(0, 0),
+        addNode(new FuncDeclNode(true, new location(0, 0),
                 new FuncDeclObject("getInt", new ArrayList<>(), new BuiltInType("int", 4)),
                 null));
         List<FuncParamNode> paras = new ArrayList<>();
         paras.add(new FuncParamNode(new location(0,0), new ParameterObject("a", new Type("string", 0))));
-        addNode(new FuncDeclNode(new location(0, 0),
+        addNode(new FuncDeclNode(true, new location(0, 0),
                 new FuncDeclObject("print", paras, new BuiltInType("void", 0)),
                 null));
-        addNode(new FuncDeclNode(new location(0, 0),
+        addNode(new FuncDeclNode(true, new location(0, 0),
                 new FuncDeclObject("println", paras, new BuiltInType("void", 0)),
                 null));
-        addNode(new FuncDeclNode(new location(0, 0),
+        addNode(new FuncDeclNode(true, new location(0, 0),
                 new FuncDeclObject("getString", new ArrayList<>(), new BuiltInType("string", 0)),
                 null));
         paras.clear();
         paras.add(new FuncParamNode(new location(0, 0), new ParameterObject("a", new Type("int", 4))));
-        addNode(new FuncDeclNode(new location(0, 0),
+        addNode(new FuncDeclNode(true, new location(0, 0),
                 new FuncDeclObject("toString", paras, new BuiltInType("string", 4)),
                 null));
-        addNode(new FuncDeclNode(new location(0, 0),
+        addNode(new FuncDeclNode(true, new location(0, 0),
                 new FuncDeclObject("size", new ArrayList<>(), new BuiltInType("int", 4)),
                 null));
-        addNode(new FuncDeclNode(new location(0, 0),
+        addNode(new FuncDeclNode(true, new location(0, 0),
                 new FuncDeclObject("length", new ArrayList<>(), new BuiltInType("int", 4)),
                 null));
         paras.clear();
         paras.add(new FuncParamNode(new location(0, 0), new ParameterObject("left", new Type("int", 4))));
         paras.add(new FuncParamNode(new location(0, 0), new ParameterObject("right", new Type("int", 4))));
-        addNode(new FuncDeclNode(new location(0, 0),
+        addNode(new FuncDeclNode(true, new location(0, 0),
                 new FuncDeclObject("substring", paras, new BuiltInType("string", 4)),
                 null));
-        addNode(new FuncDeclNode(new location(0, 0),
+        addNode(new FuncDeclNode(true, new location(0, 0),
                 new FuncDeclObject("parseInt", new ArrayList<>(), new BuiltInType("int", 4)),
                 null));
         paras.clear();
         paras.add(new FuncParamNode(new location(0, 0), new ParameterObject("pos", new Type("int", 4))));
-        addNode(new FuncDeclNode(new location(0, 0),
+        addNode(new FuncDeclNode(true, new location(0, 0),
                 new FuncDeclObject("ord", paras, new BuiltInType("int", 4)),
                 null));
     }

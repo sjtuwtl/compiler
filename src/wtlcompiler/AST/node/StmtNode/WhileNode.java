@@ -2,6 +2,8 @@ package wtlcompiler.AST.node.StmtNode;
 
 import wtlcompiler.AST.node.ExprNode.ExprNode;
 import wtlcompiler.AST.tool.ASTVisitor;
+import wtlcompiler.IR.IRBase.IRTraversal;
+import wtlcompiler.IR.IRInstruction;
 import wtlcompiler.Type.ArrayType;
 import wtlcompiler.utility.Scope;
 import wtlcompiler.utility.location;
@@ -43,5 +45,11 @@ public class WhileNode extends StmtNode{
     @Override
     public void accept(ASTVisitor visitor) {
         visitor.visit(this);
+    }
+
+    @Override
+    public IRInstruction accept(IRTraversal visitor) {
+        visitor.visit(this);
+        return null;
     }
 }

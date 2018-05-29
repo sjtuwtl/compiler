@@ -1,5 +1,7 @@
 package wtlcompiler.AST.node.DeclNode;
 
+import wtlcompiler.IR.IRBase.IRTraversal;
+import wtlcompiler.IR.IRInstruction;
 import wtlcompiler.utility.Name;
 import wtlcompiler.utility.location;
 import wtlcompiler.Type.ClassType;
@@ -20,20 +22,24 @@ public class ClassDeclNode extends DeclNode{
         type = ty;
         memFunction = func;
         memVarible = var;
+        size = -1;
     }
 
     public ClassType getType()
     {
         return type;
     }
+
     public void setType(ClassType t)
     {
         type = t;
     }
+
     public List<FuncDeclNode> getMemberFunction()
     {
         return memFunction;
     }
+
     public List<VarDeclNode> getMemberVarible()
     {
         return memVarible;
@@ -55,6 +61,16 @@ public class ClassDeclNode extends DeclNode{
         this.internalScope = internalScope;
     }
 
+    public int getSize() {
+        return size;
+    }
+
+    public void initTypeSize() {
+        if (this.size != -1)
+            return;
+        this.size = 8 * memVarible.size();
+    }
+
     @Override
     public Name getName() {
         return type.getTypeName();
@@ -63,5 +79,11 @@ public class ClassDeclNode extends DeclNode{
     @Override
     public void accept(ASTVisitor visitor) {
         visitor.visit(this);
+    }
+
+    @Override
+    public IRInstruction accept(IRTraversal visitor) {
+        visitor.visit(this);
+        return null;
     }
 }

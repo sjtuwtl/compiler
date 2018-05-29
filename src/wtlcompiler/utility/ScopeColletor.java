@@ -50,8 +50,12 @@ public class ScopeColletor implements ASTVisitor {
         setCurrentScope(scope);
         for(FuncDeclNode item : node.getMemberFunction())
             visit(item);
-        for(VarDeclNode item : node.getMemberVarible())
+        int i = 0;
+        for(VarDeclNode item : node.getMemberVarible()) {
             visit(item);
+            item.setMember(true);
+            item.setMemberNum(i++);
+        }
         exitCurrentScope();
     }
 

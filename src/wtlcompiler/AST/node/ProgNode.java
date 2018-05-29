@@ -1,6 +1,7 @@
 package wtlcompiler.AST.node;
 
 import wtlcompiler.AST.node.DeclNode.DeclNode;
+import wtlcompiler.IR.IRBase.IRTraversal;
 import wtlcompiler.utility.location;
 import wtlcompiler.AST.tool.ASTVisitor;
 import wtlcompiler.utility.Scope;
@@ -41,5 +42,11 @@ public class ProgNode extends ASTNode{
     @Override
     public void accept(ASTVisitor visitor) {
         visitor.visit(this);
+    }
+
+    @Override
+    public Object accept(IRTraversal visitor) {
+        visitor.visit(this);
+        return null;
     }
 }

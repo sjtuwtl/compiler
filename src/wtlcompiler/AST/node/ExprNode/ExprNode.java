@@ -1,6 +1,8 @@
 package wtlcompiler.AST.node.ExprNode;
 
 import wtlcompiler.AST.node.ASTNode;
+import wtlcompiler.IR.IRBase.IRTraversal;
+import wtlcompiler.IR.Value.IntegerValue;
 import wtlcompiler.utility.location;
 import wtlcompiler.Type.Type;
 
@@ -27,5 +29,10 @@ public abstract class ExprNode extends ASTNode{
 
     public Type getExprType() {
         return exprType;
+    }
+
+    @Override
+    public IntegerValue accept(IRTraversal visitor) {
+        return visitor.visit(this);
     }
 }

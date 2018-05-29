@@ -227,6 +227,7 @@ public class Semantic implements ASTVisitor {
                     node.getFuncName().toString() + " is not a function");
         visit(node.getParameter());
         node.setExprType(function.getReturnType());
+        node.setFunction(function);
         checkParameterMatch(function, node);
     }
 
@@ -277,6 +278,7 @@ public class Semantic implements ASTVisitor {
             node.setExprType(func.getReturnType());
             visit(node.getFunctionCall().getParameter());
             checkParameterMatch(func, node.getFunctionCall());
+            node.getFunctionCall().setFunction(func);
         }
         else {
             node.setExprType(((VarDeclNode)scope.findNode(node.getName())).getType());
