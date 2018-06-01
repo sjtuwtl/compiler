@@ -89,10 +89,11 @@ public class Main {
     }
 
     public static void main(String[] args) throws Exception {
-//        InputStream is = System.in;
+        InputStream is = System.in;
 //      InputStream is = new FileInputStream("Test/text.txt");
-        OutputStream out = System.out;
-         InputStream is = new FileInputStream("program.txt");
+
+//         InputStream is = new FileInputStream("program.txt");
+         OutputStream out = System.out;
         ProgNode program = buildAST(is);
 
 
