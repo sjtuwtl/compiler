@@ -1,6 +1,7 @@
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
 
 import wtlcompiler.AST.ASTBuilder;
@@ -11,6 +12,9 @@ import wtlcompiler.IR.IRBase.IRConstructor;
 import wtlcompiler.IR.IRBase.IRPrinter;
 import wtlcompiler.IR.IRInstruction;
 import wtlcompiler.IR.IRType.Class;
+import wtlcompiler.Optimizer.Allocator;
+import wtlcompiler.Translator.NasmPrinter;
+import wtlcompiler.Translator.Translator;
 import wtlcompiler.utility.*;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.CharStream;
@@ -70,9 +74,24 @@ public class Main {
         irPrinter.printIR();
     }
 
+    public static void translate(IRConstructor irConstructor, OutputStream outputStream) {
+        Translator translator = new Translator(irConstructor.getEntry(), irConstructor.getInitializeEntry(),
+                irConstructor.getDataSection(), irConstructor.getDataZone(), irConstructor.getBssZone());
+        translator.process();
+        NasmPrinter nasmPrinter = new NasmPrinter(translator.getNasmInsts(), translator.getDataInsts(),
+                translator.getDataZoneInsts(), translator.getBssZoneInsts(),
+                irConstructor.getGlobalName(), outputStream);
+        nasmPrinter.printNasm();
+    }
+    public static void optimizeIR(IRConstructor irConstructor) {
+        Allocator allocator = new Allocator(irConstructor.getEntry(), irConstructor.getInitializeEntry());
+        allocator.process();
+    }
+
     public static void main(String[] args) throws Exception {
  //     InputStream is = System.in;
        InputStream is = new FileInputStream("Test/text.txt");
+        OutputStream out = System.out;
 //         InputStream is = new FileInputStream("program.txt");
         ProgNode program = buildAST(is);
 
@@ -83,6 +102,8 @@ public class Main {
         IRConstructor constructor = constructIR(program);
 
         printIR(constructor);
+        optimizeIR(constructor);
+        translate(constructor, out);
     }
 
 }

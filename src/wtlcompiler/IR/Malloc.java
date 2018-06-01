@@ -37,6 +37,10 @@ public class Malloc extends IRInstruction{
         this.returnReg = returnReg;
     }
 
+    public Address getReturnAddress() {
+        return returnAddress;
+    }
+
     @Override
     public void accept(IRInstTraversal visitor) {
         visitor.visit(this);

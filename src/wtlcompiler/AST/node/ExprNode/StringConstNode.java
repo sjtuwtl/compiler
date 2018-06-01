@@ -19,6 +19,10 @@ public class StringConstNode extends ConstExprNode{
         return str;
     }
 
+    public void setStr(String str) {
+        this.str = str;
+    }
+
     @Override
     public void accept(ASTVisitor visitor) {
         visitor.visit(this);

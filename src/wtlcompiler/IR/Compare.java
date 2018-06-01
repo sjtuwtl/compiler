@@ -65,7 +65,16 @@ public class Compare extends IRInstruction{
 
     @Override
     public String toString() {
-        return dest.toString() + "=" + lhs.toString() + " " + condition.toString() + " " + rhs.toString();
+        String ret = "";
+        if(dest != null)
+            ret += dest.toString() + " = ";
+        if(lhs != null)
+            ret += lhs.toString() + " ";
+        ret += condition.toString() + " ";
+        if(rhs != null)
+            ret += rhs.toString();
+        return ret;
+        //return dest.toString() + "=" + lhs.toString() + " " + condition.toString() + " " + rhs.toString();
     }
 
     @Override

@@ -1,0 +1,112 @@
+ProgNode
+  *ClassDeclaration: TA
+    *VariableDeclaration: state
+      BuiltInType: string
+    *VariableDeclaration: anger
+      BuiltInType: int
+  *VariableDeclaration: init_anger
+    BuiltInType: int
+    IntConstNode  value = 100
+  *VariableDeclaration: work_anger
+    BuiltInType: int
+    IntConstNode  value = 10
+  *FunctionDeclaration: work
+    BuiltInType: void
+    FuncParamNode Type: string    Name: st
+    FuncParamNode Type: TA    Name: ta
+    BlockNode
+      IfNode
+        BinaryExprNode  Op: SEQ
+          MemberExprNode
+            IdentifierExprNode  ID name: ta
+            mem = anger
+          IntConstNode  value = 100
+        ExprStatNode
+          CallExprNode  Function Name: println
+            ExprListNode
+              BinaryExprNode  Op: ADD
+                BinaryExprNode  Op: ADD
+                  BinaryExprNode  Op: ADD
+                    IdentifierExprNode  ID name: st
+                    StringConstNode  value = , 
+                  MemberExprNode
+                    IdentifierExprNode  ID name: ta
+                    mem = state
+                StringConstNode  value =  enjoys this work. XD
+        ExprStatNode
+          CallExprNode  Function Name: println
+            ExprListNode
+              BinaryExprNode  Op: ADD
+                BinaryExprNode  Op: ADD
+                  BinaryExprNode  Op: ADD
+                    IdentifierExprNode  ID name: st
+                    StringConstNode  value = , 
+                  MemberExprNode
+                    IdentifierExprNode  ID name: ta
+                    mem = state
+                StringConstNode  value =  wants to give up!!!!!
+      ExprStatNode
+        AssignExprNode
+          MemberExprNode
+            IdentifierExprNode  ID name: ta
+            mem = anger
+          BinaryExprNode  Op: ADD
+            MemberExprNode
+              IdentifierExprNode  ID name: ta
+              mem = anger
+            IdentifierExprNode  ID name: work_anger
+  *FunctionDeclaration: main
+    BuiltInType: int
+    BlockNode
+      *VariableDeclaration: mr
+        ClassType: TA
+      *VariableDeclaration: mars
+        ClassType: TA
+      ExprStatNode
+        AssignExprNode
+          IdentifierExprNode  ID name: mr
+          New:   Type   : TA  Size:  0
+      ExprStatNode
+        AssignExprNode
+          MemberExprNode
+            IdentifierExprNode  ID name: mr
+            mem = state
+          StringConstNode  value = the leading TA
+      ExprStatNode
+        AssignExprNode
+          MemberExprNode
+            IdentifierExprNode  ID name: mr
+            mem = anger
+          IntConstNode  value = 0
+      ExprStatNode
+        AssignExprNode
+          IdentifierExprNode  ID name: mars
+          New:   Type   : TA  Size:  0
+      ExprStatNode
+        AssignExprNode
+          MemberExprNode
+            IdentifierExprNode  ID name: mars
+            mem = state
+          StringConstNode  value = the striking TA
+      ExprStatNode
+        AssignExprNode
+          MemberExprNode
+            IdentifierExprNode  ID name: mars
+            mem = anger
+          IdentifierExprNode  ID name: init_anger
+      ExprStatNode
+        CallExprNode  Function Name: work
+          ExprListNode
+            StringConstNode  value = MR
+            IdentifierExprNode  ID name: mr
+      ExprStatNode
+        CallExprNode  Function Name: work
+          ExprListNode
+            StringConstNode  value = Mars
+            IdentifierExprNode  ID name: mars
+      ExprStatNode
+        CallExprNode  Function Name: work
+          ExprListNode
+            StringConstNode  value = Mars
+            IdentifierExprNode  ID name: mars
+      ReturnNode

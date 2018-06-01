@@ -31,10 +31,14 @@ public class Store extends IRInstruction{
         this.dataReg = dataReg;
     }
 
+    public IntegerValue getAddress() {
+        return address;
+    }
+
     @Override
     public String toString() {
-        if (data == null) return "Store " + address.toString();
-        else if (address == null) return "Store " + data.toString();
+        if (data == null) return "Store NULL to" + address.toString();
+        else if (address == null) return "Store " + data.toString() + " to NULL";
         else return "Store " + data.toString() + " to " + address.toString();
 
     }

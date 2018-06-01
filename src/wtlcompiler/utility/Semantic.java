@@ -146,7 +146,10 @@ public class Semantic implements ASTVisitor {
         if(!(node.getArray().getExprType() instanceof ArrayType))
             errorHandle.addError(node.getLocation(),
                     "'[]' can not be applied to non-array element" + node.getArray().getExprType().getTypeName().toString());
-        node.setExprType(((ArrayType)node.getArray().getExprType()).getBasicType());
+        if (((ArrayType)node.getArray().getExprType()).getDimension() > 1)
+            node.setExprType(((ArrayType)node.getArray().getExprType()).getBasicType());
+        else
+            node.setExprType(currentScope.findType(((ArrayType)node.getArray().getExprType()).getBasicType().getTypeName()));
     }
 
     @Override
@@ -246,6 +249,8 @@ public class Semantic implements ASTVisitor {
                     node.getName().toString() + " have not been declared");
         VarDeclNode var = (VarDeclNode)currentScope.findNode(node.getName());
         node.setExprType(var.getType());
+        if (node.getExprType() == null)
+            System.out.println(1);
     }
 
     @Override
@@ -298,6 +303,8 @@ public class Semantic implements ASTVisitor {
     @Override
     public void visit(CreatorExprNode node) {
         if(node == null) return;
+        for (ExprNode item: node.getExpresses())
+            visit(item);
         if(!currentScope.containsType(node.getType().getTypeName())) {
             errorHandle.addError(node.getLocation(),
                     node.getType().getTypeName().toString() + " is not declared");
