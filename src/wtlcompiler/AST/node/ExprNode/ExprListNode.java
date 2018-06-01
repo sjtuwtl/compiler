@@ -14,9 +14,13 @@ public class ExprListNode extends ExprNode{
         expresses = exprs;
     }
 
-    public void addExpr(ExprNode node) {
-        expresses.add(node);
+    public void addExpr(ExprNode node, int pos) {
+        expresses.add(pos, node);
     }
+
+   /* public void addExpr(ExprNode node) {
+        expresses.add(node);
+    }*/
 
     public List<ExprNode> getExpresses() {
         return expresses;

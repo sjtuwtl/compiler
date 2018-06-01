@@ -89,7 +89,11 @@ public class ASTPrinter implements ASTVisitor {
     }
 
     @Override
-    public void visit(CreatorExprNode node) { }
+    public void visit(CreatorExprNode node) {
+        if(node == null) return;
+        printStream.println(indent.toString() + "New:   Type   : " + node.getType().getTypeName()
+                + "  Size:  " + String.valueOf(node.getSize()));
+    }
 
     @Override
     public void visit(ExprNode node) {
@@ -193,11 +197,18 @@ public class ASTPrinter implements ASTVisitor {
         printStream.println(indent.toString() + node.getClass().getSimpleName());
         Tab();
         visit(node.getExpress());
+        if (node.isFunctionCall())
+            visit(node.getFunctionCall());
+        else
+            printStream.println(indent.toString() + "mem = " + node.getIdentifier());
         BackSpace();
     }
 
     @Override
-    public void visit(NewExprNode node) { }
+    public void visit(NewExprNode node) {
+        if(node == null) return;
+        visit(node.getCreatorNode());
+    }
 
     @Override
     public void visit(NullConstNode node) {

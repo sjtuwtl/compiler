@@ -131,7 +131,7 @@ public class Semantic implements ASTVisitor {
         visit(node.getLeft());
         visit(node.getRight());
         if(node.getLeft().getExprType().getTypeName() != Name.getName("bool")
-                || node.getLeft().getExprType().getTypeName() != Name.getName("bool"))
+                || node.getRight().getExprType().getTypeName() != Name.getName("bool"))
             errorHandle.addError(node.getLocation(), "condition must be of bool type");
         node.setExprType(node.getLeft().getExprType());
     }
@@ -256,11 +256,13 @@ public class Semantic implements ASTVisitor {
             if(node.getExpress().getExprType() instanceof ArrayType
                     && node.isFunctionCall()
                     && node.getFunctionCall().getFuncName() == Name.getName("size")) {
+                visit(node.getFunctionCall());
                 node.setExprType(new BuiltInType("int", 4));
             }
             else if (node.getExpress().getExprType().getTypeName() == Name.getName("string")
                     && node.isFunctionCall()
                     && isStringBuiltIn(node.getFunctionCall().getFuncName())) {
+                visit(node.getFunctionCall());
                 FuncDeclNode func = (FuncDeclNode)currentScope.findNode(node.getName());
                 node.setExprType(func.getReturnType());
             }
@@ -278,6 +280,7 @@ public class Semantic implements ASTVisitor {
             node.setExprType(func.getReturnType());
             visit(node.getFunctionCall().getParameter());
             checkParameterMatch(func, node.getFunctionCall());
+            visit(node.getFunctionCall());
             node.getFunctionCall().setFunction(func);
         }
         else {

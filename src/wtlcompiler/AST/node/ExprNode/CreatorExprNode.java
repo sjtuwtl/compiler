@@ -38,6 +38,10 @@ public class CreatorExprNode extends ExprNode{
         return type;
     }
 
+    public List<ExprNode> getExpresses() {
+        return expresses;
+    }
+
     @Override
     public void accept(ASTVisitor visitor) {
         visitor.visit(this);

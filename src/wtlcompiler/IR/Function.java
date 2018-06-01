@@ -39,6 +39,10 @@ public class Function extends IRInstruction {
         this.usedSlotNum = usedSlotNum;
     }
 
+    public void addUsedSlotNumber(int value) {
+        this.usedSlotNum += value;
+    }
+
     public String paramToString() {
         String tmp = "(";
         int i = 0;

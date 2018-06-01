@@ -1,10 +1,16 @@
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.util.List;
 
 import wtlcompiler.AST.ASTBuilder;
 import wtlcompiler.AST.ASTPrinter;
 import wtlcompiler.AST.node.ProgNode;
+import wtlcompiler.IR.IRBase.DataSection;
+import wtlcompiler.IR.IRBase.IRConstructor;
+import wtlcompiler.IR.IRBase.IRPrinter;
+import wtlcompiler.IR.IRInstruction;
+import wtlcompiler.IR.IRType.Class;
 import wtlcompiler.utility.*;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.CharStream;
@@ -26,15 +32,12 @@ public class Main {
     }
 
     public static void printAST(ProgNode program) throws Exception {
-        FileOutputStream outputStream = new FileOutputStream("Test/TestSemantic/test_result.txt");
+        FileOutputStream outputStream = new FileOutputStream("Test/ASTtest_result.txt");
         ASTPrinter printer = new ASTPrinter();
         printer.PrintAST(program, outputStream);
     }
 
-    public static void main(String[] args) throws Exception {
- //     InputStream is = System.in;
-//       InputStream is = new FileInputStream("Test/TestSemantic/text.txt");
-         InputStream is = new FileInputStream("program.txt");
+    public static ProgNode buildAST(InputStream is) throws Exception {
         ANTLRInputStream input = new ANTLRInputStream(is);
         tryLexer lexer = new tryLexer(input);
 //        lexer.addErrorListener(tryErrorListener.INSTANCE);
@@ -44,12 +47,42 @@ public class Main {
         ParseTree tree = parser.definition();
 
         ParseTreeWalker walker = new ParseTreeWalker();
-        ASTBuilder constructor = new ASTBuilder();
-        walker.walk(constructor, tree);
+        ASTBuilder builder = new ASTBuilder();
+        walker.walk(builder, tree);
 
-//        printAST(constructor.getProgram());
+        return builder.getProgram();
+    }
 
-        checkSemantic(constructor.getProgram());
+    public static IRConstructor constructIR(ProgNode program)
+    {
+        IRConstructor irConstructor = new IRConstructor(program);
+        irConstructor.BuildIR();
+        return irConstructor;
+    }
+
+    public static void printIR(IRConstructor irConstructor) throws Exception
+    {
+        FileOutputStream outputStream = new FileOutputStream("Test/IRtest_result.txt");
+        IRInstruction entry = irConstructor.getEntry();
+        List<Class> typeList = irConstructor.getTypes();
+        DataSection dataSection = irConstructor.getDataSection();
+        IRPrinter irPrinter = new IRPrinter(entry, irConstructor.getInitializeEntry(), outputStream, typeList ,dataSection);
+        irPrinter.printIR();
+    }
+
+    public static void main(String[] args) throws Exception {
+ //     InputStream is = System.in;
+       InputStream is = new FileInputStream("Test/text.txt");
+//         InputStream is = new FileInputStream("program.txt");
+        ProgNode program = buildAST(is);
+
+
+        printAST(program);
+
+        checkSemantic(program);
+        IRConstructor constructor = constructIR(program);
+
+        printIR(constructor);
     }
 
 }

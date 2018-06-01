@@ -40,6 +40,10 @@ public class CallExprNode extends ExprNode {
         return function;
     }
 
+    public void addParam(ExprNode node, int pos) {
+        this.parameter.addExpr(node, pos);
+    }
+
     @Override
     public void accept(ASTVisitor visitor) {
         visitor.visit(this);

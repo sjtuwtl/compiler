@@ -11,7 +11,7 @@ public class FunctionScope {
     private int curNum = 0;
     private Name name;
     private FuncDeclNode funcDeclNode;
-    private int usedSlotNum = 0;
+    private int usedSlotNum = 2;
 
     public FunctionScope(Name name) {
         this.name = name;

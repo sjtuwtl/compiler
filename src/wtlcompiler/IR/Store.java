@@ -33,7 +33,10 @@ public class Store extends IRInstruction{
 
     @Override
     public String toString() {
-        return "Store " + data.toString() + " to " + address.toString();
+        if (data == null) return "Store " + address.toString();
+        else if (address == null) return "Store " + data.toString();
+        else return "Store " + data.toString() + " to " + address.toString();
+
     }
 
     @Override

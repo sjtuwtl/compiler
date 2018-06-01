@@ -11,6 +11,10 @@ public class Immediate extends IntegerValue {
         return value;
     }
 
+    public void addValue(int v) {
+        value += v;
+    }
+
     @Override
     public String toString() {
         return "Immediate:" + String.valueOf(value);

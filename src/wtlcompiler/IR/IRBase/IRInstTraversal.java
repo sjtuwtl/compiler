@@ -13,6 +13,7 @@ public interface IRInstTraversal {
     void visit(Jump inst);
     void visit(Label inst);
 //    void visit(Load inst);
+    void visit(Malloc inst);
     void visit(MemCopy inst);
     void visit(Move inst);
     void visit(Return inst);

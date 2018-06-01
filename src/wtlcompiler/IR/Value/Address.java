@@ -8,6 +8,8 @@ public class Address extends VitualRegister{
     private Address base;
     private IntegerValue offset;
     private IRType irType;
+    private boolean isGlobal = false;
+    private boolean isPointer = false;
 
     private PhysicalRegister baseReg, offsetReg;
 
@@ -15,12 +17,21 @@ public class Address extends VitualRegister{
         super(name, true);
         this.name = name;
         this.irType = irType;
+        this.isGlobal = false;
+    }
+
+    public Address(Name name, boolean isGlobal) {
+        super(name);
+        this.name = name;
+        this.isGlobal = isGlobal;
     }
 
     public Address(Name name, Address base, IntegerValue offset) {
         super(name);
+        this.name = name;
         this.base = base;
         this.offset = offset;
+        this.isGlobal = false;
     }
 
     public Name getName() {
@@ -33,6 +44,22 @@ public class Address extends VitualRegister{
 
     public IntegerValue getOffset() {
         return offset;
+    }
+
+    public void setGlobal(boolean global) {
+        isGlobal = global;
+    }
+
+    public boolean isPointer() {
+        return isPointer;
+    }
+
+    public boolean isGlobal() {
+        return isGlobal;
+    }
+
+    public void setPointer(boolean pointer) {
+        isPointer = pointer;
     }
 
     public IRType getIrType() {
@@ -57,9 +84,10 @@ public class Address extends VitualRegister{
 
     @Override
     public String toString() {
+        if (name == null) return "NoAddress";
         if (this.offset == null)
             return "[" + name.toString() + "]";
         else
-            return "Address: " + name.toString() + "+ offset" + offset.toString() + "* i64;";
+            return "[Address: " + name.toString() + ":" + base.toString() + "+ offset " + offset.toString() + "*i64]";
     }
 }

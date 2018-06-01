@@ -32,7 +32,10 @@ public class Return extends Terminator{
     @Override
     public String toString()
     {
-        return "Return: " + value.toString();
+        if (value == null)
+            return "Return";
+        else
+            return "Return: " + value.toString();
     }
 
     @Override

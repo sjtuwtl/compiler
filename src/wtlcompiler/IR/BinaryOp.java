@@ -71,7 +71,10 @@ public class BinaryOp extends IRInstruction{
 
     @Override
     public String toString() {
-        return dest.toString() + "=" + lhs.toString() + " " + op.toString() + " " + rhs.toString();
+        String tmp = dest.toString() + " = " + lhs.toString() + " " + op.toString();
+        if (rhs != null)
+            tmp += " " + rhs.toString();
+        return tmp;
     }
 
     @Override

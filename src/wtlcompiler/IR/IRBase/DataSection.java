@@ -6,13 +6,27 @@ import java.util.List;
 public class DataSection {
     public class DataPiece {
         private String strValue;
+        private String otherValue;
+        private String op;
         private String name;
         private int length;
 
-        public DataPiece(String name, String strValue) {
-            this.strValue = strValue;
+        public DataPiece(String name, String value) {
+            if (value != null) {
+                this.strValue = value;
+                this.length = strValue.length();
+            }
             this.name = name;
-            this.length = strValue.length();
+        }
+
+        public DataPiece(String name, String value, String op) {
+            this.otherValue = value;
+            this.op = op;
+            this.name = name;
+        }
+
+        public String getOtherValue() {
+            return otherValue;
         }
 
         public String getStrValue() {
@@ -41,6 +55,11 @@ public class DataSection {
 
     public String addData(String name, String value) {
         dataPieces.add(new DataPiece(name, value));
+        return name;
+    }
+
+    public String addData(String name, String value, String op) {
+        dataPieces.add(new DataPiece(name, value, op));
         return name;
     }
 

@@ -51,7 +51,11 @@ public class Branch extends Terminator{
 
     @Override
     public String toString() {
-        return "Branch" + condition.toString() + "true: " + ifTure.toString() + "false: " + ifFalse.toString();
+        String tmp = "Branch: ";
+        if (condition != null)
+            tmp += condition.toString();
+        tmp += " true: " + ifTure.toString() + " false " + ifFalse.toString();
+        return tmp;
     }
 
     @Override
