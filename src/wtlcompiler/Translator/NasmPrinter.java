@@ -81,7 +81,7 @@ public class NasmPrinter {
 
     public List<String> getClibCode() throws Exception {
         List<String> clibCode = new ArrayList<>();
-        FileReader fileReader = new FileReader("src/Test/clib.txt");
+        FileReader fileReader = new FileReader("Test/clib.txt");
         BufferedReader bufferedReader = new BufferedReader(fileReader);
         String str;
         while((str = bufferedReader.readLine()) != null) {
