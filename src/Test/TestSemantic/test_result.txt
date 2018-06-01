@@ -1,0 +1,11 @@
+ProgNode
+  *FunctionDeclaration: main
+    BuiltInType: int
+    BlockNode
+      *VariableDeclaration: c
+        BuiltInType: int
+        IntConstNode  value = 10
+      *VariableDeclaration: b
+        ArrayType: int
+        IdentifierExprNode  ID name: c
+      ReturnNode
