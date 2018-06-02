@@ -634,8 +634,9 @@ public class IRConstructor implements IRTraversal {
         Label endLabel = new Label(null);
 
         IntegerValue condition = visit(node.getCondition());
-        addInst(new Compare(curLab, Compare.Condition.EQU, new Address(curFunc.getRegister().getName(), new BuiltIn()), condition, new Immediate(1)));
-        addInst(new Branch(curLab, trueLabel, falseLabel, condition));
+        Address address = new Address(curFunc.getRegister().getName(), new BuiltIn());
+        addInst(new Compare(curLab, Compare.Condition.EQU, address, condition, new Immediate(1)));
+        addInst(new Branch(curLab, trueLabel, falseLabel, address, Compare.Condition.EQU));
         addInst(trueLabel);
         visit(node.getState());
         addInst(new Jump(curLab, endLabel));

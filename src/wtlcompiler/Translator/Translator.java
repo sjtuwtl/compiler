@@ -256,7 +256,7 @@ public class Translator implements IRInstTraversal {
         if (inst.getSize() instanceof Immediate) {
             size = String.valueOf((((Immediate) inst.getSize()).getValue() + 1) * 8);
             addInst(NasmInst.Instruction.mov, "rdi", size);
-            addInst(NasmInst.Instruction.call, "malloc", size);
+            addInst(NasmInst.Instruction.call, "malloc", null);
         }
         else {
             size = processIntegerValue(inst.getSize(), inst.getSizeReg());
