@@ -609,8 +609,9 @@ public class IRConstructor implements IRTraversal {
         if(node.getEndCondition() != null)
             endCondition = visit(node.getEndCondition());
         if (endCondition != null) {
-            addInst(new Compare(curLab, Compare.Condition.EQU, new Address(curFunc.getRegister().getName(), new BuiltIn()), endCondition, new Immediate(1)));
-            addInst(new Branch(curLab, trueLabel, falseLabel, endCondition));
+            Address address = new Address(curFunc.getRegister().getName(), new BuiltIn());
+            addInst(new Compare(curLab, Compare.Condition.EQU, address, endCondition, new Immediate(1)));
+            addInst(new Branch(curLab, trueLabel, falseLabel, address, Compare.Condition.EQU));
         }
         addInst(trueLabel);
         visit(node.getBlock());
@@ -673,8 +674,9 @@ public class IRConstructor implements IRTraversal {
         if(node.getCondition() != null)
             endCondition = visit(node.getCondition());
         if (endCondition != null) {
-            addInst(new Compare(curLab, Compare.Condition.EQU, new Address(curFunc.getRegister().getName(), new BuiltIn()), endCondition, new Immediate(1)));
-            addInst(new Branch(curLab, trueLabel, falseLabel, endCondition));
+            Address address = new Address(curFunc.getRegister().getName(), new BuiltIn());
+            addInst(new Compare(curLab, Compare.Condition.EQU, address, endCondition, new Immediate(1)));
+            addInst(new Branch(curLab, trueLabel, falseLabel, address, Compare.Condition.EQU));
         }
         addInst(trueLabel);
         visit(node.getBlock());
