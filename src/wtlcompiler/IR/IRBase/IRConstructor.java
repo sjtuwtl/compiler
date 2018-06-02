@@ -621,6 +621,7 @@ public class IRConstructor implements IRTraversal {
         addInst(falseLabel);
 
         exitJumpLabel();
+        exitEndLabel();
         exitIRScope();
 
         return null;
@@ -684,8 +685,8 @@ public class IRConstructor implements IRTraversal {
         addInst(falseLabel);
 
         exitIRScope();
-        exitJumpLabel();
         exitEndLabel();
+        exitJumpLabel();
         return null;
     }
 
