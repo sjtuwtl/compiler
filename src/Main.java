@@ -91,9 +91,9 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 //        InputStream is = System.in;
-      InputStream is = new FileInputStream("Test/text.txt");
+//      InputStream is = new FileInputStream("Test/text.txt");
 
-//         InputStream is = new FileInputStream("program.txt");
+         InputStream is = new FileInputStream("program.txt");
          OutputStream out = System.out;
         ProgNode program = buildAST(is);
 
@@ -103,7 +103,7 @@ public class Main {
         checkSemantic(program);
         IRConstructor constructor = constructIR(program);
 
-        printIR(constructor);
+//        printIR(constructor);
         optimizeIR(constructor);
         translate(constructor, out);
     }
