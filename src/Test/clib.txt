@@ -234,7 +234,7 @@ ord:
     mov al,byte[rdi+rsi]
     ret
 
-Str_ADD:
+StrADD:
         push    r15
         push    r14
         mov     r15, rdi

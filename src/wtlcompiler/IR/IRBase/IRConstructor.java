@@ -731,7 +731,7 @@ public class IRConstructor implements IRTraversal {
                 case DIV: binaryOp = wtlcompiler.IR.BinaryOp.BinOp.idiv; break;
                 case L_SHIFT: binaryOp = wtlcompiler.IR.BinaryOp.BinOp.shl; break;
                 case R_SHIFT: binaryOp = wtlcompiler.IR.BinaryOp.BinOp.shr; break;
-                case MOD: binaryOp = wtlcompiler.IR.BinaryOp.BinOp.idiv; break;
+                case MOD: binaryOp = wtlcompiler.IR.BinaryOp.BinOp.mod; break;
                 case BIT_AND: binaryOp = wtlcompiler.IR.BinaryOp.BinOp.and; break;
                 case BIT_OR: binaryOp = wtlcompiler.IR.BinaryOp.BinOp.or; break;
                 case BIT_XOR: binaryOp = wtlcompiler.IR.BinaryOp.BinOp.xor; break;
