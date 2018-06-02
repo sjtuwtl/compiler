@@ -18,16 +18,6 @@ public interface tryListener extends ParseTreeListener {
 	 */
 	void exitDefinition(tryParser.DefinitionContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link tryParser#classname}.
-	 * @param ctx the parse tree
-	 */
-	void enterClassname(tryParser.ClassnameContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link tryParser#classname}.
-	 * @param ctx the parse tree
-	 */
-	void exitClassname(tryParser.ClassnameContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link tryParser#classdef}.
 	 * @param ctx the parse tree
 	 */

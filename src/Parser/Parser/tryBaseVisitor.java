@@ -24,13 +24,6 @@ public class tryBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements tr
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitClassname(tryParser.ClassnameContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
 	@Override public T visitClassdef(tryParser.ClassdefContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}

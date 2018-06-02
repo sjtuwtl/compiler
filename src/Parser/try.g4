@@ -5,9 +5,6 @@ grammar try;
 definition   :   (fundef | varsdef | classdef )* EOF ;
 
 //classdefinition
-classname
-        :   ID
-        ;
 
 classdef:   'class' ID '{'
         (   fundef
@@ -92,9 +89,9 @@ expr    :   funname '(' exprs? ')'                                              
         |   'this'                                                              #thisExpr
         ;
 
-creator :    (classname | basetype) ('[' expr ']')* ('[' ']')+('[' expr ']')+   #wrongCreator
-         |   (classname | basetype) ('[' expr ']')+ ('[' ']')*                  #arrayCreator
-         |   (classname | basetype) ('(' exprs ')' )?                           #nonArrayCreator
+creator :    (typename | basetype) ('[' expr ']')* ('[' ']')+('[' expr ']')+   #wrongCreator
+         |   (typename | basetype) ('[' expr ']')+ ('[' ']')*                  #arrayCreator
+         |   typename  ('(' exprs ')' )?                                       #nonArrayCreator
          ;
 
 //lexxer

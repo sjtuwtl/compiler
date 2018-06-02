@@ -305,7 +305,9 @@ public class Semantic implements ASTVisitor {
         if(node == null) return;
         for (ExprNode item: node.getExpresses())
             visit(item);
-        if(!currentScope.containsType(node.getType().getTypeName())) {
+        if(!currentScope.containsType
+                (node.getType()
+                        .getTypeName())) {
             errorHandle.addError(node.getLocation(),
                     node.getType().getTypeName().toString() + " is not declared");
         }

@@ -28,18 +28,6 @@ public class tryBaseListener implements tryListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterClassname(tryParser.ClassnameContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitClassname(tryParser.ClassnameContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterClassdef(tryParser.ClassdefContext ctx) { }
 	/**
 	 * {@inheritDoc}

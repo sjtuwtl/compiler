@@ -17,12 +17,6 @@ public interface tryVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitDefinition(tryParser.DefinitionContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link tryParser#classname}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitClassname(tryParser.ClassnameContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link tryParser#classdef}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

@@ -265,10 +265,10 @@ public class ASTBuilder extends tryBaseListener{
     @Override
     public void exitArrayCreator(tryParser.ArrayCreatorContext ctx) {
         Type type;
-        if(ctx.classname() != null)
-//            type = new Type(ctx.classname().ID().getText(), -1);
+        if(ctx.typename() != null)
+//            type = new Type(ctx.typename().ID().getText(), -1);
 //        else type = new Type(ctx.basetype().getText(), -1);
-            type = (Type)map.get(ctx.classname());
+            type = (Type)map.get(ctx.typename());
         else
             type = (Type)map.get(ctx.basetype());
         List<ExprNode> exprs = new LinkedList<>();
@@ -287,7 +287,7 @@ public class ASTBuilder extends tryBaseListener{
         else {
             type = new Type(ctx.basetype().getText(), 1);
         }*/
-        Type type = new Type(ctx.classname().ID().getText(), 1);
+        Type type = new Type(ctx.typename().ID().getText(), 1);
         map.put(ctx, new CreatorExprNode(new location(ctx.getStart().getLine(), 0), type, new ArrayList<>(), 0));
     }
 
