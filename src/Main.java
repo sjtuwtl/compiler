@@ -16,9 +16,10 @@ import wtlcompiler.Optimizer.Allocator;
 import wtlcompiler.Translator.NasmPrinter;
 import wtlcompiler.Translator.Translator;
 import wtlcompiler.utility.*;
-import org.antlr.v4.runtime.*;
-import org.antlr.v4.runtime.CharStream;
-import org.antlr.v4.runtime.tree.*;
+import org.antlr.v4.runtime.ANTLRInputStream;
+import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.tree.ParseTree;
+import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import Parser.Parser.*;
 import Parser.*;
 
@@ -89,10 +90,10 @@ public class Main {
     }
 
     public static void main(String[] args) throws Exception {
-        InputStream is = System.in;
+//        InputStream is = System.in;
 //      InputStream is = new FileInputStream("Test/text.txt");
 
-//         InputStream is = new FileInputStream("program.txt");
+         InputStream is = new FileInputStream("program.txt");
          OutputStream out = System.out;
         ProgNode program = buildAST(is);
 
