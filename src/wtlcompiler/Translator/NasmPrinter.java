@@ -61,13 +61,6 @@ public class NasmPrinter {
             else
                 printStream.println(indent + nasmInst.toString());
         }
-        printStream.println("\nsection .bss\n");
-        for(NasmInst nasmInst : bssZone) {
-            if(nasmInst.getInst() == NasmInst.Instruction.NULL)
-                printStream.print(nasmInst.toString() + ":");
-            else
-                printStream.println(indent + nasmInst.toString());
-        }
         printStream.println("\n");
         try {
             List<String> clibCode = getClibCode();
@@ -77,6 +70,14 @@ public class NasmPrinter {
         catch (Exception e) {
             throw new RuntimeException("cannot open file");
         }
+        printStream.println("\nsection .bss\n");
+        for(NasmInst nasmInst : bssZone) {
+            if(nasmInst.getInst() == NasmInst.Instruction.NULL)
+                printStream.print(nasmInst.toString() + ":");
+            else
+                printStream.println(indent + nasmInst.toString());
+        }
+
     }
 
     public List<String> getClibCode() throws Exception {

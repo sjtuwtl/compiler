@@ -27,7 +27,7 @@ public class Label extends IRInstruction{
 
     @Override
     public String toString() {
-        return "Label: " + name;
+        return "Label " + name;
     }
 
     @Override
