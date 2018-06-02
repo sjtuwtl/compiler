@@ -34,7 +34,14 @@ public class MemCopy extends IRInstruction{
 
     @Override
     public String toString() {
-        return "MemCopy: " + fromAddress.toString() + " to " + toAddress.toString();
+        if (fromAddress != null && toAddress != null)
+            return "MemCopy: " + fromAddress.toString() + " to " + toAddress.toString();
+        else if (fromAddress == null && toAddress != null)
+            return "";
+        else if (fromAddress != null && toAddress == null)
+            return "MemCopy: " + fromAddress.toString() + " to NULL";
+        else
+            return "MemCopy: NULL to NULL";
     }
 
     @Override
