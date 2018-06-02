@@ -249,8 +249,6 @@ public class Semantic implements ASTVisitor {
                     node.getName().toString() + " have not been declared");
         VarDeclNode var = (VarDeclNode)currentScope.findNode(node.getName());
         node.setExprType(var.getType());
-        if (node.getExprType() == null)
-            System.out.println(1);
     }
 
     @Override
@@ -285,7 +283,7 @@ public class Semantic implements ASTVisitor {
             node.setExprType(func.getReturnType());
             visit(node.getFunctionCall().getParameter());
             checkParameterMatch(func, node.getFunctionCall());
-            visit(node.getFunctionCall());
+            visitMemberCall(node.getFunctionCall(), node.getExpress().getExprType().getClassNode().getInternalScope());
             node.getFunctionCall().setFunction(func);
         }
         else {
@@ -493,6 +491,20 @@ public class Semantic implements ASTVisitor {
                         "required type " + formal_params.get(i).getType().getTypeName()
                                 + " finding " + actual_params.get(i).getExprType().getTypeName());
         }
+    }
+
+    private void visitMemberCall(CallExprNode node, Scope scope) {
+        if (node == null) return;
+        if (!scope.containsNode(node.getFuncName()))
+            errorHandle.addError(node.getLocation(), "function " + node.getFunction().toString()
+                    + " have not been declared");
+        FuncDeclNode funcDeclNode = (FuncDeclNode)scope.findNode(node.getFuncName());
+        if (!funcDeclNode.isFunction())
+            errorHandle.addError(node.getLocation(), node.getFuncName().toString() + " is not a function");
+        visit(node.getParameter());
+        node.setExprType(funcDeclNode.getReturnType());
+        node.setFunction(funcDeclNode);
+        checkParameterMatch(funcDeclNode, node);
     }
 
 }

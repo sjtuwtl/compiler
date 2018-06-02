@@ -10,6 +10,8 @@ public class Address extends VitualRegister{
     private IRType irType;
     private boolean isGlobal = false;
     private boolean isPointer = false;
+    private boolean isMember = false;
+    private int memberNumber = -1;
 
     private PhysicalRegister baseReg, offsetReg;
 
@@ -56,6 +58,22 @@ public class Address extends VitualRegister{
 
     public boolean isGlobal() {
         return isGlobal;
+    }
+
+    public boolean isMember() {
+        return isMember;
+    }
+
+    public void setMember(boolean member) {
+        isMember = member;
+    }
+
+    public int getMemberNumber() {
+        return memberNumber;
+    }
+
+    public void setMemberNumber(int memberNumber) {
+        this.memberNumber = memberNumber;
     }
 
     public void setPointer(boolean pointer) {

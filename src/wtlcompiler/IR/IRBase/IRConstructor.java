@@ -113,12 +113,14 @@ public class IRConstructor implements IRTraversal {
         curClass = node;
         Class classType = new Class(node.getName());
         if(node == null) return null;
-        for(FuncDeclNode item : node.getMemberFunction())
-            visit(item);
         for(VarDeclNode item : node.getMemberVarible()) {
 //            visit(item);
             classType.addContain(convertType(item.getType()));
+            curIRScope.addAddress(item.getName(), new Address(item.getName(), convertType(item.getType())));
         }
+        for(FuncDeclNode item : node.getMemberFunction())
+            visit(item);
+
         addType(classType);
         curClass = null;
         return null;

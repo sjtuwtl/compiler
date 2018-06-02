@@ -252,11 +252,14 @@ public class Translator implements IRInstTraversal {
 
     @Override
     public void visit(Malloc inst) {
+        //System.out.println(1);
         String size;
         if (inst.getSize() instanceof Immediate) {
             size = String.valueOf((((Immediate) inst.getSize()).getValue() + 1) * 8);
             addInst(NasmInst.Instruction.mov, "rdi", size);
+            //System.out.println(nasmInsts.get(nasmInsts.size() - 1).toString());
             addInst(NasmInst.Instruction.call, "malloc", null);
+            //System.out.println(nasmInsts.get(nasmInsts.size() - 1).toString());
         }
         else {
             size = processIntegerValue(inst.getSize(), inst.getSizeReg());
@@ -267,6 +270,7 @@ public class Translator implements IRInstTraversal {
             addInst(NasmInst.Instruction.call, "malloc", null);
         }
         addInst(NasmInst.Instruction.mov, processAddress(inst.getReturnAddress(), null), "rax");
+        //System.out.println(nasmInsts.get(nasmInsts.size() - 1).toString());
     }
 
     @Override
@@ -292,6 +296,7 @@ public class Translator implements IRInstTraversal {
     public void visit(Store inst) {
         if(inst.getData() != null) {
             String store = processIntegerValue(inst.getData(), inst.getDataReg());
+            //System.out.println(1);
             addInst(NasmInst.Instruction.mov, processAddress((Address) inst.getAddress(), null), store);
         }
     }

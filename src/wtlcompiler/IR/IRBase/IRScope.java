@@ -38,12 +38,15 @@ public class IRScope {
     public Address findAddress(Name name) {
         if (addressMap.containsKey(name))
             return addressMap.get(name);
-        else return parent.findAddress(name);
+        else
+            return parent.findAddress(name);
     }
 
     public boolean containAddress(Name name) {
         if (addressMap.containsKey(name))
             return true;
+        else if (this.parent == null)
+            return false;
         else
             return this.parent.containAddress(name);
     }
