@@ -2,82 +2,50 @@ __________________________________________
 ===================TEXT===================
 
 
-define i64 @work(i64, struct:TA;)
-  [%r0]= alloca  i64
-  [%r0] = [Address: anger:[ta]+ offset Immediate:1*i64] SEQ Immediate:100
-  Branch: [%r0] true: Label: 3 false Label: 4
-
-  Label: 3
-  Store Immediate:1 to [%r0]
-  Jump: Label: 5
-
-  Label: 4
-  Store Immediate:0 to [%r0]
-
-  Label: 5
-  [%r1] = [%r0] EQU Immediate:1
-  Branch: [%r0] true: Label: 0 false Label: 1
-
-  Label: 0
-  [%r3]= alloca  i64
-  [%r4]= alloca  i64
-  [%r5]= alloca  i64
-  [%r5] = Call @StrADD([st],[String_0])
-  [%r4] = Call @StrADD([%r5],[Address: state:[ta]+ offset Immediate:0*i64])
-  [%r3] = Call @StrADD([%r4],[String_1])
-  Call @println([%r3])
-  Jump: Label: 2
-
-  Label: 1
-  [%r7]= alloca  i64
-  [%r8]= alloca  i64
-  [%r9]= alloca  i64
-  [%r9] = Call @StrADD([st],[String_2])
-  [%r8] = Call @StrADD([%r9],[Address: state:[ta]+ offset Immediate:0*i64])
-  [%r7] = Call @StrADD([%r8],[String_3])
-  Call @println([%r7])
-  Jump: Label: 2
-
-  Label: 2
-  [%r10]= alloca  i64
-  [%r10] = [Address: anger:[ta]+ offset Immediate:1*i64] add [work_anger]
-  Store [%r10] to [Address: anger:[ta]+ offset Immediate:1*i64]
-  Return
-  Return
-
 define i64 @main()
-  [mr]= alloca  struct:TA;
-  [mars]= alloca  struct:TA;
+  [obj]= alloca  struct:C2;
   [%r0]= alloca  Immediate:8
   [%r0]= Malloc Immediate:4
-  Store [%r0] to [mr]
-  Store [String_4] to [Address: state:[mr]+ offset Immediate:0*i64]
-  Store Immediate:0 to [Address: anger:[mr]+ offset Immediate:1*i64]
-  [%r1]= alloca  Immediate:8
-  [%r1]= Malloc Immediate:4
-  Store [%r1] to [mars]
-  Store [String_5] to [Address: state:[mars]+ offset Immediate:0*i64]
-  Store [init_anger] to [Address: anger:[mars]+ offset Immediate:1*i64]
-  Call @work([String_6],[mr])
-  Call @work([String_7],[mars])
-  Call @work([String_8],[mars])
-  Return: Immediate:0
+  Store [%r0] to [obj]
+  Store Immediate:10 to [Address: x:[obj]+ offset Immediate:0*i64]
+  Store Immediate:20 to [Address: y:[obj]+ offset Immediate:1*i64]
+  [%r1]= alloca  i64
+  [%r1] = [Address: x:[obj]+ offset Immediate:0*i64] SGT [Address: y:[obj]+ offset Immediate:1*i64]
+  Branch: [%r1] true: Label_0 false Label_1
+
+  Label_0
+  Store Immediate:1 to [%r1]
+  Jump: Label_2
+
+  Label_1
+  Store Immediate:0 to [%r1]
+
+  Label_2
+  Store [%r1] to [Address: b:[obj]+ offset Immediate:2*i64]
+  [%r2] = [Address: b:[obj]+ offset Immediate:2*i64] EQU Immediate:1
+  Branch: [%r2] true: Label_3 false Label_4
+
+  Label_3
+  Store Immediate:40 to [Address: z:[obj]+ offset Immediate:3*i64]
+  Jump: Label_5
+
+  Label_4
+  Store Immediate:80 to [Address: z:[obj]+ offset Immediate:3*i64]
+  Jump: Label_5
+
+  Label_5
+  [%r3]= alloca  i64
+  [%r3] = [Address: x:[obj]+ offset Immediate:0*i64] add [Address: y:[obj]+ offset Immediate:1*i64]
+  [%r4]= alloca  i64
+  [%r4] = [%r3] add [Address: z:[obj]+ offset Immediate:3*i64]
+  Return: [%r4]
   Return
 
 
 __________________________________________
 ===================TYPE===================
-struct:TA= type {i64 i64}
+struct:C2= type {i64 i64 i64 i64}
 
 
 __________________________________________
 ===================DATA===================
-String_0: , 
-String_1:  enjoys this work. XD
-String_2: , 
-String_3:  wants to give up!!!!!
-String_4: the leading TA
-String_5: the striking TA
-String_6: MR
-String_7: Mars
-String_8: Mars

@@ -234,7 +234,7 @@ ord:
     mov al,byte[rdi+rsi]
     ret
 
-Str_ADD:
+StrADD:
         push    r15
         push    r14
         mov     r15, rdi
@@ -278,7 +278,7 @@ L_002:  mov     byte [rbx+r12], 0
         ret
 
 
-Str_LT:
+StrLT:
 
     push rbp
     mov rbp,rsp
@@ -291,7 +291,7 @@ Str_LT:
     pop rbp
     ret
 
-Str_LE:
+StrLE:
 
     push rbp
     mov rbp,rsp
@@ -304,7 +304,7 @@ Str_LE:
     pop rbp
     ret
 
-Str_GT:
+StrGT:
 
     push rbp
     mov rbp,rsp
@@ -317,7 +317,7 @@ Str_GT:
     pop rbp
     ret
 
-Str_GE:
+StrGE:
 
     push rbp
     mov rbp,rsp
@@ -330,7 +330,7 @@ Str_GE:
     pop rbp
     ret
 
-Str_EQ:
+StrEQ:
 
     push rbp
     mov rbp,rsp
@@ -343,7 +343,7 @@ Str_EQ:
     pop rbp
     ret
 
-Str_NE:
+StrNE:
 
     push rbp
     mov rbp,rsp
