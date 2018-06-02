@@ -18,6 +18,7 @@ import wtlcompiler.IR.IRType.IRType;
 import wtlcompiler.IR.IRType.BuiltIn;
 import wtlcompiler.IR.IRType.Array;
 import wtlcompiler.IR.Label;
+import wtlcompiler.utility.Scope;
 import wtlcompiler.utility.UnaryOp;
 
 import java.util.ArrayList;
@@ -29,14 +30,16 @@ public class IRConstructor implements IRTraversal {
     private IRInstruction initializeGlobalInst;
     private Label curLab;
     private IRScope curIRScope;
-    private FunctionScope curFunc;
+    private FunctionScope curFuncScope;
+    private Stack<IRScope> irScopeStack = new Stack<>();
+    private Function curFunc;
     private ClassDeclNode curClass;
     private boolean isHeapAllocate = false;
     private boolean isInitializeInst = false;
 
     private Label nextJumpLabel;
     private Label nextEndLabel;
-    private boolean isVarForCond = false;
+    private boolean isMembefFunction = false;
     private Stack<Label> jumpLabelStack = new Stack<>();
     private Stack<Label> endLabelStack = new Stack<>();
 
@@ -52,7 +55,7 @@ public class IRConstructor implements IRTraversal {
     public IRConstructor(ProgNode progNode) {
         program = progNode;
         Label globalLabel = new Label("GLOBAL");
-        curFunc = new FunctionScope(Name.getName("GLOBAL"));
+        curFuncScope = new FunctionScope(Name.getName("GLOBAL"));
         curLab = globalLabel;
         setJumpLabel(globalLabel);
         setEndLabel(globalLabel);
@@ -112,17 +115,23 @@ public class IRConstructor implements IRTraversal {
     public IRInstruction visit(ClassDeclNode node) {
         curClass = node;
         Class classType = new Class(node.getName());
+        setIRScope(node.getInternalScope().getIrScope());
         if(node == null) return null;
         for(VarDeclNode item : node.getMemberVarible()) {
-//            visit(item);
+            String name = node.getName().toString() + "_" + item.getName();
+            Address address = new Address(Name.getName(name), convertType(item.getType()));
+            address.setMember(true);
+            address.setMemberNumber(item.getMemberNum());
+            curIRScope.addAddress(item.getName(), address);
             classType.addContain(convertType(item.getType()));
-            curIRScope.addAddress(item.getName(), new Address(item.getName(), convertType(item.getType())));
         }
+        isMembefFunction = true;
         for(FuncDeclNode item : node.getMemberFunction())
             visit(item);
-
+        isMembefFunction = false;
         addType(classType);
         curClass = null;
+        exitIRScope();
         return null;
     }
 
@@ -131,14 +140,14 @@ public class IRConstructor implements IRTraversal {
         IRType type = visit(node.getReturnType());
         List<Parameter> params = new ArrayList<>();
         setIRScope(node.getInternalScope().getIrScope());
-        curFunc = new FunctionScope(node.getName());
-        curFunc.setFuncDeclNode(node);
+        curFuncScope = new FunctionScope(node.getName());
+        curFuncScope.setFuncDeclNode(node);
         if(curClass != null)
             params.add(new Parameter(new Class(curClass.getName()), Name.getName("null") ,
                     new Address(Name.getName("null"), new BuiltIn()), true));
         for(FuncParamNode item : node.getParameter()) {
             Address address = new Address(item.getName(), convertType(item.getType()));
-            curFunc.incSlotNum();
+            curFuncScope.incSlotNum();
             params.add(new Parameter(convertType(item.getType()), item.getName(), address));
             curIRScope.addAddress(item.getName(), address);
         }
@@ -146,9 +155,10 @@ public class IRConstructor implements IRTraversal {
 //        visitFormalParameter(node.getParameter());
         Function function = new Function(curLab, name, type, params, 0);
         addInst(function);
+        curFunc = function;
         visit(node.getBlock());
         exitIRScope();
-        function.setUsedSlotNum(curFunc.getUsedSlotNum());
+        function.setUsedSlotNum(curFuncScope.getUsedSlotNum());
         addInst(new Return(curLab, null));
         return null;
     }
@@ -161,7 +171,7 @@ public class IRConstructor implements IRTraversal {
             name += "_ch";
         Address address = new Address(Name.getName(name), irType);
         addInst(new Alloca(curLab, address,  irType));
-        curFunc.incSlotNum();
+        curFuncScope.incSlotNum();
         curIRScope.addAddress(node.getName(), address);
         if(node.getValue() != null) {
 /*            if(isCondition(node.getValue())) {
@@ -218,7 +228,7 @@ public class IRConstructor implements IRTraversal {
         if(node.getLeft() instanceof BinaryExprNode)
             op = convertOp(((BinaryExprNode) node.getLeft()).getOp());
         addInst(new Branch(curLab, midLabel, falseLabel, lhs, op));*/
-        Address address = new Address(curFunc.getRegister().getName(), new BuiltIn());
+        Address address = new Address(curFuncScope.getRegister().getName(), new BuiltIn());
         addInst(new Compare(curLab, Compare.Condition.NEQ,
                 address,
                 lhs, new Immediate(0)));
@@ -229,9 +239,9 @@ public class IRConstructor implements IRTraversal {
         /*Compare.Condition op = null;
         if(node.getRight() instanceof BinaryExprNode)
             op = convertOp(((BinaryExprNode) node.getRight()).getOp());*/
-        Address returnAddress = new Address(curFunc.getRegister().getName(), new BuiltIn());
+        Address returnAddress = new Address(curFuncScope.getRegister().getName(), new BuiltIn());
         addInst(new Alloca(curLab, returnAddress, new BuiltIn()));
-        curFunc.incSlotNum();
+        curFuncScope.incSlotNum();
         //addInst(new Branch(curLab, trueLabel, falseLabel, rhs, op));
         addInst(new Compare(curLab, Compare.Condition.NEQ,
                 returnAddress,
@@ -290,11 +300,11 @@ public class IRConstructor implements IRTraversal {
 //        VirtualRegister dest = currentFunction.getRegister();
         IntegerValue left = visit(node.getL());
         IntegerValue right = visit(node.getR());
-        VitualRegister dest = curFunc.getRegister();
+        VitualRegister dest = curFuncScope.getRegister();
         IRType irType = new BuiltIn();
         Address address = new Address(dest.getName(), irType);
         addInst(new Alloca(curLab, address, irType));
-        curFunc.incSlotNum();
+        curFuncScope.incSlotNum();
         curIRScope.addAddress(dest.getName(), address);
 
         addBinaryInst(address, left, right, node.getOp());
@@ -311,16 +321,13 @@ public class IRConstructor implements IRTraversal {
     @Override
     public IntegerValue visit(CallExprNode node)
     {
-        //should assign a register to the return value
-//        Address address = new Address(currentFunction.getRegister().getName());
-//        addInst(new Alloca(currentLabel, address, convertType(node.getFunction().getReturnType())));
-        VitualRegister register = curFunc.getRegister();
+        VitualRegister register = curFuncScope.getRegister();
         IRType irType = new BuiltIn();
         Address address = null;
         if (node.getFunction().getReturnType() != null && node.getFunction().getReturnType().getTypeName() != Name.getName("void")) {
             address = new Address(register.getName(), irType);
             addInst(new Alloca(curLab, address, irType));
-            curFunc.incSlotNum();
+            curFuncScope.incSlotNum();
             curIRScope.addAddress(register.getName(), address);
         }
 
@@ -329,7 +336,7 @@ public class IRConstructor implements IRTraversal {
         {
             params.add(visit(item));
         }
-        addInst(new Call(curLab, address, FunctionRename(node.getFuncName()), params));
+        addInst(new Call(curLab, address, node.getFuncName(), params));
         return address;
     }
 
@@ -341,7 +348,12 @@ public class IRConstructor implements IRTraversal {
     @Override
     public IntegerValue visit(IdentifierExprNode node) {
         if(node == null) return null;
-        return curIRScope.findAddress(node.getName());
+        Address address = curIRScope.findAddress(node.getName());
+        if (!address.isMember())
+            return address;
+        Address base = curFunc.getParameters().get(0).getAddress();
+        Address member = new Address(address.getName(), base, new Immediate(address.getMemberNumber()));
+        return member;
     }
 
     @Override
@@ -363,7 +375,7 @@ public class IRConstructor implements IRTraversal {
                 node.getFunctionCall().setFuncName(Name.getName("__" + name.toString() + "__" + node.getFunctionCall().getFuncName()));
             }
             node.getFunctionCall().addParam(node.getExpress(), 0);
-            ret = visit(node.getFunctionCall());
+            ret = visitMemberCall(node.getFunctionCall(), base);
         }
         else {
             //TO DO
@@ -388,17 +400,17 @@ public class IRConstructor implements IRTraversal {
             return null;
         if (node.getSize() == 0) {
             IRType irType = convertType(node.getType());
-            Address address = new Address(curFunc.getRegister().getName(), irType);
+            Address address = new Address(curFuncScope.getRegister().getName(), irType);
             addInst(new Alloca(curLab, address, new Immediate(8)));
-            curFunc.incSlotNum();
+            curFuncScope.incSlotNum();
             addInst(new Malloc(curLab, new Immediate(node.getExprType().getTypeSize()), address));
             return address;
         }
         else if (node.getSize() == 1) {
             IRType irType = convertType(node.getType());
-            Address address = new Address(curFunc.getRegister().getName(), irType);
+            Address address = new Address(curFuncScope.getRegister().getName(), irType);
             addInst(new Alloca(curLab, address, new BuiltIn()));
-            curFunc.incSlotNum();
+            curFuncScope.incSlotNum();
             IntegerValue value = visit(node.getExpresses().get(0));
             addInst(new Malloc(curLab,value,address));
             addInst(new Store(curLab, new Address(Name.getName(address.getName().toString() + "_size"),
@@ -406,7 +418,7 @@ public class IRConstructor implements IRTraversal {
             return address;
         }
         else {
-            Address address = new Address(curFunc.getRegister().getName(), convertType(node.getType()));
+            Address address = new Address(curFuncScope.getRegister().getName(), convertType(node.getType()));
             memoryAllocate(node.getExpresses(), node.getType(), true, address);
             return address;
         }
@@ -429,7 +441,7 @@ public class IRConstructor implements IRTraversal {
         if(node.getLeft() instanceof BinaryExprNode)
             op = convertOp(((BinaryExprNode) node.getLeft()).getOp());
         addInst(new Branch(curLab, trueLabel, midLabel, lhs, op));*/
-        Address address = new Address(curFunc.getRegister().getName(), new BuiltIn());
+        Address address = new Address(curFuncScope.getRegister().getName(), new BuiltIn());
         addInst(new Compare(curLab, Compare.Condition.EQU,
                 address,
                 lhs, new Immediate(0)));
@@ -440,9 +452,9 @@ public class IRConstructor implements IRTraversal {
         /*Compare.Condition op = null;
         if(node.getRight() instanceof BinaryExprNode)
             op = convertOp(((BinaryExprNode) node.getRight()).getOp());*/
-        Address returnAddress = new Address(curFunc.getRegister().getName(), new BuiltIn());
+        Address returnAddress = new Address(curFuncScope.getRegister().getName(), new BuiltIn());
         addInst(new Alloca(curLab, returnAddress, new BuiltIn()));
-        curFunc.incSlotNum();
+        curFuncScope.incSlotNum();
         //addInst(new Branch(curLab, trueLabel, falseLabel, rhs, op));
         addInst(new Compare(curLab, Compare.Condition.NEQ,
                 returnAddress,
@@ -459,24 +471,24 @@ public class IRConstructor implements IRTraversal {
                 BinaryOp.isCompare(((BinaryExprNode) node.getExpr()).getOp())))
             return visitNotCondition(node);
         IntegerValue value = visit(node.getExpr());
-        VitualRegister register = curFunc.getRegister();
+        VitualRegister register = curFuncScope.getRegister();
         Address address = new Address(register.getName(), new BuiltIn());
         switch (node.getOption()) {
             case NEG:
                 addInst(new Alloca(curLab, address, new BuiltIn()));
-                curFunc.incSlotNum();
+                curFuncScope.incSlotNum();
                 addInst(new wtlcompiler.IR.BinaryOp(curLab, wtlcompiler.IR.BinaryOp.BinOp.neg, address,
                         value,null));
                 return address;
             case NOT:
                 addInst(new Alloca(curLab, address, new BuiltIn()));
-                curFunc.incSlotNum();
+                curFuncScope.incSlotNum();
                 addInst(new wtlcompiler.IR.BinaryOp(curLab, wtlcompiler.IR.BinaryOp.BinOp.xor, address,
                         value, new Immediate(1)));
                 return address;
             case BIT_NOT:
                 addInst(new Alloca(curLab, address, new BuiltIn()));
-                curFunc.incSlotNum();
+                curFuncScope.incSlotNum();
                 addInst(new wtlcompiler.IR.BinaryOp(curLab, wtlcompiler.IR.BinaryOp.BinOp.not, address,
                         value, new Immediate(-1)));
                 return address;
@@ -529,15 +541,15 @@ public class IRConstructor implements IRTraversal {
     @Override
     public IntegerValue visit(SuffixExprNode node) {
         IntegerValue value = visit(node.getExpr());
-        VitualRegister new_reg = curFunc.getRegister();
-        VitualRegister origin_reg = curFunc.getRegister();
+        VitualRegister new_reg = curFuncScope.getRegister();
+        VitualRegister origin_reg = curFuncScope.getRegister();
         IRType irType;
         irType = new BuiltIn();
 
         Address origin_address = new Address(origin_reg.getName(), irType);
 
         addInst(new Alloca(curLab, origin_address, irType));
-        curFunc.incSlotNum();
+        curFuncScope.incSlotNum();
         curIRScope.addAddress(origin_reg.getName(), origin_address);
         addInst(new Store(curLab, origin_address, value));
 
@@ -611,7 +623,7 @@ public class IRConstructor implements IRTraversal {
         if(node.getEndCondition() != null)
             endCondition = visit(node.getEndCondition());
         if (endCondition != null) {
-            Address address = new Address(curFunc.getRegister().getName(), new BuiltIn());
+            Address address = new Address(curFuncScope.getRegister().getName(), new BuiltIn());
             addInst(new Compare(curLab, Compare.Condition.EQU, address, endCondition, new Immediate(1)));
             addInst(new Branch(curLab, trueLabel, falseLabel, address, Compare.Condition.EQU));
         }
@@ -638,7 +650,7 @@ public class IRConstructor implements IRTraversal {
         Label endLabel = new Label(null);
 
         IntegerValue condition = visit(node.getCondition());
-        Address address = new Address(curFunc.getRegister().getName(), new BuiltIn());
+        Address address = new Address(curFuncScope.getRegister().getName(), new BuiltIn());
         addInst(new Compare(curLab, Compare.Condition.EQU, address, condition, new Immediate(1)));
         addInst(new Branch(curLab, trueLabel, falseLabel, address, Compare.Condition.EQU));
         addInst(trueLabel);
@@ -677,7 +689,7 @@ public class IRConstructor implements IRTraversal {
         if(node.getCondition() != null)
             endCondition = visit(node.getCondition());
         if (endCondition != null) {
-            Address address = new Address(curFunc.getRegister().getName(), new BuiltIn());
+            Address address = new Address(curFuncScope.getRegister().getName(), new BuiltIn());
             addInst(new Compare(curLab, Compare.Condition.EQU, address, endCondition, new Immediate(1)));
             addInst(new Branch(curLab, trueLabel, falseLabel, address, Compare.Condition.EQU));
         }
@@ -745,9 +757,9 @@ public class IRConstructor implements IRTraversal {
     }
 
     private IntegerValue dealStringOperation(BinaryExprNode node) {
-        Address address = new Address(curFunc.getRegister().getName(), new BuiltIn());
+        Address address = new Address(curFuncScope.getRegister().getName(), new BuiltIn());
         addInst((new Alloca(curLab, address, new BuiltIn())));
-        curFunc.incSlotNum();
+        curFuncScope.incSlotNum();
         List<IntegerValue> parameter = new ArrayList<>();
         parameter.add(visit(node.getL()));
         parameter.add(visit(node.getR()));
@@ -831,9 +843,11 @@ public class IRConstructor implements IRTraversal {
 
     private void setIRScope(IRScope irScope) {
         this.curIRScope = irScope;
+        irScopeStack.push(irScope);
     }
 
     private void exitIRScope() {
+        irScopeStack.pop();
         this.curIRScope = curIRScope.getParent();
     }
 
@@ -907,24 +921,24 @@ public class IRConstructor implements IRTraversal {
         IntegerValue size = visit(node.get(0));
         node.remove(0);
         if (isTop) {
-            curFunc.incSlotNum();
+            curFuncScope.incSlotNum();
             addInst(new Alloca(curLab, address, new BuiltIn()));
         }
         addInst(new Malloc(curLab, size, address));
         addInst(new Store(curLab, new Address(Name.getName(address.getName().toString() + "_size"), address, new Immediate(-1)), size));
         Label trueLabel = new Label(null);
         Label falseLabel = new Label(null);
-        Address offset = new Address(curFunc.getRegister().getName(), new BuiltIn());
+        Address offset = new Address(curFuncScope.getRegister().getName(), new BuiltIn());
         addInst(new Alloca(curLab, offset, new BuiltIn()));
-        curFunc.incSlotNum();
+        curFuncScope.incSlotNum();
         addInst(new Store(curLab, offset, new Immediate(0)));
         if (node.size() != 0) {
             addInst(trueLabel);
-            Address address1 = new Address(curFunc.getRegister().getName(), address, offset);
+            Address address1 = new Address(curFuncScope.getRegister().getName(), address, offset);
             memoryAllocate(node, type, false, address1);
-            Address compare = new Address(curFunc.getRegister().getName(), new BuiltIn());
+            Address compare = new Address(curFuncScope.getRegister().getName(), new BuiltIn());
             addInst(new Alloca(curLab, compare,new BuiltIn()));
-            curFunc.incSlotNum();
+            curFuncScope.incSlotNum();
             addInst(new wtlcompiler.IR.BinaryOp(curLab, wtlcompiler.IR.BinaryOp.BinOp.add, offset, offset, new Immediate(1)));
             addInst(new Compare(curLab, Compare.Condition.SEQ, compare, offset, size));
             addInst(new Branch(curLab, trueLabel, falseLabel, compare, Compare.Condition.SEQ));
@@ -955,7 +969,7 @@ public class IRConstructor implements IRTraversal {
 
     private IntegerValue visitNotCondition(PrefixExprNode node) {
         IntegerValue value = visit(node.getExpr());
-        VitualRegister register = curFunc.getRegister();
+        VitualRegister register = curFuncScope.getRegister();
 
         Address address = new Address(register.getName(), new BuiltIn());
 
@@ -973,5 +987,26 @@ public class IRConstructor implements IRTraversal {
         addInst(falseLabel);
         addInst(new Store(curLab, address, new Immediate(0)));
         addInst(endLabel);
+    }
+
+    private IntegerValue visitMemberCall(CallExprNode node, Address classAddress) {
+        VitualRegister register = curFuncScope.getRegister();
+        IRType irType = new BuiltIn();
+        Address address = null;
+        if (node.getFunction().getReturnType() != null && node.getFunction().getReturnType().getTypeName() != Name.getName("void")) {
+            address = new Address(register.getName(), irType);
+            addInst(new Alloca(curLab, address, irType));
+            curFuncScope.incSlotNum();
+            curIRScope.addAddress(register.getName(), address);
+        }
+        List<IntegerValue> params = new ArrayList<>();
+        for (ExprNode item : node.getParameter().getExpresses()) {
+            if (params.size() == 0)
+                params.add(classAddress);
+            else
+                params.add(visit(item));
+        }
+        addInst(new Call(curLab, address, node.getFuncName(), params));
+        return address;
     }
 }
