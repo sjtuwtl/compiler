@@ -229,9 +229,7 @@ public class IRConstructor implements IRTraversal {
             op = convertOp(((BinaryExprNode) node.getLeft()).getOp());
         addInst(new Branch(curLab, midLabel, falseLabel, lhs, op));*/
         Address address = new Address(curFuncScope.getRegister().getName(), new BuiltIn());
-        addInst(new Compare(curLab, Compare.Condition.NEQ,
-                address,
-                lhs, new Immediate(0)));
+        addInst(new Compare(curLab, Compare.Condition.NEQ, address, lhs, new Immediate(0)));
         addInst(new Branch(curLab, midLabel, falseLabel, address, Compare.Condition.NEQ));
         addInst(midLabel);
         curLab = midLabel;
@@ -243,9 +241,7 @@ public class IRConstructor implements IRTraversal {
         addInst(new Alloca(curLab, returnAddress, new BuiltIn()));
         curFuncScope.incSlotNum();
         //addInst(new Branch(curLab, trueLabel, falseLabel, rhs, op));
-        addInst(new Compare(curLab, Compare.Condition.NEQ,
-                returnAddress,
-                rhs, new Immediate(0)));
+        addInst(new Compare(curLab, Compare.Condition.NEQ, returnAddress, rhs, new Immediate(0)));
         addInst(new Branch(curLab, trueLabel, falseLabel, returnAddress, Compare.Condition.NEQ));
         storeCompareResult(returnAddress, trueLabel, falseLabel, endLabel);
         return returnAddress;
@@ -443,9 +439,7 @@ public class IRConstructor implements IRTraversal {
             op = convertOp(((BinaryExprNode) node.getLeft()).getOp());
         addInst(new Branch(curLab, trueLabel, midLabel, lhs, op));*/
         Address address = new Address(curFuncScope.getRegister().getName(), new BuiltIn());
-        addInst(new Compare(curLab, Compare.Condition.EQU,
-                address,
-                lhs, new Immediate(0)));
+        addInst(new Compare(curLab, Compare.Condition.EQU, address, lhs, new Immediate(0)));
         addInst(new Branch(curLab, midLabel, trueLabel, address, Compare.Condition.EQU));
         addInst(midLabel);
         curLab = midLabel;
@@ -457,9 +451,7 @@ public class IRConstructor implements IRTraversal {
         addInst(new Alloca(curLab, returnAddress, new BuiltIn()));
         curFuncScope.incSlotNum();
         //addInst(new Branch(curLab, trueLabel, falseLabel, rhs, op));
-        addInst(new Compare(curLab, Compare.Condition.NEQ,
-                returnAddress,
-                rhs, new Immediate(0)));
+        addInst(new Compare(curLab, Compare.Condition.NEQ, returnAddress, rhs, new Immediate(0)));
         addInst(new Branch(curLab, trueLabel, falseLabel, returnAddress, Compare.Condition.NEQ));
         storeCompareResult(returnAddress, trueLabel, falseLabel, endLabel);
         return returnAddress;
