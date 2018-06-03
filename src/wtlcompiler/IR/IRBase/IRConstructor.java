@@ -948,6 +948,7 @@ public class IRConstructor implements IRTraversal {
             addInst(new wtlcompiler.IR.BinaryOp(curLab, wtlcompiler.IR.BinaryOp.BinOp.add, offset, offset, new Immediate(1)));
             addInst(new Compare(curLab, Compare.Condition.SEQ, compare, offset, size));
             addInst(new Branch(curLab, trueLabel, falseLabel, compare, Compare.Condition.SEQ));
+            addInst(new Jump(curLab, trueLabel));
             addInst(falseLabel);
         }
         return address;
