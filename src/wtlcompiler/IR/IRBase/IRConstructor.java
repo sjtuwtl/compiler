@@ -491,7 +491,7 @@ public class IRConstructor implements IRTraversal {
                 addInst(new Alloca(curLab, address, new BuiltIn()));
                 curFuncScope.incSlotNum();
                 addInst(new wtlcompiler.IR.BinaryOp(curLab, wtlcompiler.IR.BinaryOp.BinOp.not, address,
-                        value, new Immediate(-1)));
+                        value, null));
                 return address;
             case POS:
                 return value;
