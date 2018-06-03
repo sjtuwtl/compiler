@@ -139,7 +139,7 @@ public class Translator implements IRInstTraversal {
         String right = null;
         if (inst.getRhs() != null)
             right = processIntegerValue(inst.getRhs(), inst.getRhsReg());
-        if (inst.getOp() == BinaryOp.BinOp.shl || inst.getOp() == BinaryOp.BinOp.shr) {
+        if (inst.getOp() == BinaryOp.BinOp.sal || inst.getOp() == BinaryOp.BinOp.sar) {
             addInst(NasmInst.Instruction.mov, "rcx", right);
             right = "cl";
         }

@@ -64,30 +64,42 @@ public class Allocator extends  RegisterAllocator implements IRInstTraversal {
     @Override
     public void visit(BinaryOp inst) {
         //const value folded
+        if(inst.getOp() == BinaryOp.BinOp.idiv || inst.getOp() == BinaryOp.BinOp.mod) {
+            visitDiv(inst);
+            return;
+        }
+        PhysicalRegister destPr = getPhysicalRegister(inst.getDest());
+        inst.setDestReg(destPr);
+
+        if(inst.getLhs() instanceof VitualRegister) {
+            PhysicalRegister lhsPr = getPhysicalRegister((VitualRegister) inst.getLhs());
+            inst.setLhsReg(lhsPr);
+        }
+        if(inst.getRhs() instanceof VitualRegister) {
+            PhysicalRegister rhsPr = getPhysicalRegister((VitualRegister) inst.getRhs());
+            inst.setRhsReg(rhsPr);
+        }
+        else {
+            PhysicalRegister rhsPr = getAvailablePhysicalRegister();
+            inst.setRhsReg(rhsPr);
+        }
+    }
+
+    public void visitDiv(BinaryOp inst) {
         if(inst.getOp() == BinaryOp.BinOp.idiv) {
             inst.setDestReg(physicalRegisters.get(0));
             isAvailable[0] = false;
         }
-        else if(inst.getOp() == BinaryOp.BinOp.mod) {
+        else {
             inst.setOp(BinaryOp.BinOp.idiv);
             inst.setDestReg(physicalRegisters.get(2));
             isAvailable[2] = false;
         }
-        else {
-            PhysicalRegister destPr = getPhysicalRegister(inst.getDest());
-            inst.setDestReg(destPr);
-        }
-
-        if(inst.getLhs() instanceof VitualRegister) {
-            PhysicalRegister lhsPr;
-            if(inst.getOp() == BinaryOp.BinOp.idiv) {
-                lhsPr = physicalRegisters.get(0);
-                isAvailable[0] = false;
-            }
-            else
-                lhsPr = getPhysicalRegister((VitualRegister) inst.getLhs());
-            inst.setLhsReg(lhsPr);
-        }
+        isAvailable[0] = false;
+        if(inst.getLhs() instanceof VitualRegister)
+            allocRegisterForAddress((VitualRegister) inst.getLhs());
+        PhysicalRegister lhsPr = physicalRegisters.get(0);
+        inst.setLhsReg(lhsPr);
         if(inst.getRhs() instanceof VitualRegister) {
             PhysicalRegister rhsPr = getPhysicalRegister((VitualRegister) inst.getRhs());
             inst.setRhsReg(rhsPr);
@@ -122,7 +134,6 @@ public class Allocator extends  RegisterAllocator implements IRInstTraversal {
         inst.setDestReg(destPr);
         if(inst.getLhs() instanceof VitualRegister) {
             PhysicalRegister lhsPr = getPhysicalRegister((VitualRegister) inst.getLhs());
-//            PhysicalRegister lhsPr = getAvailablePhysicalRegister();
             inst.setLhsReg(lhsPr);
         }
         else if(inst.getLhs() instanceof Immediate) {
@@ -215,10 +226,18 @@ public class Allocator extends  RegisterAllocator implements IRInstTraversal {
         if(registerMap.containsKey(vr))
             return registerMap.get(vr);
         else {
+            try
+            {
                 PhysicalRegister pr = getAvailablePhysicalRegister();
                 registerMap.put(vr, pr);
                 return pr;
+            }
+            catch (Exception e)
+            {
+                System.out.println(1);
+            }
         }
+        return new PhysicalRegister(Name.getName("rax"));
     }
 
     private PhysicalRegister getAvailablePhysicalRegister() {
