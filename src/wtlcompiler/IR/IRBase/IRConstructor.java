@@ -228,23 +228,23 @@ public class IRConstructor implements IRTraversal {
         if(node.getLeft() instanceof BinaryExprNode)
             op = convertOp(((BinaryExprNode) node.getLeft()).getOp());
         addInst(new Branch(curLab, midLabel, falseLabel, lhs, op));*/
-        Address address = new Address(curFuncScope.getRegister().getName(), new BuiltIn());
-        addInst(new Compare(curLab, Compare.Condition.NEQ, address, lhs, new Immediate(0)));
-        addInst(new Branch(curLab, midLabel, falseLabel, address, Compare.Condition.NEQ));
+        //Address address = new Address(curFuncScope.getRegister().getName(), new BuiltIn());
+        //addInst(new Compare(curLab, Compare.Condition.NEQ, address, lhs, new Immediate(0)));
+        addInst(new Branch(curLab, midLabel, falseLabel, lhs, Compare.Condition.NEQ));
         addInst(midLabel);
         curLab = midLabel;
         IntegerValue rhs = visit(node.getRight());
         /*Compare.Condition op = null;
         if(node.getRight() instanceof BinaryExprNode)
             op = convertOp(((BinaryExprNode) node.getRight()).getOp());*/
-        Address returnAddress = new Address(curFuncScope.getRegister().getName(), new BuiltIn());
-        addInst(new Alloca(curLab, returnAddress, new BuiltIn()));
+        //Address returnAddress = new Address(curFuncScope.getRegister().getName(), new BuiltIn());
+        //addInst(new Alloca(curLab, returnAddress, new BuiltIn()));
         curFuncScope.incSlotNum();
         //addInst(new Branch(curLab, trueLabel, falseLabel, rhs, op));
-        addInst(new Compare(curLab, Compare.Condition.NEQ, returnAddress, rhs, new Immediate(0)));
-        addInst(new Branch(curLab, trueLabel, falseLabel, returnAddress, Compare.Condition.NEQ));
-        storeCompareResult(returnAddress, trueLabel, falseLabel, endLabel);
-        return returnAddress;
+        //addInst(new Compare(curLab, Compare.Condition.NEQ, returnAddress, rhs, new Immediate(0)));
+        addInst(new Branch(curLab, trueLabel, falseLabel, rhs, Compare.Condition.NEQ));
+        storeCompareResult((Address)rhs, trueLabel, falseLabel, endLabel);
+        return rhs;
     }
 
     @Override
