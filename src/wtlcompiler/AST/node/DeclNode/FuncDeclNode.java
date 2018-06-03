@@ -18,6 +18,7 @@ public class FuncDeclNode extends DeclNode{
     private FuncDeclObject function;
     private BlockNode block;
     private Scope externalScope, internalScope;
+    private ClassDeclNode classDeclNode;
 
     public FuncDeclNode(boolean isBuiltIn, location pos, FuncDeclObject func, BlockNode blo) {
         super(pos, isBuiltIn);
@@ -78,6 +79,14 @@ public class FuncDeclNode extends DeclNode{
 
     public void setInternalScope(Scope internalScope) {
         this.internalScope = internalScope;
+    }
+
+    public ClassDeclNode getClassDeclNode() {
+        return classDeclNode;
+    }
+
+    public void setClassDeclNode(ClassDeclNode classDeclNode) {
+        this.classDeclNode = classDeclNode;
     }
 
     @Override

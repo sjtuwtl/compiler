@@ -66,6 +66,7 @@ public class Semantic implements ASTVisitor {
         if(node == null) return;
         currentFunction = node;
         setCurrentScope(node.getInternalScope());
+        node.setClassDeclNode(currentClass);
         if(node.isConstructor() && (node.getName() != currentClass.getName()))
             errorHandle.addError(node.getLocation(), "name of the constructor should be the name of the class");
         for(FuncParamNode item : node.getParameter())

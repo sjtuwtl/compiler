@@ -106,6 +106,8 @@ public class Address extends VitualRegister{
         if (this.offset == null)
             return "[" + name.toString() + "]";
         else
-            return "[Address: " + name.toString() + ":" + base.toString() + "+ offset " + offset.toString() + "*i64]";
+            return "[Address: " + name.toString() +
+                    ":" + base.toString() +
+                    "+ offset " + offset.toString() + "*i64]";
     }
 }

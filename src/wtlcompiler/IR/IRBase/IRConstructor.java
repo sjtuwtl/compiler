@@ -332,11 +332,12 @@ public class IRConstructor implements IRTraversal {
         }
 
         List<IntegerValue> params = new ArrayList<>();
-        for(ExprNode item : node.getParameter().getExpresses())
-        {
+        if (node.getFunction().getClassDeclNode() != null)
+            params.add(curFunc.getParameters().get(0).getAddress());
+        for(ExprNode item : node.getParameter().getExpresses()) {
             params.add(visit(item));
         }
-        addInst(new Call(curLab, address, node.getFuncName(), params));
+        addInst(new Call(curLab, address, FunctionRename(node.getFunction()), params));
         return address;
     }
 
@@ -569,8 +570,8 @@ public class IRConstructor implements IRTraversal {
 
     @Override
     public IntegerValue visit(ThisExprNode node) {
-        //TODO
-        return null;
+        Address address = curFunc.getParameters().get(0).getAddress();
+        return address;
     }
 
     @Override
@@ -816,10 +817,15 @@ public class IRConstructor implements IRTraversal {
         curLab.addInst(instruction);
     }
 
-    private Name FunctionRename(Name origin_name)
-    {
-        Name new_name = curClass == null? origin_name :
-                Name.getName("__" + curClass.getName().toString() + "__" + origin_name.toString());
+    private Name FunctionRename(FuncDeclNode node) {
+        Name new_name = node.getClassDeclNode() == null? node.getName() :
+                Name.getName("__" + node.getClassDeclNode().getName().toString() + "__" + node.getName().toString());
+        return new_name;
+    }
+
+    private Name FunctionRename(Name name) {
+        Name new_name = curClass == null? name :
+                Name.getName("__" + curClass.getName().toString() + "__" + name.toString());
         return new_name;
     }
 
