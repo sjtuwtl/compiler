@@ -78,6 +78,19 @@ public class BinaryOp extends IRInstruction{
     }
 
     @Override
+    public Register getDefRegister() {
+        return dest;
+    }
+
+    @Override
+    public void setUsedRegister(){
+        usedRegister.clear();
+        if (lhs instanceof Register) usedRegister.add((Register) lhs);
+        if (rhs instanceof Register) usedRegister.add((Register) rhs);
+    }
+
+
+    @Override
     public void accept(IRInstTraversal visitor) {
         visitor.visit(this);
     }

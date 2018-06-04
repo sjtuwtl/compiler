@@ -19,6 +19,17 @@ public class Move extends IRInstruction{
     }
 
     @Override
+    public Register getDefRegister() {
+        return dest;
+    }
+
+    @Override
+    public void setUsedRegister() {
+        usedRegister.clear();
+        usedRegister.add(data);
+    }
+
+    @Override
     public void accept(IRInstTraversal visitor) {
         visitor.visit(this);
     }

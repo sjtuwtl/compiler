@@ -4,6 +4,7 @@ import wtlcompiler.IR.IRBase.IRInstTraversal;
 import wtlcompiler.IR.Value.Address;
 import wtlcompiler.IR.Value.IntegerValue;
 import wtlcompiler.IR.Value.PhysicalRegister;
+import wtlcompiler.IR.Value.Register;
 
 public class Malloc extends IRInstruction{
     private IntegerValue size;
@@ -44,6 +45,17 @@ public class Malloc extends IRInstruction{
     @Override
     public void accept(IRInstTraversal visitor) {
         visitor.visit(this);
+    }
+
+    @Override
+    public Register getDefRegister() {
+        return returnAddress;
+    }
+
+    @Override
+    public void setUsedRegister() {
+        usedRegister.clear();
+        if (size instanceof Register) usedRegister.add((Register) usedRegister);
     }
 
     @Override

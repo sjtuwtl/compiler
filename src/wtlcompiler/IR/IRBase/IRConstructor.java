@@ -252,7 +252,11 @@ public class IRConstructor implements IRTraversal {
         //should return address
         IntegerValue index = visit(node.getIndex());
         Address array = (Address)visit(node.getArray());
-        return new Address(array.getName(), array, index);
+        Address arrayAddress = new Address(curFuncScope.getRegister().getName(), new BuiltIn());
+        addInst(new Alloca(curLab, arrayAddress, new BuiltIn()));
+        curFuncScope.incSlotNum();
+        addInst(new Store(curLab, arrayAddress, array));
+        return new Address(array.getName(), arrayAddress, index);
     }
 
     @Override
@@ -933,7 +937,15 @@ public class IRConstructor implements IRTraversal {
         if (node.size() != 0) {
             addInst(trueLabel);
             Address address1 = new Address(curFuncScope.getRegister().getName(), address, offset);
-            memoryAllocate(node, type, false, address1);
+
+            Address address2 = new Address(curFuncScope.getRegister().getName(), new BuiltIn());
+            addInst(new Alloca(curLab, address2, new BuiltIn()));
+            curFuncScope.incSlotNum();
+            addInst(new Store(curLab, address2, address1));
+
+            memoryAllocate(node, type, false, address2);
+            addInst(new Store(curLab, address1, address2));
+
             Address compare = new Address(curFuncScope.getRegister().getName(), new BuiltIn());
             addInst(new Alloca(curLab, compare,new BuiltIn()));
             curFuncScope.incSlotNum();

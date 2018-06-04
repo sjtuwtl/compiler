@@ -4,6 +4,7 @@ import wtlcompiler.AST.node.ExprNode.MemberExprNode;
 import wtlcompiler.IR.IRBase.IRInstTraversal;
 import wtlcompiler.IR.Value.Address;
 import wtlcompiler.IR.Value.PhysicalRegister;
+import wtlcompiler.IR.Value.Register;
 
 public class MemCopy extends IRInstruction{
     private Address fromAddress;
@@ -42,6 +43,16 @@ public class MemCopy extends IRInstruction{
             return "MemCopy: " + fromAddress.toString() + " to NULL";
         else
             return "MemCopy: NULL to NULL";
+    }
+    @Override
+    public Register getDefRegister() {
+        return toAddress;
+    }
+
+    @Override
+    public void setUsedRegister() {
+        usedRegister.clear();
+        usedRegister.add(fromAddress);
     }
 
     @Override

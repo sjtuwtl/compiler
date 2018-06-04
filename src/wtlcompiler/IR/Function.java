@@ -1,6 +1,7 @@
 package wtlcompiler.IR;
 
 import wtlcompiler.AST.node.DeclNode.FuncParamNode;
+import wtlcompiler.IR.Value.Register;
 import wtlcompiler.utility.Name;
 import wtlcompiler.IR.IRBase.BasicBlock;
 import wtlcompiler.IR.IRType.*;
@@ -60,6 +61,14 @@ public class Function extends IRInstruction {
     public String toString() {
         return "define " + retType.toString() + " @" + name.toString() + paramToString();
     }
+
+    @Override
+    public Register getDefRegister() {
+        return null;
+    }
+
+    @Override
+    public void setUsedRegister() { }
 
     @Override
     public void accept(IRInstTraversal visitor) {

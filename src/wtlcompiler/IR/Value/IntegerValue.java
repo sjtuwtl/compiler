@@ -9,6 +9,14 @@ public class IntegerValue extends IRInstruction{
     }
 
     @Override
+    public Register getDefRegister() {
+        return null;
+    }
+
+    @Override
+    public void setUsedRegister() { }
+
+    @Override
     public void accept(IRInstTraversal visitor) {
         visitor.visit(this);
     }

@@ -1,10 +1,7 @@
 package wtlcompiler.IR;
 
 import wtlcompiler.IR.IRBase.IRInstTraversal;
-import wtlcompiler.IR.Value.Address;
-import wtlcompiler.IR.Value.Immediate;
-import wtlcompiler.IR.Value.PhysicalRegister;
-import wtlcompiler.IR.Value.VitualRegister;
+import wtlcompiler.IR.Value.*;
 
 public class Load extends IRInstruction {
     private VitualRegister dest;
@@ -59,6 +56,14 @@ public class Load extends IRInstruction {
             return dest.toString() + " = Load " + address.toString();
         else return dest.toString() + " = Load " + value.toString();
     }
+
+    @Override
+    public Register getDefRegister() {
+        return null;
+    }
+
+    @Override
+    public void setUsedRegister() { }
 
     @Override
     public void accept(IRInstTraversal visitor) {

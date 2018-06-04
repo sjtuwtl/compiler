@@ -4,6 +4,7 @@ import wtlcompiler.IR.IRBase.IRInstTraversal;
 import wtlcompiler.IR.IRType.IRType;
 import wtlcompiler.IR.Value.Address;
 import wtlcompiler.IR.Value.IntegerValue;
+import wtlcompiler.IR.Value.Register;
 import wtlcompiler.IR.Value.VitualRegister;
 
 public class GetElementPtr extends IRInstruction
@@ -31,6 +32,14 @@ public class GetElementPtr extends IRInstruction
                 type.toString() + " % " + baseAddress.toString() + " " +
                 String.valueOf(pos1) + " " + String.valueOf(pos2);
     }
+
+    @Override
+    public Register getDefRegister() {
+        return null;
+    }
+
+    @Override
+    public void setUsedRegister() { }
 
     @Override
     public void accept(IRInstTraversal visitor)

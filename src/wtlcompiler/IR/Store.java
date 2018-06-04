@@ -3,6 +3,7 @@ package wtlcompiler.IR;
 import wtlcompiler.IR.IRBase.IRInstTraversal;
 import wtlcompiler.IR.Value.IntegerValue;
 import wtlcompiler.IR.Value.PhysicalRegister;
+import wtlcompiler.IR.Value.Register;
 
 public class Store extends IRInstruction{
     private IntegerValue address;
@@ -41,6 +42,17 @@ public class Store extends IRInstruction{
         else if (address == null) return "Store " + data.toString() + " to NULL";
         else return "Store " + data.toString() + " to " + address.toString();
 
+    }
+
+    @Override
+    public Register getDefRegister() {
+        return (Register) address;
+    }
+
+    @Override
+    public void setUsedRegister() {
+        usedRegister.clear();
+        if (data instanceof Register) usedRegister.add((Register) data);
     }
 
     @Override

@@ -3,6 +3,7 @@ package wtlcompiler.IR;
 import wtlcompiler.IR.IRBase.IRInstTraversal;
 import wtlcompiler.IR.Value.IntegerValue;
 import wtlcompiler.IR.Value.PhysicalRegister;
+import wtlcompiler.IR.Value.Register;
 
 public class Return extends Terminator{
     private IntegerValue value;
@@ -36,6 +37,18 @@ public class Return extends Terminator{
             return "Return";
         else
             return "Return: " + value.toString();
+    }
+
+    @Override
+    public Register getDefRegister() {
+        return null;
+    }
+
+    @Override
+    public void setUsedRegister() {
+        usedRegister.clear();
+        if (value instanceof Register)
+            usedRegister.add((Register) value);
     }
 
     @Override

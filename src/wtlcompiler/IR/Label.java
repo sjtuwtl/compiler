@@ -2,6 +2,7 @@ package wtlcompiler.IR;
 
 import wtlcompiler.IR.IRBase.*;
 import wtlcompiler.IR.IRBase.IRInstTraversal;
+import wtlcompiler.IR.Value.Register;
 
 public class Label extends IRInstruction{
     private BasicBlock block;
@@ -29,6 +30,14 @@ public class Label extends IRInstruction{
     public String toString() {
         return "Label_" + name;
     }
+
+    @Override
+    public Register getDefRegister() {
+        return null;
+    }
+
+    @Override
+    public void setUsedRegister() { }
 
     @Override
     public void accept(IRInstTraversal visitor) {

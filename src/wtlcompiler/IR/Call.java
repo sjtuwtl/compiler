@@ -62,6 +62,19 @@ public class Call extends IRInstruction{
     }
 
     @Override
+    public Register getDefRegister() {
+        return dest;
+    }
+
+    @Override
+    public void setUsedRegister() {
+        usedRegister.clear();
+        for (IntegerValue item : params)
+            if (item instanceof Register)
+                usedRegister.add((Register) item);
+    }
+
+    @Override
     public void accept(IRInstTraversal visitor) {
         visitor.visit(this);
     }

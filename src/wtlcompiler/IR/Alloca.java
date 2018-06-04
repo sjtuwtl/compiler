@@ -33,6 +33,13 @@ public class Alloca extends IRInstruction{
         else
             return dest.toString() + "= alloca  " + type.toString();
     }
+    @Override
+    public Register getDefRegister() {
+        return dest;
+    }
+
+    @Override
+    public void setUsedRegister() { }
 
     @Override
     public void accept(IRInstTraversal visitor)
