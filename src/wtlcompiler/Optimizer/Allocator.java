@@ -16,7 +16,7 @@ public class Allocator extends  RegisterAllocator implements IRInstTraversal {
     private IRInstruction initializeEntry;
     private Map<VitualRegister, PhysicalRegister> registerMap = new HashMap<>();
     private List<PhysicalRegister> physicalRegisters;
-    private String[] registerNames = {"rax", "rcx", "rdx", "rbx",
+    private String[] registerNames = {"rax", "rcx", "rdx", "rbx", "rsi", "rdi",
             "r8",  "r9", "r10", "r11", "r12", "r13", "r14", "r15"};
     private String[] parameterRegNames = {"rdi", "rsi", "rdx", "rcx", "r8", "r9"};
     private boolean[] isAvailable;
@@ -50,8 +50,7 @@ public class Allocator extends  RegisterAllocator implements IRInstTraversal {
     }
 
     @Override
-    public void visit(Alloca inst) {
-    }
+    public void visit(Alloca inst) { }
 
     @Override
     public void visit(Malloc inst) {
@@ -63,7 +62,6 @@ public class Allocator extends  RegisterAllocator implements IRInstTraversal {
 
     @Override
     public void visit(BinaryOp inst) {
-        //const value folded
         if(inst.getOp() == BinaryOp.BinOp.idiv || inst.getOp() == BinaryOp.BinOp.mod) {
             visitDiv(inst);
             return;
@@ -111,8 +109,7 @@ public class Allocator extends  RegisterAllocator implements IRInstTraversal {
     }
 
     @Override
-    public void visit(Branch inst) {
-    }
+    public void visit(Branch inst) { }
 
     @Override
     public void visit(Call inst) {
@@ -147,16 +144,14 @@ public class Allocator extends  RegisterAllocator implements IRInstTraversal {
     }
 
     @Override
-    public void visit(Function inst) {
-    }
+    public void visit(Function inst) { }
 
     @Override
     public void visit(Jump inst) {
     }
 
     @Override
-    public void visit(Label inst) {
-    }
+    public void visit(Label inst) { }
 
     @Override
     public void visit(MemCopy inst)
@@ -165,10 +160,7 @@ public class Allocator extends  RegisterAllocator implements IRInstTraversal {
     }
 
     @Override
-    public void visit(Move inst) {
-        //TODO
-        //because we do not have move instructions now
-    }
+    public void visit(Move inst) { }
 
     @Override
     public void visit(Return inst) {
@@ -201,6 +193,7 @@ public class Allocator extends  RegisterAllocator implements IRInstTraversal {
     private void resetAvailable() {
         for(int i = 0; i < 16; ++i)
             isAvailable[i] = true;
+        isAvailable[1] = isAvailable[2] = isAvailable[4] = isAvailable[5] = false;
     }
 
 
