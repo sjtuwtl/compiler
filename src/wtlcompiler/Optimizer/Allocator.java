@@ -226,7 +226,7 @@ public class Allocator extends  RegisterAllocator implements IRInstTraversal {
             }
             catch (Exception e)
             {
-                System.out.println(1);
+                //System.out.println(1);
             }
         }
         return new PhysicalRegister(Name.getName("rax"));
