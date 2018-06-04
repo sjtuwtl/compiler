@@ -16,7 +16,7 @@ public class Allocator extends  RegisterAllocator implements IRInstTraversal {
     private IRInstruction initializeEntry;
     private Map<VitualRegister, PhysicalRegister> registerMap = new HashMap<>();
     private List<PhysicalRegister> physicalRegisters;
-    private String[] registerNames = {"rax", "rcx", "rdx", "rbx",
+    private String[] registerNames = {"rax", "rcx", "rdx", "rbx", "rsi", "rdi",
             "r8",  "r9", "r10", "r11", "r12", "r13", "r14", "r15"};
     private boolean[] isAvailable;
 
@@ -192,7 +192,7 @@ public class Allocator extends  RegisterAllocator implements IRInstTraversal {
     private void resetAvailable() {
         for(int i = 0; i < 16; ++i)
             isAvailable[i] = true;
-        //isAvailable[1] = isAvailable[2] = isAvailable[4] = isAvailable[5] = false;
+        isAvailable[1] = isAvailable[2] = isAvailable[4] = isAvailable[5] = false;
     }
 
 
