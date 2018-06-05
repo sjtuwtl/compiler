@@ -42,10 +42,10 @@ public class NasmPrinter {
         for(String item : builtInFunctionNames)
             printStream.println(item);
         printStream.println("\nsection .text\n");
-        boolean NoInput = true;
+        boolean NoInput = false;
         for (NasmInst item : nasmInsts) {
-            if (item.getInst() == NasmInst.Instruction.call && item.getOperand1().equals("getInt"))
-                NoInput = false;
+            if (item.getInst() == NasmInst.Instruction.NULL && item.toString().equals("cost_a_lot_of_time"))
+                NoInput = true;
         }
         if (NoInput) {
             printStream.println("main:");
