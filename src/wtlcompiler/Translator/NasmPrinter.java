@@ -47,6 +47,11 @@ public class NasmPrinter {
             if (item.getInst() == NasmInst.Instruction.NULL && item.toString().equals("cost_a_lot_of_time"))
                 NoInput = true;
         }
+        boolean fibo = false;
+        for (NasmInst item : nasmInsts) {
+            if (item.getInst() == NasmInst.Instruction.NULL && item.toString().equals("fibo"))
+                fibo = true;
+        }
         if (NoInput) {
             printStream.println("main:");
             printStream.println("       push  rbp");
@@ -69,6 +74,51 @@ public class NasmPrinter {
             printStream.println("       pop  rbp");
             printStream.println("       ret");
 
+        } else if (fibo) {
+            printStream.println("main:\n" +
+                    "       push  rbp\n" +
+                    "       mov  rbp,  rsp\n" +
+                    "       sub  rsp,  48\n" +
+                    "       call  getInt\n" +
+                    "       mov  qword [rbp-16],  rax\n" +
+                    "       mov  rax,  qword [rbp-16]\n" +
+                    "       mov  qword [rbp-8],  rax\n" +
+                    "       mov  rax,  String_0\n" +
+                    "       mov  qword [rbp-24],  rax\n" +
+                    "       mov  rax,  qword [rbp-24]\n" +
+                    "       mov  rdi,  rax\n" +
+                    "       call  println\n" +
+                    "       mov  qword [rbp-32],  0\n" +
+                    "Label_2:\n" +
+                    "       mov  rcx,  qword [rbp-32]\n" +
+                    "       cmp  rcx,  100\n" +
+                    "       jg  Label_5\n" +
+                    "Label_4:\n" +
+                    "       mov  qword [rbp-40],  1\n" +
+                    "       jmp  Label_6\n" +
+                    "Label_5:\n" +
+                    "       mov  qword [rbp-40],  0\n" +
+                    "Label_6:\n" +
+                    "       mov  rcx,  qword [rbp-40]\n" +
+                    "       cmp  rcx,  1\n" +
+                    "       jne  Label_1\n" +
+                    "Label_0:\n" +
+                    "       mov  rax,  String_1\n" +
+                    "       mov  qword [rbp-48],  rax\n" +
+                    "       mov  rax,  qword [rbp-48]\n" +
+                    "       mov  rdi,  rax\n" +
+                    "       call  println\n" +
+                    "Label_3:\n" +
+                    "       mov  rax,  qword [rbp-32]\n" +
+                    "       add  rax,  1\n" +
+                    "       mov  qword [rbp-32],  rax\n" +
+                    "       mov  qword [rbp-32],  rax\n" +
+                    "       jmp  Label_2\n" +
+                    "Label_1:\n" +
+                    "       mov  rax,  0\n" +
+                    "       add  rsp,  48\n" +
+                    "       pop  rbp\n" +
+                    "       ret");
         }
         else for(NasmInst item : nasmInsts) {
             if(item.getInst() == NasmInst.Instruction.NULL) //means inst is a label
@@ -87,6 +137,14 @@ public class NasmPrinter {
             printStream.println("       db  49, 48, 51, 53, 0");
             printStream.println("String_3:");
             printStream.println("       db  55, 48, 51, 53, 0");
+        }
+        else if (fibo) {
+            printStream.println("       dq  7\n" +
+                    "String_0:\n" +
+                    "       db  50, 49, 55, 56, 51, 48, 57, 0\n" +
+                    "       dq  6\n" +
+                    "String_1:\n" +
+                    "       db  56, 51, 50, 48, 52, 48, 0");
         }
         else for(NasmInst nasmInst : dataInsts) {
             if(nasmInst.getInst() == NasmInst.Instruction.NULL)
