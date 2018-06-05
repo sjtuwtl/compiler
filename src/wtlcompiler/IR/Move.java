@@ -3,6 +3,8 @@ package wtlcompiler.IR;
 import wtlcompiler.IR.IRBase.IRInstTraversal;
 import wtlcompiler.IR.Value.Register;
 
+import java.util.List;
+
 public class Move extends IRInstruction{
     private Register dest;
     private Register data;
@@ -19,7 +21,7 @@ public class Move extends IRInstruction{
     }
 
     @Override
-    public Register getDefRegister() {
+    public List<Register> getDefRegister() {
         return null;
     }
 

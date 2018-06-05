@@ -3,13 +3,15 @@ package wtlcompiler.IR.Value;
 import wtlcompiler.IR.IRInstruction;
 import wtlcompiler.IR.IRBase.IRInstTraversal;
 
+import java.util.List;
+
 public class IntegerValue extends IRInstruction{
     public String toString() {
         return "Integer";
     }
 
     @Override
-    public Register getDefRegister() {
+    public List<Register> getDefRegister() {
         return null;
     }
 

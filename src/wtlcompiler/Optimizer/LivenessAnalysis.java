@@ -5,6 +5,7 @@ import wtlcompiler.IR.Value.Register;
 import wtlcompiler.IR.Value.VitualRegister;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class LivenessAnalysis {
@@ -55,9 +56,6 @@ public class LivenessAnalysis {
                     if (((Jump) inst).getTarget() != null)
                         inst.liveOut.addAll(((Jump) inst).getTarget().liveIn);
                 }
-                else if (inst instanceof Call) {
-
-                }
                 else if (!(inst instanceof Return)) {
                     inst.liveOut.addAll(inst.getNext().liveOut);
                 }
@@ -66,9 +64,10 @@ public class LivenessAnalysis {
                     if (item instanceof VitualRegister)
                         inst.liveIn.add((VitualRegister) item);
                 inst.liveIn.addAll(inst.liveOut);
-                Register defRegister = inst.getDefRegister();
-                if (defRegister instanceof VitualRegister && !inst.usedRegister.contains(defRegister))
-                    inst.liveIn.remove(defRegister);
+                List<Register> defRegister = inst.getDefRegister();
+                for (Register item : defRegister)
+                    if (item instanceof VitualRegister && !inst.usedRegister.contains(item))
+                        inst.liveIn.remove(item);
 
                 if (!inst.liveIn.equals(in) || !inst.liveOut.equals(out))
                     changed = true;

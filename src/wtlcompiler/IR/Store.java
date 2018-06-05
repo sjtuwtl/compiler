@@ -1,9 +1,13 @@
 package wtlcompiler.IR;
 
 import wtlcompiler.IR.IRBase.IRInstTraversal;
+import wtlcompiler.IR.Value.Address;
 import wtlcompiler.IR.Value.IntegerValue;
 import wtlcompiler.IR.Value.PhysicalRegister;
 import wtlcompiler.IR.Value.Register;
+
+import java.util.LinkedList;
+import java.util.List;
 
 public class Store extends IRInstruction{
     private IntegerValue address;
@@ -45,14 +49,42 @@ public class Store extends IRInstruction{
     }
 
     @Override
-    public Register getDefRegister() {
-        return null;
+    public List<Register> getDefRegister() {
+        List<Register> tmp = new LinkedList<>();
+        if (address instanceof Address) {
+            if (((Address) address).getBase() != null) {
+                tmp.add((Register) ((Address) address).getBase());
+                if (((Address) address).getOffset() instanceof Register)
+                    tmp.add((Register) ((Address) address).getOffset());
+                ((Address) address).getBase().setUsedRegister();
+                tmp.addAll(((Address) address).getBase().usedRegister);
+                if (((Address) address).getOffset() instanceof Address){
+                    ((Address) address).getOffset().setUsedRegister();
+                    tmp.addAll(((Address) address).getOffset().usedRegister);
+                }
+            }
+        }
+        else if (address instanceof Register) tmp.add((Register) address);
+        return tmp;
     }
 
     @Override
     public void setUsedRegister() {
         usedRegister.clear();
-        if (data instanceof Register) usedRegister.add((Register) data);
+        if (data instanceof Address) {
+            if (((Address) data).getBase() != null) {
+                usedRegister.add((Register) ((Address) data).getBase());
+                if (((Address) data).getOffset() instanceof Register)
+                    usedRegister.add((Register) ((Address) data).getOffset());
+                ((Address) data).getBase().setUsedRegister();
+                usedRegister.addAll(((Address) data).getBase().usedRegister);
+                if (((Address) data).getOffset() instanceof Address){
+                    ((Address) data).getOffset().setUsedRegister();
+                    usedRegister.addAll(((Address) data).getOffset().usedRegister);
+                }
+            }
+        }
+        else if (data instanceof Register) usedRegister.add((Register) data);
     }
 
     @Override

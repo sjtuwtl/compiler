@@ -4,6 +4,7 @@ import wtlcompiler.utility.Name;
 import wtlcompiler.IR.Value.*;
 import wtlcompiler.IR.IRBase.IRInstTraversal;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class Call extends IRInstruction{
@@ -62,8 +63,23 @@ public class Call extends IRInstruction{
     }
 
     @Override
-    public Register getDefRegister() {
-        return dest;
+    public List<Register> getDefRegister() {
+        List<Register> tmp = new LinkedList<>();
+        if (dest instanceof Address) {
+            if (((Address) dest).getBase() != null) {
+                tmp.add((Register) ((Address) dest).getBase());
+                if (((Address) dest).getOffset() instanceof Register)
+                    tmp.add((Register) ((Address) dest).getOffset());
+                ((Address) dest).getBase().setUsedRegister();
+                tmp.addAll(((Address) dest).getBase().usedRegister);
+                if (((Address) dest).getOffset() instanceof Address){
+                    ((Address) dest).getOffset().setUsedRegister();
+                    tmp.addAll(((Address) dest).getOffset().usedRegister);
+                }
+            }
+        }
+        else if (dest instanceof Register) tmp.add((Register) dest);
+        return tmp;
     }
 
     @Override

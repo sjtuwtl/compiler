@@ -3,6 +3,8 @@ package wtlcompiler.IR;
 import wtlcompiler.IR.Value.*;
 import wtlcompiler.IR.IRBase.IRInstTraversal;
 
+import java.util.List;
+
 public class Branch extends Terminator{
     private Label ifTure;
     private Label ifFalse;
@@ -59,7 +61,7 @@ public class Branch extends Terminator{
     }
 
     @Override
-    public Register getDefRegister() {
+    public List<Register> getDefRegister() {
         return null;
     }
 

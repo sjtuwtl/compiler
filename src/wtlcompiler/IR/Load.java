@@ -3,6 +3,8 @@ package wtlcompiler.IR;
 import wtlcompiler.IR.IRBase.IRInstTraversal;
 import wtlcompiler.IR.Value.*;
 
+import java.util.List;
+
 public class Load extends IRInstruction {
     private VitualRegister dest;
     private Address address;
@@ -58,7 +60,7 @@ public class Load extends IRInstruction {
     }
 
     @Override
-    public Register getDefRegister() {
+    public List<Register> getDefRegister() {
         return null;
     }
 

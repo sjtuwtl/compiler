@@ -4,6 +4,11 @@ import wtlcompiler.IR.Value.*;
 import wtlcompiler.IR.IRBase.IRInstTraversal;
 
 import wtlcompiler.IR.Value.*;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
 public class BinaryOp extends IRInstruction{
     public enum BinOp {
         add, sub, imul, idiv, mod, sal, sar, and, or, xor, neg, not
@@ -78,8 +83,23 @@ public class BinaryOp extends IRInstruction{
     }
 
     @Override
-    public Register getDefRegister() {
-        return dest;
+    public List<Register> getDefRegister() {
+        List<Register> tmp = new LinkedList<>();
+        if (dest instanceof Address) {
+            if (((Address) dest).getBase() != null) {
+                tmp.add((Register) ((Address) dest).getBase());
+                if (((Address) dest).getOffset() instanceof Register)
+                    tmp.add((Register) ((Address) dest).getOffset());
+                ((Address) dest).getBase().setUsedRegister();
+                tmp.addAll(((Address) dest).getBase().usedRegister);
+                if (((Address) dest).getOffset() instanceof Address){
+                    ((Address) dest).getOffset().setUsedRegister();
+                    tmp.addAll(((Address) dest).getOffset().usedRegister);
+                }
+            }
+        }
+        else if (dest instanceof Register) tmp.add((Register) dest);
+        return tmp;
     }
 
     @Override
@@ -99,7 +119,20 @@ public class BinaryOp extends IRInstruction{
             }
         }
         else if (lhs instanceof Register) usedRegister.add((Register) lhs);
-        if (rhs instanceof Register) usedRegister.add((Register) rhs);
+        if (rhs instanceof Address) {
+            if (((Address) rhs).getBase() != null) {
+                usedRegister.add((Register) ((Address) rhs).getBase());
+                if (((Address) rhs).getOffset() instanceof Register)
+                    usedRegister.add((Register) ((Address) rhs).getOffset());
+                ((Address) rhs).getBase().setUsedRegister();
+                usedRegister.addAll(((Address) rhs).getBase().usedRegister);
+                if (((Address) rhs).getOffset() instanceof Address){
+                    ((Address) rhs).getOffset().setUsedRegister();
+                    usedRegister.addAll(((Address) rhs).getOffset().usedRegister);
+                }
+            }
+        }
+        else if (rhs instanceof Register) usedRegister.add((Register) rhs);
     }
 
 

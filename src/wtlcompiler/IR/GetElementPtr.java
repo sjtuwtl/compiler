@@ -7,6 +7,8 @@ import wtlcompiler.IR.Value.IntegerValue;
 import wtlcompiler.IR.Value.Register;
 import wtlcompiler.IR.Value.VitualRegister;
 
+import java.util.List;
+
 public class GetElementPtr extends IRInstruction
 {
     private VitualRegister dest;
@@ -34,7 +36,7 @@ public class GetElementPtr extends IRInstruction
     }
 
     @Override
-    public Register getDefRegister() {
+    public List<Register> getDefRegister() {
         return null;
     }
 

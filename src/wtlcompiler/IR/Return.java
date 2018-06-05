@@ -1,9 +1,12 @@
 package wtlcompiler.IR;
 
 import wtlcompiler.IR.IRBase.IRInstTraversal;
+import wtlcompiler.IR.Value.Address;
 import wtlcompiler.IR.Value.IntegerValue;
 import wtlcompiler.IR.Value.PhysicalRegister;
 import wtlcompiler.IR.Value.Register;
+
+import java.util.List;
 
 public class Return extends Terminator{
     private IntegerValue value;
@@ -40,15 +43,27 @@ public class Return extends Terminator{
     }
 
     @Override
-    public Register getDefRegister() {
+    public List<Register> getDefRegister() {
         return null;
     }
 
     @Override
     public void setUsedRegister() {
         usedRegister.clear();
-        if (value instanceof Register)
-            usedRegister.add((Register) value);
+        if (value instanceof Address) {
+            if (((Address) value).getBase() != null) {
+                usedRegister.add((Register) ((Address) value).getBase());
+                if (((Address) value).getOffset() instanceof Register)
+                    usedRegister.add((Register) ((Address) value).getOffset());
+                ((Address) value).getBase().setUsedRegister();
+                usedRegister.addAll(((Address) value).getBase().usedRegister);
+                if (((Address) value).getOffset() instanceof Address){
+                    ((Address) value).getOffset().setUsedRegister();
+                    usedRegister.addAll(((Address) value).getOffset().usedRegister);
+                }
+            }
+        }
+        else if (value instanceof Register) usedRegister.add((Register) value);
     }
 
     @Override

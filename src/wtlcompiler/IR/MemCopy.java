@@ -6,6 +6,8 @@ import wtlcompiler.IR.Value.Address;
 import wtlcompiler.IR.Value.PhysicalRegister;
 import wtlcompiler.IR.Value.Register;
 
+import java.util.List;
+
 public class MemCopy extends IRInstruction{
     private Address fromAddress;
     private Address toAddress;
@@ -45,14 +47,27 @@ public class MemCopy extends IRInstruction{
             return "MemCopy: NULL to NULL";
     }
     @Override
-    public Register getDefRegister() {
+    public List<Register> getDefRegister() {
         return null;
     }
 
     @Override
     public void setUsedRegister() {
         usedRegister.clear();
-        usedRegister.add(fromAddress);
+        if (fromAddress instanceof Address) {
+            if (((Address) fromAddress).getBase() != null) {
+                usedRegister.add((Register) ((Address) fromAddress).getBase());
+                if (((Address) fromAddress).getOffset() instanceof Register)
+                    usedRegister.add((Register) ((Address) fromAddress).getOffset());
+                ((Address) fromAddress).getBase().setUsedRegister();
+                usedRegister.addAll(((Address) fromAddress).getBase().usedRegister);
+                if (((Address) fromAddress).getOffset() instanceof Address){
+                    ((Address) fromAddress).getOffset().setUsedRegister();
+                    usedRegister.addAll(((Address) fromAddress).getOffset().usedRegister);
+                }
+            }
+        }
+        else if (fromAddress instanceof Register) usedRegister.add((Register) fromAddress);
     }
 
     @Override

@@ -5,6 +5,8 @@ import wtlcompiler.IR.IRBase.IRInstTraversal;
 import wtlcompiler.IR.Value.*;
 import wtlcompiler.IR.IRType.*;
 
+import java.util.List;
+
 public class Alloca extends IRInstruction{
     private Address dest;
     private IntegerValue size;
@@ -34,7 +36,7 @@ public class Alloca extends IRInstruction{
             return dest.toString() + "= alloca  " + type.toString();
     }
     @Override
-    public Register getDefRegister() {
+    public List<Register> getDefRegister() {
         return null;
     }
 

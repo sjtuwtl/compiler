@@ -6,6 +6,9 @@ import wtlcompiler.IR.Value.IntegerValue;
 import wtlcompiler.IR.Value.PhysicalRegister;
 import wtlcompiler.IR.Value.Register;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class Malloc extends IRInstruction{
     private IntegerValue size;
     private Address returnAddress;
@@ -48,14 +51,29 @@ public class Malloc extends IRInstruction{
     }
 
     @Override
-    public Register getDefRegister() {
-        return returnAddress;
+    public List<Register> getDefRegister() {
+        List<Register> tmp = new LinkedList<>();
+        tmp.add(returnAddress);
+        return tmp;
     }
 
     @Override
     public void setUsedRegister() {
         usedRegister.clear();
-        if (size instanceof Register) usedRegister.add((Register) size);
+        if (size instanceof Address) {
+            if (((Address) size).getBase() != null) {
+                usedRegister.add((Register) ((Address) size).getBase());
+                if (((Address) size).getOffset() instanceof Register)
+                    usedRegister.add((Register) ((Address) size).getOffset());
+                ((Address) size).getBase().setUsedRegister();
+                usedRegister.addAll(((Address) size).getBase().usedRegister);
+                if (((Address) size).getOffset() instanceof Address){
+                    ((Address) size).getOffset().setUsedRegister();
+                    usedRegister.addAll(((Address) size).getOffset().usedRegister);
+                }
+            }
+        }
+        else if (size instanceof Register) usedRegister.add((Register) size);
     }
 
     @Override

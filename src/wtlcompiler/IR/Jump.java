@@ -3,6 +3,8 @@ package wtlcompiler.IR;
 import wtlcompiler.IR.IRBase.IRInstTraversal;
 import wtlcompiler.IR.Value.Register;
 
+import java.util.List;
+
 public class Jump extends Terminator{
     private Label target;
 
@@ -21,7 +23,7 @@ public class Jump extends Terminator{
     }
 
     @Override
-    public Register getDefRegister() {
+    public List<Register> getDefRegister() {
         return null;
     }
 

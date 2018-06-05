@@ -4,6 +4,8 @@ import wtlcompiler.IR.IRBase.*;
 import wtlcompiler.IR.IRBase.IRInstTraversal;
 import wtlcompiler.IR.Value.Register;
 
+import java.util.List;
+
 public class Label extends IRInstruction{
     private BasicBlock block;
     private String name;
@@ -32,7 +34,7 @@ public class Label extends IRInstruction{
     }
 
     @Override
-    public Register getDefRegister() {
+    public List<Register> getDefRegister() {
         return null;
     }
 
