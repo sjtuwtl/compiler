@@ -64,44 +64,33 @@ public class Call extends IRInstruction{
 
     @Override
     public Register getDefRegister() {
-        List<Register> tmp = new LinkedList<>();
-        if (dest instanceof Address) {
-            if (((Address) dest).getBase() != null) {
-                tmp.add((Register) ((Address) dest).getBase());
-                if (((Address) dest).getOffset() instanceof Register)
-                    tmp.add((Register) ((Address) dest).getOffset());
-                ((Address) dest).getBase().setUsedRegister();
-                tmp.addAll(((Address) dest).getBase().usedRegister);
-                if (((Address) dest).getOffset() instanceof Address){
-                    ((Address) dest).getOffset().setUsedRegister();
-                    tmp.addAll(((Address) dest).getOffset().usedRegister);
-                }
-            }
-        }
-        else if (dest instanceof Register) tmp.add((Register) dest);
-        return dest;
+        Address tmp = dest;
+        if (tmp != null)
+            while (tmp.getBase() != null)
+                tmp = tmp.getBase();
+        return tmp;
     }
 
     @Override
     public void setUsedRegister() {
         usedRegister.clear();
-        for (IntegerValue item : params)
-            if (item instanceof Register) {
-                if (item instanceof Address) {
-                    if (((Address) item).getBase() != null) {
-                        usedRegister.add((Register) ((Address) item).getBase());
-                        if (((Address) item).getOffset() instanceof Register)
-                            usedRegister.add((Register) ((Address) item).getOffset());
-                        ((Address) item).getBase().setUsedRegister();
-                        usedRegister.addAll(((Address) item).getBase().usedRegister);
-                        if (((Address) item).getOffset() instanceof Address){
-                            ((Address) item).getOffset().setUsedRegister();
-                            usedRegister.addAll(((Address) item).getOffset().usedRegister);
-                        }
-                    }
-                }
-                else usedRegister.add((Register) item);
+        Address tmp = dest;
+        if (tmp != null)
+            while (tmp.getBase() != null) {
+                usedRegister.add((Register) tmp.getOffset());
+                tmp = tmp.getBase();
             }
+
+        for (IntegerValue item : params)
+            if (item instanceof Address) {
+                tmp = (Address) item;
+                while (tmp.getBase() != null) {
+                    usedRegister.add((Register) tmp.getOffset());
+                    tmp = tmp.getBase();
+                }
+                usedRegister.add(tmp);
+            }
+            else if (item instanceof Register) usedRegister.add((Register) item);
     }
 
     @Override

@@ -13,6 +13,8 @@ import wtlcompiler.IR.IRBase.IRPrinter;
 import wtlcompiler.IR.IRInstruction;
 import wtlcompiler.IR.IRType.Class;
 import wtlcompiler.Optimizer.Allocator;
+import wtlcompiler.Optimizer.Graphcolor;
+import wtlcompiler.Optimizer.LivenessAnalysis;
 import wtlcompiler.Translator.NasmPrinter;
 import wtlcompiler.Translator.Translator;
 import wtlcompiler.utility.*;
@@ -104,7 +106,13 @@ public class Main {
         IRConstructor constructor = constructIR(program);
 
 //        printIR(constructor);
-        optimizeIR(constructor);
+        LivenessAnalysis livenessAnalysis = new LivenessAnalysis(constructor.getEntry(), constructor.getInitializeEntry());
+        livenessAnalysis.process();
+
+        Graphcolor graphcolor = new Graphcolor(livenessAnalysis.map, constructor.getEntry(), constructor.getInitializeEntry());
+        graphcolor.process();
+
+//        optimizeIR(constructor);
         translate(constructor, out);
     }
 

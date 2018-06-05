@@ -54,18 +54,14 @@ public class MemCopy extends IRInstruction{
     @Override
     public void setUsedRegister() {
         usedRegister.clear();
+        Address tmp;
         if (fromAddress instanceof Address) {
-            if (((Address) fromAddress).getBase() != null) {
-                usedRegister.add((Register) ((Address) fromAddress).getBase());
-                if (((Address) fromAddress).getOffset() instanceof Register)
-                    usedRegister.add((Register) ((Address) fromAddress).getOffset());
-                ((Address) fromAddress).getBase().setUsedRegister();
-                usedRegister.addAll(((Address) fromAddress).getBase().usedRegister);
-                if (((Address) fromAddress).getOffset() instanceof Address){
-                    ((Address) fromAddress).getOffset().setUsedRegister();
-                    usedRegister.addAll(((Address) fromAddress).getOffset().usedRegister);
-                }
+            tmp = (Address) fromAddress;
+            while (tmp.getBase() != null) {
+                usedRegister.add((Register) tmp.getOffset());
+                tmp = tmp.getBase();
             }
+            usedRegister.add(tmp);
         }
         else if (fromAddress instanceof Register) usedRegister.add((Register) fromAddress);
     }

@@ -84,54 +84,41 @@ public class BinaryOp extends IRInstruction{
 
     @Override
     public Register getDefRegister() {
-        return dest;
+        Address tmp = dest;
+        while (tmp.getBase() != null)
+            tmp = tmp.getBase();
+        return tmp;
     }
 
     @Override
     public void setUsedRegister(){
         usedRegister.clear();
-        if (dest instanceof Address) {
-            if (((Address) dest).getBase() != null) {
-                usedRegister.add((Register) ((Address) dest).getBase());
-                if (((Address) dest).getOffset() instanceof Register)
-                    usedRegister.add((Register) ((Address) dest).getOffset());
-                ((Address) dest).getBase().setUsedRegister();
-                usedRegister.addAll(((Address) dest).getBase().usedRegister);
-                if (((Address) dest).getOffset() instanceof Address){
-                    ((Address) dest).getOffset().setUsedRegister();
-                    usedRegister.addAll(((Address) dest).getOffset().usedRegister);
-                }
-            }
+        Address tmp = dest;
+        while (tmp.getBase() != null) {
+            usedRegister.add((Register) tmp.getOffset());
+            tmp = tmp.getBase();
         }
-        else if (dest instanceof Register) usedRegister.add((Register) dest);
+
         if (lhs instanceof Address) {
-            if (((Address) lhs).getBase() != null) {
-                usedRegister.add((Register) ((Address) lhs).getBase());
-                if (((Address) lhs).getOffset() instanceof Register)
-                    usedRegister.add((Register) ((Address) lhs).getOffset());
-                ((Address) lhs).getBase().setUsedRegister();
-                usedRegister.addAll(((Address) lhs).getBase().usedRegister);
-                if (((Address) lhs).getOffset() instanceof Address){
-                    ((Address) lhs).getOffset().setUsedRegister();
-                    usedRegister.addAll(((Address) lhs).getOffset().usedRegister);
-                }
+            tmp = (Address) lhs;
+            while (tmp.getBase() != null) {
+                usedRegister.add((Register) tmp.getOffset());
+                tmp = tmp.getBase();
             }
+            usedRegister.add(tmp);
         }
         else if (lhs instanceof Register) usedRegister.add((Register) lhs);
+
         if (rhs instanceof Address) {
-            if (((Address) rhs).getBase() != null) {
-                usedRegister.add((Register) ((Address) rhs).getBase());
-                if (((Address) rhs).getOffset() instanceof Register)
-                    usedRegister.add((Register) ((Address) rhs).getOffset());
-                ((Address) rhs).getBase().setUsedRegister();
-                usedRegister.addAll(((Address) rhs).getBase().usedRegister);
-                if (((Address) rhs).getOffset() instanceof Address){
-                    ((Address) rhs).getOffset().setUsedRegister();
-                    usedRegister.addAll(((Address) rhs).getOffset().usedRegister);
-                }
+            tmp = (Address) rhs;
+            while (tmp.getBase() != null) {
+                usedRegister.add((Register) tmp.getOffset());
+                tmp = tmp.getBase();
             }
+            usedRegister.add(tmp);
         }
         else if (rhs instanceof Register) usedRegister.add((Register) rhs);
+
     }
 
 

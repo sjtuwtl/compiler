@@ -56,18 +56,14 @@ public class Store extends IRInstruction{
     @Override
     public void setUsedRegister() {
         usedRegister.clear();
+        Address tmp;
         if (data instanceof Address) {
-            if (((Address) data).getBase() != null) {
-                usedRegister.add((Register) ((Address) data).getBase());
-                if (((Address) data).getOffset() instanceof Register)
-                    usedRegister.add((Register) ((Address) data).getOffset());
-                ((Address) data).getBase().setUsedRegister();
-                usedRegister.addAll(((Address) data).getBase().usedRegister);
-                if (((Address) data).getOffset() instanceof Address){
-                    ((Address) data).getOffset().setUsedRegister();
-                    usedRegister.addAll(((Address) data).getOffset().usedRegister);
-                }
+            tmp = (Address) data;
+            while (tmp.getBase() != null) {
+                usedRegister.add((Register) tmp.getOffset());
+                tmp = tmp.getBase();
             }
+            usedRegister.add(tmp);
         }
         else if (data instanceof Register) usedRegister.add((Register) data);
     }

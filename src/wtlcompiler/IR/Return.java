@@ -8,7 +8,7 @@ import wtlcompiler.IR.Value.Register;
 
 import java.util.List;
 
-public class Return extends Terminator{
+public class Return extends IRInstruction{
     private IntegerValue value;
     private PhysicalRegister valueReg;
 
@@ -50,18 +50,14 @@ public class Return extends Terminator{
     @Override
     public void setUsedRegister() {
         usedRegister.clear();
+        Address tmp;
         if (value instanceof Address) {
-            if (((Address) value).getBase() != null) {
-                usedRegister.add((Register) ((Address) value).getBase());
-                if (((Address) value).getOffset() instanceof Register)
-                    usedRegister.add((Register) ((Address) value).getOffset());
-                ((Address) value).getBase().setUsedRegister();
-                usedRegister.addAll(((Address) value).getBase().usedRegister);
-                if (((Address) value).getOffset() instanceof Address){
-                    ((Address) value).getOffset().setUsedRegister();
-                    usedRegister.addAll(((Address) value).getOffset().usedRegister);
-                }
+            tmp = (Address) value;
+            while (tmp.getBase() != null) {
+                usedRegister.add((Register) tmp.getOffset());
+                tmp = tmp.getBase();
             }
+            usedRegister.add(tmp);
         }
         else if (value instanceof Register) usedRegister.add((Register) value);
     }
