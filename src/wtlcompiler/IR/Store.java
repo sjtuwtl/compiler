@@ -60,7 +60,7 @@ public class Store extends IRInstruction{
         if (data instanceof Address) {
             tmp = (Address) data;
             while (tmp.getBase() != null) {
-                usedRegister.add((Register) tmp.getOffset());
+                if (tmp.getOffset() instanceof Register) usedRegister.add((Register) tmp.getOffset());
                 tmp = tmp.getBase();
             }
             usedRegister.add(tmp);

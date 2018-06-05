@@ -85,8 +85,9 @@ public class BinaryOp extends IRInstruction{
     @Override
     public Register getDefRegister() {
         Address tmp = dest;
-        while (tmp.getBase() != null)
-            tmp = tmp.getBase();
+        if (tmp != null)
+            while (tmp.getBase() != null)
+                tmp = tmp.getBase();
         return tmp;
     }
 
@@ -95,14 +96,14 @@ public class BinaryOp extends IRInstruction{
         usedRegister.clear();
         Address tmp = dest;
         while (tmp.getBase() != null) {
-            usedRegister.add((Register) tmp.getOffset());
+            if (tmp.getOffset() instanceof Register) usedRegister.add((Register) tmp.getOffset());
             tmp = tmp.getBase();
         }
 
         if (lhs instanceof Address) {
             tmp = (Address) lhs;
             while (tmp.getBase() != null) {
-                usedRegister.add((Register) tmp.getOffset());
+                if (tmp.getOffset() instanceof Register) usedRegister.add((Register) tmp.getOffset());
                 tmp = tmp.getBase();
             }
             usedRegister.add(tmp);
@@ -112,7 +113,7 @@ public class BinaryOp extends IRInstruction{
         if (rhs instanceof Address) {
             tmp = (Address) rhs;
             while (tmp.getBase() != null) {
-                usedRegister.add((Register) tmp.getOffset());
+                if (tmp.getOffset() instanceof Register) usedRegister.add((Register) tmp.getOffset());
                 tmp = tmp.getBase();
             }
             usedRegister.add(tmp);

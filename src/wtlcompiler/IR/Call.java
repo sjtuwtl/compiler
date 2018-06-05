@@ -77,7 +77,7 @@ public class Call extends IRInstruction{
         Address tmp = dest;
         if (tmp != null)
             while (tmp.getBase() != null) {
-                usedRegister.add((Register) tmp.getOffset());
+                if (tmp.getOffset() instanceof Register) usedRegister.add((Register) tmp.getOffset());
                 tmp = tmp.getBase();
             }
 
@@ -85,7 +85,7 @@ public class Call extends IRInstruction{
             if (item instanceof Address) {
                 tmp = (Address) item;
                 while (tmp.getBase() != null) {
-                    usedRegister.add((Register) tmp.getOffset());
+                    if (tmp.getOffset() instanceof Register) usedRegister.add((Register) tmp.getOffset());
                     tmp = tmp.getBase();
                 }
                 usedRegister.add(tmp);

@@ -58,7 +58,7 @@ public class MemCopy extends IRInstruction{
         if (fromAddress instanceof Address) {
             tmp = (Address) fromAddress;
             while (tmp.getBase() != null) {
-                usedRegister.add((Register) tmp.getOffset());
+                if (tmp.getOffset() instanceof Register) usedRegister.add((Register) tmp.getOffset());
                 tmp = tmp.getBase();
             }
             usedRegister.add(tmp);

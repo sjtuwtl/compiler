@@ -17,6 +17,7 @@ public class Graphcolor implements IRInstTraversal {
             "r8",  "r9", "r10", "r11", "r12", "r13", "r14", "r15"};
     private PhysicalRegister number0 = new PhysicalRegister(Name.getName("rax"));
     private PhysicalRegister number2 = new PhysicalRegister(Name.getName("rdx"));
+    private PhysicalRegister numbertmp = new PhysicalRegister(Name.getName("r15"));
     private List<PhysicalRegister> physicalRegisters = new LinkedList<>();
 
     public Graphcolor(Map<VitualRegister, Integer> map, IRInstruction entry, IRInstruction initializeEntry) {
@@ -180,6 +181,9 @@ public class Graphcolor implements IRInstTraversal {
 
     private PhysicalRegister getPhysicalRegister(VitualRegister vr) {
         allocRegisterForAddress(vr);
-        return physicalRegisters.get(map.get(vr));
+        if (map.get(vr) != null)
+            return physicalRegisters.get(map.get(vr));
+        else
+            return numbertmp;
     }
 }

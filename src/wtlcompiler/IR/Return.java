@@ -54,7 +54,7 @@ public class Return extends IRInstruction{
         if (value instanceof Address) {
             tmp = (Address) value;
             while (tmp.getBase() != null) {
-                usedRegister.add((Register) tmp.getOffset());
+                if (tmp.getOffset() instanceof Register) usedRegister.add((Register) tmp.getOffset());
                 tmp = tmp.getBase();
             }
             usedRegister.add(tmp);

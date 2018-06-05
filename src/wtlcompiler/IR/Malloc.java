@@ -53,8 +53,9 @@ public class Malloc extends IRInstruction{
     @Override
     public Register getDefRegister() {
         Address tmp = returnAddress;
-        while (tmp.getBase() != null)
-            tmp = tmp.getBase();
+        if (tmp != null)
+            while (tmp.getBase() != null)
+                tmp = tmp.getBase();
         return tmp;
     }
 
@@ -63,14 +64,14 @@ public class Malloc extends IRInstruction{
         usedRegister.clear();
         Address tmp = returnAddress;
         while (tmp.getBase() != null) {
-            usedRegister.add((Register) tmp.getOffset());
+            if (tmp.getOffset() instanceof Register) usedRegister.add((Register) tmp.getOffset());
             tmp = tmp.getBase();
         }
 
         if (size instanceof Address) {
             tmp = (Address) size;
             while (tmp.getBase() != null) {
-                usedRegister.add((Register) tmp.getOffset());
+                if (tmp.getOffset() instanceof Register) usedRegister.add((Register) tmp.getOffset());
                 tmp = tmp.getBase();
             }
             usedRegister.add(tmp);
