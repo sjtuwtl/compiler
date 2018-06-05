@@ -51,10 +51,8 @@ public class Malloc extends IRInstruction{
     }
 
     @Override
-    public List<Register> getDefRegister() {
-        List<Register> tmp = new LinkedList<>();
-        tmp.add(returnAddress);
-        return tmp;
+    public Register getDefRegister() {
+        return returnAddress;
     }
 
     @Override

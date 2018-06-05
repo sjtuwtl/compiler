@@ -47,7 +47,7 @@ public class MemCopy extends IRInstruction{
             return "MemCopy: NULL to NULL";
     }
     @Override
-    public List<Register> getDefRegister() {
+    public Register getDefRegister() {
         return null;
     }
 

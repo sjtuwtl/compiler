@@ -63,7 +63,7 @@ public class Call extends IRInstruction{
     }
 
     @Override
-    public List<Register> getDefRegister() {
+    public Register getDefRegister() {
         List<Register> tmp = new LinkedList<>();
         if (dest instanceof Address) {
             if (((Address) dest).getBase() != null) {
@@ -79,7 +79,7 @@ public class Call extends IRInstruction{
             }
         }
         else if (dest instanceof Register) tmp.add((Register) dest);
-        return tmp;
+        return dest;
     }
 
     @Override

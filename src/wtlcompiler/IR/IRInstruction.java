@@ -54,7 +54,7 @@ public abstract class IRInstruction {
 
     public abstract void accept(IRInstTraversal visitor);
 
-    public abstract List<Register> getDefRegister();
+    public abstract Register getDefRegister();
     //public abstract void setDefRegister(Register reg);
     public abstract void setUsedRegister();
     public List<Register> getUsedRegister(){

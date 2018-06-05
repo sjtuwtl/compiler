@@ -36,7 +36,7 @@ public class Alloca extends IRInstruction{
             return dest.toString() + "= alloca  " + type.toString();
     }
     @Override
-    public List<Register> getDefRegister() {
+    public Register getDefRegister() {
         return null;
     }
 

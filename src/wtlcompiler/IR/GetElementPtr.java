@@ -36,7 +36,7 @@ public class GetElementPtr extends IRInstruction
     }
 
     @Override
-    public List<Register> getDefRegister() {
+    public Register getDefRegister() {
         return null;
     }
 

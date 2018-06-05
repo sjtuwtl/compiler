@@ -61,7 +61,7 @@ public class Branch extends Terminator{
     }
 
     @Override
-    public List<Register> getDefRegister() {
+    public Register getDefRegister() {
         return null;
     }
 

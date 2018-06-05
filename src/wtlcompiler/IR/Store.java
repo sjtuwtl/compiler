@@ -49,23 +49,8 @@ public class Store extends IRInstruction{
     }
 
     @Override
-    public List<Register> getDefRegister() {
-        List<Register> tmp = new LinkedList<>();
-        if (address instanceof Address) {
-            if (((Address) address).getBase() != null) {
-                tmp.add((Register) ((Address) address).getBase());
-                if (((Address) address).getOffset() instanceof Register)
-                    tmp.add((Register) ((Address) address).getOffset());
-                ((Address) address).getBase().setUsedRegister();
-                tmp.addAll(((Address) address).getBase().usedRegister);
-                if (((Address) address).getOffset() instanceof Address){
-                    ((Address) address).getOffset().setUsedRegister();
-                    tmp.addAll(((Address) address).getOffset().usedRegister);
-                }
-            }
-        }
-        else if (address instanceof Register) tmp.add((Register) address);
-        return tmp;
+    public Register getDefRegister() {
+       return (Register) address;
     }
 
     @Override

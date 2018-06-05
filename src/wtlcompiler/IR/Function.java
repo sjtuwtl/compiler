@@ -63,7 +63,7 @@ public class Function extends IRInstruction {
     }
 
     @Override
-    public List<Register> getDefRegister() {
+    public Register getDefRegister() {
         return null;
     }
 

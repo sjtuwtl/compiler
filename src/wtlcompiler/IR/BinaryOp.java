@@ -83,28 +83,27 @@ public class BinaryOp extends IRInstruction{
     }
 
     @Override
-    public List<Register> getDefRegister() {
-        List<Register> tmp = new LinkedList<>();
-        if (dest instanceof Address) {
-            if (((Address) dest).getBase() != null) {
-                tmp.add((Register) ((Address) dest).getBase());
-                if (((Address) dest).getOffset() instanceof Register)
-                    tmp.add((Register) ((Address) dest).getOffset());
-                ((Address) dest).getBase().setUsedRegister();
-                tmp.addAll(((Address) dest).getBase().usedRegister);
-                if (((Address) dest).getOffset() instanceof Address){
-                    ((Address) dest).getOffset().setUsedRegister();
-                    tmp.addAll(((Address) dest).getOffset().usedRegister);
-                }
-            }
-        }
-        else if (dest instanceof Register) tmp.add((Register) dest);
-        return tmp;
+    public Register getDefRegister() {
+        return dest;
     }
 
     @Override
     public void setUsedRegister(){
         usedRegister.clear();
+        if (dest instanceof Address) {
+            if (((Address) dest).getBase() != null) {
+                usedRegister.add((Register) ((Address) dest).getBase());
+                if (((Address) dest).getOffset() instanceof Register)
+                    usedRegister.add((Register) ((Address) dest).getOffset());
+                ((Address) dest).getBase().setUsedRegister();
+                usedRegister.addAll(((Address) dest).getBase().usedRegister);
+                if (((Address) dest).getOffset() instanceof Address){
+                    ((Address) dest).getOffset().setUsedRegister();
+                    usedRegister.addAll(((Address) dest).getOffset().usedRegister);
+                }
+            }
+        }
+        else if (dest instanceof Register) usedRegister.add((Register) dest);
         if (lhs instanceof Address) {
             if (((Address) lhs).getBase() != null) {
                 usedRegister.add((Register) ((Address) lhs).getBase());

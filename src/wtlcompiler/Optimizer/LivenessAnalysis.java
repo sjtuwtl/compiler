@@ -64,15 +64,20 @@ public class LivenessAnalysis {
                     if (item instanceof VitualRegister)
                         inst.liveIn.add((VitualRegister) item);
                 inst.liveIn.addAll(inst.liveOut);
-                List<Register> defRegister = inst.getDefRegister();
-                for (Register item : defRegister)
-                    if (item instanceof VitualRegister && !inst.usedRegister.contains(item))
-                        inst.liveIn.remove(item);
+                Register defRegister = inst.getDefRegister();
+                if (defRegister instanceof VitualRegister && !inst.usedRegister.contains(defRegister))
+                    inst.liveIn.remove(defRegister);
 
                 if (!inst.liveIn.equals(in) || !inst.liveOut.equals(out))
                     changed = true;
 
             }
+        }
+
+        //need to link def with out;
+        curEntry = entry;
+        while (curEntry != null) {
+            System.out.println();
         }
     }
 }
