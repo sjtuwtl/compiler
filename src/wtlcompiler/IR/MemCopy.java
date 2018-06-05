@@ -46,7 +46,7 @@ public class MemCopy extends IRInstruction{
     }
     @Override
     public Register getDefRegister() {
-        return toAddress;
+        return null;
     }
 
     @Override

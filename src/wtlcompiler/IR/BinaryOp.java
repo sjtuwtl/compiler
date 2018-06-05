@@ -85,7 +85,20 @@ public class BinaryOp extends IRInstruction{
     @Override
     public void setUsedRegister(){
         usedRegister.clear();
-        if (lhs instanceof Register) usedRegister.add((Register) lhs);
+        if (lhs instanceof Address) {
+            if (((Address) lhs).getBase() != null) {
+                usedRegister.add((Register) ((Address) lhs).getBase());
+                if (((Address) lhs).getOffset() instanceof Register)
+                    usedRegister.add((Register) ((Address) lhs).getOffset());
+                ((Address) lhs).getBase().setUsedRegister();
+                usedRegister.addAll(((Address) lhs).getBase().usedRegister);
+                if (((Address) lhs).getOffset() instanceof Address){
+                    ((Address) lhs).getOffset().setUsedRegister();
+                    usedRegister.addAll(((Address) lhs).getOffset().usedRegister);
+                }
+            }
+        }
+        else if (lhs instanceof Register) usedRegister.add((Register) lhs);
         if (rhs instanceof Register) usedRegister.add((Register) rhs);
     }
 

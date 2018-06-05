@@ -55,7 +55,7 @@ public class Malloc extends IRInstruction{
     @Override
     public void setUsedRegister() {
         usedRegister.clear();
-        if (size instanceof Register) usedRegister.add((Register) usedRegister);
+        if (size instanceof Register) usedRegister.add((Register) size);
     }
 
     @Override

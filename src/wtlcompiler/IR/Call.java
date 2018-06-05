@@ -70,8 +70,22 @@ public class Call extends IRInstruction{
     public void setUsedRegister() {
         usedRegister.clear();
         for (IntegerValue item : params)
-            if (item instanceof Register)
-                usedRegister.add((Register) item);
+            if (item instanceof Register) {
+                if (item instanceof Address) {
+                    if (((Address) item).getBase() != null) {
+                        usedRegister.add((Register) ((Address) item).getBase());
+                        if (((Address) item).getOffset() instanceof Register)
+                            usedRegister.add((Register) ((Address) item).getOffset());
+                        ((Address) item).getBase().setUsedRegister();
+                        usedRegister.addAll(((Address) item).getBase().usedRegister);
+                        if (((Address) item).getOffset() instanceof Address){
+                            ((Address) item).getOffset().setUsedRegister();
+                            usedRegister.addAll(((Address) item).getOffset().usedRegister);
+                        }
+                    }
+                }
+                else usedRegister.add((Register) item);
+            }
     }
 
     @Override

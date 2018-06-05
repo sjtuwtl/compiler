@@ -92,15 +92,11 @@ public class Allocator extends  RegisterAllocator implements IRInstTraversal {
             inst.setDestReg(physicalRegisters.get(2));
             isAvailable[2] = false;
         }
-        /*isAvailable[0] = false;
+        isAvailable[0] = false;
         if(inst.getLhs() instanceof VitualRegister)
             allocRegisterForAddress((VitualRegister) inst.getLhs());
         PhysicalRegister lhsPr = physicalRegisters.get(0);
-        inst.setLhsReg(lhsPr);*/
-        if(inst.getLhs() instanceof VitualRegister) {
-            PhysicalRegister lhsPr = getPhysicalRegister((VitualRegister) inst.getLhs());
-            inst.setLhsReg(lhsPr);
-        }
+        inst.setLhsReg(lhsPr);
         if(inst.getRhs() instanceof VitualRegister) {
             PhysicalRegister rhsPr = getPhysicalRegister((VitualRegister) inst.getRhs());
             inst.setRhsReg(rhsPr);
@@ -157,8 +153,7 @@ public class Allocator extends  RegisterAllocator implements IRInstTraversal {
     public void visit(Label inst) { }
 
     @Override
-    public void visit(MemCopy inst)
-    {
+    public void visit(MemCopy inst) {
         inst.setDataReg(getPhysicalRegister(inst.getFromAddress()));
     }
 
@@ -206,8 +201,7 @@ public class Allocator extends  RegisterAllocator implements IRInstTraversal {
             if(((Address) vr).getBase() != null) {
                 PhysicalRegister basePr = getAvailablePhysicalRegister();
                 ((Address) vr).setBaseReg(basePr);
-                if (!(((Address) vr).getOffset() instanceof Immediate))
-                {
+                if (!(((Address) vr).getOffset() instanceof Immediate)) {
                     PhysicalRegister offsetPr = getAvailablePhysicalRegister();
                     ((Address) vr).setOffsetReg(offsetPr);
                 }

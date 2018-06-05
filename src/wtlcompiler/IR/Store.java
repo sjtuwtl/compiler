@@ -46,7 +46,7 @@ public class Store extends IRInstruction{
 
     @Override
     public Register getDefRegister() {
-        return (Register) address;
+        return null;
     }
 
     @Override
