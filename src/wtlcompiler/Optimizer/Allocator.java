@@ -92,11 +92,15 @@ public class Allocator extends  RegisterAllocator implements IRInstTraversal {
             inst.setDestReg(physicalRegisters.get(2));
             isAvailable[2] = false;
         }
-        isAvailable[0] = false;
+        /*isAvailable[0] = false;
         if(inst.getLhs() instanceof VitualRegister)
             allocRegisterForAddress((VitualRegister) inst.getLhs());
         PhysicalRegister lhsPr = physicalRegisters.get(0);
-        inst.setLhsReg(lhsPr);
+        inst.setLhsReg(lhsPr);*/
+        if(inst.getLhs() instanceof VitualRegister) {
+            PhysicalRegister lhsPr = getPhysicalRegister((VitualRegister) inst.getLhs());
+            inst.setLhsReg(lhsPr);
+        }
         if(inst.getRhs() instanceof VitualRegister) {
             PhysicalRegister rhsPr = getPhysicalRegister((VitualRegister) inst.getRhs());
             inst.setRhsReg(rhsPr);
