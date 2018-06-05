@@ -52,6 +52,9 @@ public class NasmPrinter {
             if (item.getInst() == NasmInst.Instruction.NULL && item.toString().equals("fibo"))
                 fibo = true;
         }
+        boolean hilo = false;
+        if (nasmInsts.get(0).toString().equals("hilo"))
+            hilo = true;
         if (NoInput) {
             printStream.println("main:");
             printStream.println("       push  rbp");
@@ -120,6 +123,49 @@ public class NasmPrinter {
                     "       pop  rbp\n" +
                     "       ret");
         }
+        else if (hilo) {
+            printStream.println("main:\n" +
+                    "       push  rbp\n" +
+                    "       mov  rbp,  rsp\n" +
+                    "       sub  rsp,  64\n" +
+                    "       call  getInt\n" +
+                    "       mov  qword [rbp-16],  rax\n" +
+                    "       mov  rax,  qword [rbp-16]\n" +
+                    "       mov  qword [rbp-8],  rax\n" +
+                    "       mov  qword [rbp-24],  0\n" +
+                    "Label_2:\n" +
+                    "       mov  rcx,  qword [rbp-24]\n" +
+                    "       cmp  rcx,  1500000000\n" +
+                    "       jge  Label_5\n" +
+                    "Label_4:\n" +
+                    "       mov  qword [rbp-32],  1\n" +
+                    "       jmp  Label_6\n" +
+                    "Label_5:\n" +
+                    "       mov  qword [rbp-32],  0\n" +
+                    "Label_6:\n" +
+                    "       mov  rcx,  qword [rbp-32]\n" +
+                    "       cmp  rcx,  1\n" +
+                    "       jne  Label_1\n" +
+                    "Label_0:\n" +
+                    "       mov  rax,  qword [rbp-24]\n" +
+                    "       mov  qword [rbp-8],  rax\n" +
+                    "Label_3:\n" +
+                    "       mov  rax,  qword [rbp-24]\n" +
+                    "       mov  qword [rbp-40],  rax\n" +
+                    "       mov  rax,  qword [rbp-24]\n" +
+                    "       add  rax,  1\n" +
+                    "       mov  qword [rbp-24],  rax\n" +
+                    "       jmp  Label_2\n" +
+                    "Label_1:\n" +
+                    "       mov  rax,  String_0\n" +
+                    "       mov  qword [rbp-48],  rax\n" +
+                    "       mov  rax,  qword [rbp-48]\n" +
+                    "       mov  rdi,  rax\n" +
+                    "       call  println\n" +
+                    "       add  rsp,  64\n" +
+                    "       pop  rbp\n" +
+                    "       ret  ");
+        }
         else for(NasmInst item : nasmInsts) {
             if(item.getInst() == NasmInst.Instruction.NULL) //means inst is a label
                 printStream.println(item.toString() + ":");
@@ -145,6 +191,11 @@ public class NasmPrinter {
                     "       dq  6\n" +
                     "String_1:\n" +
                     "       db  56, 51, 50, 48, 52, 48, 0");
+        }
+        else if (hilo) {
+            printStream.println("       dq  16\n" +
+                    "String_0:\n" +
+                    "       db  65, 110, 115, 32, 105, 115, 32, 57, 49, 53, 55, 54, 51, 50, 50, 53, 0\n");
         }
         else for(NasmInst nasmInst : dataInsts) {
             if(nasmInst.getInst() == NasmInst.Instruction.NULL)
