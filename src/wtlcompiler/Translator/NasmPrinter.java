@@ -162,6 +162,7 @@ public class NasmPrinter {
                     "       mov  rax,  qword [rbp-48]\n" +
                     "       mov  rdi,  rax\n" +
                     "       call  println\n" +
+                    "       mov  rax,  0\n" +
                     "       add  rsp,  64\n" +
                     "       pop  rbp\n" +
                     "       ret  ");
