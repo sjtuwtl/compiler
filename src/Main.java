@@ -106,13 +106,13 @@ public class Main {
         IRConstructor constructor = constructIR(program);
 
 //        printIR(constructor);
-        LivenessAnalysis livenessAnalysis = new LivenessAnalysis(constructor.getEntry(), constructor.getInitializeEntry());
+/*        LivenessAnalysis livenessAnalysis = new LivenessAnalysis(constructor.getEntry(), constructor.getInitializeEntry());
         livenessAnalysis.process();
 
         Graphcolor graphcolor = new Graphcolor(livenessAnalysis.map, constructor.getEntry(), constructor.getInitializeEntry());
-        graphcolor.process();
+        graphcolor.process();*/
 
-//        optimizeIR(constructor);
+        optimizeIR(constructor);
         translate(constructor, out);
     }
 

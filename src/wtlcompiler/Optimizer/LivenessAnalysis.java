@@ -110,7 +110,7 @@ public class LivenessAnalysis {
                         inst.liveOut.addAll(((Jump) inst).getTarget().liveIn);
                 }
                 else if (!(inst instanceof Return)) {
-                    inst.liveOut.addAll(inst.getNext().liveIn);
+                    if (inst.getNext() != null) inst.liveOut.addAll(inst.getNext().liveIn);
                 }
 
                 for (Register item : inst.usedRegister)
