@@ -35,7 +35,7 @@ public class Alloca extends IRInstruction{
     }
     @Override
     public Register getDefRegister() {
-        return dest;
+        return null;
     }
 
     @Override

@@ -192,7 +192,7 @@ public class Allocator extends  RegisterAllocator implements IRInstTraversal {
     private void resetAvailable() {
         for(int i = 0; i < 16; ++i)
             isAvailable[i] = true;
-        isAvailable[1]  = false;
+        isAvailable[2]  = false;
         //isAvailable[1] = isAvailable[2] = isAvailable[4] = isAvailable[5] = false;
     }
 
