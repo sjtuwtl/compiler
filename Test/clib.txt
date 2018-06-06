@@ -235,43 +235,47 @@ ord:
     ret
 
 StrADD:
-        	push rbp
-
-	mov rbp,rsp
-
-	push rsi
-
-	mov rsi,rdi
-
-	mov rdi,stringbuffer
-
-	mov rdx,[rsi-8]
-
-	push rdx
-
-	call memcpy
-
-	pop rdi
-
-	pop rsi
-
-	add rdi,stringbuffer
-
-	mov rdx,[rsi-8]
-
-	add rdx,1
-
-	call memcpy
-
-	mov rdi,stringbuffer
-
-	call transtring
-
-	mov rsp,rbp
-
-	pop rbp
-
-	ret
+        push    r15
+        push    r14
+        mov     r15, rdi
+        push    r13
+        push    r12
+        mov     r14, rsi
+        push    rbp
+        push    rbx
+        sub     rsp, 8
+        mov     rbp, qword [rdi-8H]
+        mov     r12, qword [rsi-8H]
+        lea     rbx, [rbp+r12]
+        lea     rdi, [rbx+9H]
+        call    malloc
+        test    rbp, rbp
+        mov     qword [rax], rbx
+        mov     r13, rax
+        lea     rbx, [rax+8H]
+        jle     L_001
+        mov     rdx, rbp
+        mov     rsi, r15
+        mov     rdi, rbx
+        call    memcpy
+L_001:  add     rbx, rbp
+        test    r12, r12
+        jle     L_002
+        lea     rdi, [r13+rbp+8H]
+        mov     rdx, r12
+        mov     rsi, r14
+        call    memcpy
+L_002:  mov     byte [rbx+r12], 0
+        mov     rax, rbx
+        add     rsp, 8
+        pop     rbx
+        sub     rax, rbp
+        pop     rbp
+        pop     r12
+        pop     r13
+        pop     r14
+        pop     r15
+        ret
 
 
 StrLT:
