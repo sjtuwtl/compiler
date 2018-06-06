@@ -1,112 +1,422 @@
 ProgNode
-  *ClassDeclaration: TA
-    *VariableDeclaration: state
-      BuiltInType: string
-    *VariableDeclaration: anger
-      BuiltInType: int
-  *VariableDeclaration: init_anger
-    BuiltInType: int
-    IntConstNode  value = 100
-  *VariableDeclaration: work_anger
-    BuiltInType: int
-    IntConstNode  value = 10
-  *FunctionDeclaration: work
-    BuiltInType: void
-    FuncParamNode Type: string    Name: st
-    FuncParamNode Type: TA    Name: ta
-    BlockNode
-      IfNode
-        BinaryExprNode  Op: SEQ
-          MemberExprNode
-            IdentifierExprNode  ID name: ta
-            mem = anger
-          IntConstNode  value = 100
+  *ClassDeclaration: vector
+    *FunctionDeclaration: init
+      BuiltInType: void
+      FuncParamNode Type: int    Name: vec
+      BlockNode
+        IfNode
+          BinaryExprNode  Op: EQU
+            IdentifierExprNode  ID name: vec
+            NullConstNode
+          ReturnNode
         ExprStatNode
-          CallExprNode  Function Name: println
-            ExprListNode
-              BinaryExprNode  Op: ADD
-                BinaryExprNode  Op: ADD
-                  BinaryExprNode  Op: ADD
-                    IdentifierExprNode  ID name: st
-                    StringConstNode  value = , 
-                  MemberExprNode
-                    IdentifierExprNode  ID name: ta
-                    mem = state
-                StringConstNode  value =  enjoys this work. XD
-        ExprStatNode
-          CallExprNode  Function Name: println
-            ExprListNode
-              BinaryExprNode  Op: ADD
-                BinaryExprNode  Op: ADD
-                  BinaryExprNode  Op: ADD
-                    IdentifierExprNode  ID name: st
-                    StringConstNode  value = , 
-                  MemberExprNode
-                    IdentifierExprNode  ID name: ta
-                    mem = state
-                StringConstNode  value =  wants to give up!!!!!
-      ExprStatNode
-        AssignExprNode
-          MemberExprNode
-            IdentifierExprNode  ID name: ta
-            mem = anger
-          BinaryExprNode  Op: ADD
+          AssignExprNode
+            IdentifierExprNode  ID name: data
+            New:   Type   : int  Size:  1
+        *VariableDeclaration: i
+          BuiltInType: int
+        ForNode
+          AssignExprNode
+            IdentifierExprNode  ID name: i
+            IntConstNode  value = 0
+          BinaryExprNode  Op: SLT
+            IdentifierExprNode  ID name: i
             MemberExprNode
-              IdentifierExprNode  ID name: ta
-              mem = anger
-            IdentifierExprNode  ID name: work_anger
+              IdentifierExprNode  ID name: vec
+              CallExprNode  Function Name: size
+                ExprListNode
+          PrefixExprNode  Op: INC
+            IdentifierExprNode  ID name: i
+          BlockNode
+            ExprStatNode
+              AssignExprNode
+                ArrayExprNode
+                  IdentifierExprNode  ID name: data
+                  IdentifierExprNode  ID name: i
+                ArrayExprNode
+                  IdentifierExprNode  ID name: vec
+                  IdentifierExprNode  ID name: i
+    *FunctionDeclaration: getDim
+      BuiltInType: int
+      BlockNode
+        IfNode
+          BinaryExprNode  Op: EQU
+            IdentifierExprNode  ID name: data
+            NullConstNode
+          ReturnNode
+        ReturnNode
+    *FunctionDeclaration: dot
+      BuiltInType: int
+      FuncParamNode Type: vector    Name: rhs
+      BlockNode
+        *VariableDeclaration: i
+          BuiltInType: int
+          IntConstNode  value = 0
+        *VariableDeclaration: result
+          BuiltInType: int
+          IntConstNode  value = 0
+        WhileNode
+          BinaryExprNode  Op: SLT
+            IdentifierExprNode  ID name: i
+            CallExprNode  Function Name: getDim
+              ExprListNode
+          BlockNode
+            ExprStatNode
+              AssignExprNode
+                IdentifierExprNode  ID name: result
+                BinaryExprNode  Op: MUL
+                  ArrayExprNode
+                    IdentifierExprNode  ID name: data
+                    IdentifierExprNode  ID name: i
+                  ArrayExprNode
+                    MemberExprNode
+                      IdentifierExprNode  ID name: rhs
+                      mem = data
+                    IdentifierExprNode  ID name: i
+            ExprStatNode
+              PrefixExprNode  Op: INC
+                IdentifierExprNode  ID name: i
+        ReturnNode
+    *FunctionDeclaration: scalarInPlaceMultiply
+      ClassType: vector
+      FuncParamNode Type: int    Name: c
+      BlockNode
+        IfNode
+          BinaryExprNode  Op: EQU
+            IdentifierExprNode  ID name: data
+            NullConstNode
+          ReturnNode
+        *VariableDeclaration: i
+          BuiltInType: int
+        ForNode
+          AssignExprNode
+            IdentifierExprNode  ID name: i
+            IntConstNode  value = 0
+          BinaryExprNode  Op: SLT
+            IdentifierExprNode  ID name: i
+            CallExprNode  Function Name: getDim
+              ExprListNode
+          PrefixExprNode  Op: INC
+            IdentifierExprNode  ID name: i
+          BlockNode
+            ExprStatNode
+              AssignExprNode
+                ArrayExprNode
+                  MemberExprNode
+                    ThisExprNodethis
+                    mem = data
+                  IdentifierExprNode  ID name: i
+                BinaryExprNode  Op: MUL
+                  IdentifierExprNode  ID name: c
+                  ArrayExprNode
+                    MemberExprNode
+                      ThisExprNodethis
+                      mem = data
+                    IdentifierExprNode  ID name: i
+        ReturnNode
+    *FunctionDeclaration: add
+      ClassType: vector
+      FuncParamNode Type: vector    Name: rhs
+      BlockNode
+        IfNode
+          OrExprNode
+            BinaryExprNode  Op: NEQ
+              CallExprNode  Function Name: getDim
+                ExprListNode
+              MemberExprNode
+                IdentifierExprNode  ID name: rhs
+                CallExprNode  Function Name: getDim
+                  ExprListNode
+            BinaryExprNode  Op: EQU
+              CallExprNode  Function Name: getDim
+                ExprListNode
+              IntConstNode  value = 0
+          ReturnNode
+        *VariableDeclaration: temp
+          ClassType: vector
+          New:   Type   : vector  Size:  0
+        *VariableDeclaration: i
+          BuiltInType: int
+        ExprStatNode
+          AssignExprNode
+            MemberExprNode
+              IdentifierExprNode  ID name: temp
+              mem = data
+            New:   Type   : int  Size:  1
+        ForNode
+          AssignExprNode
+            IdentifierExprNode  ID name: i
+            IntConstNode  value = 0
+          BinaryExprNode  Op: SLT
+            IdentifierExprNode  ID name: i
+            CallExprNode  Function Name: getDim
+              ExprListNode
+          PrefixExprNode  Op: INC
+            IdentifierExprNode  ID name: i
+          BlockNode
+            ExprStatNode
+              AssignExprNode
+                ArrayExprNode
+                  MemberExprNode
+                    IdentifierExprNode  ID name: temp
+                    mem = data
+                  IdentifierExprNode  ID name: i
+                BinaryExprNode  Op: ADD
+                  ArrayExprNode
+                    IdentifierExprNode  ID name: data
+                    IdentifierExprNode  ID name: i
+                  ArrayExprNode
+                    MemberExprNode
+                      IdentifierExprNode  ID name: rhs
+                      mem = data
+                    IdentifierExprNode  ID name: i
+        ReturnNode
+    *FunctionDeclaration: set
+      BuiltInType: bool
+      FuncParamNode Type: int    Name: idx
+      FuncParamNode Type: int    Name: value
+      BlockNode
+        IfNode
+          BinaryExprNode  Op: SLT
+            CallExprNode  Function Name: getDim
+              ExprListNode
+            IdentifierExprNode  ID name: idx
+          ReturnNode
+        ExprStatNode
+          AssignExprNode
+            ArrayExprNode
+              IdentifierExprNode  ID name: data
+              IdentifierExprNode  ID name: idx
+            IdentifierExprNode  ID name: value
+        ReturnNode
+    *FunctionDeclaration: tostring
+      BuiltInType: string
+      BlockNode
+        *VariableDeclaration: temp
+          BuiltInType: string
+          StringConstNode  value = ( 
+        IfNode
+          BinaryExprNode  Op: SGT
+            CallExprNode  Function Name: getDim
+              ExprListNode
+            IntConstNode  value = 0
+          BlockNode
+            ExprStatNode
+              AssignExprNode
+                IdentifierExprNode  ID name: temp
+                BinaryExprNode  Op: ADD
+                  IdentifierExprNode  ID name: temp
+                  CallExprNode  Function Name: toString
+                    ExprListNode
+                      ArrayExprNode
+                        IdentifierExprNode  ID name: data
+                        IntConstNode  value = 0
+        *VariableDeclaration: i
+          BuiltInType: int
+        ForNode
+          AssignExprNode
+            IdentifierExprNode  ID name: i
+            IntConstNode  value = 1
+          BinaryExprNode  Op: SLT
+            IdentifierExprNode  ID name: i
+            CallExprNode  Function Name: getDim
+              ExprListNode
+          PrefixExprNode  Op: INC
+            IdentifierExprNode  ID name: i
+          BlockNode
+            ExprStatNode
+              AssignExprNode
+                IdentifierExprNode  ID name: temp
+                BinaryExprNode  Op: ADD
+                  BinaryExprNode  Op: ADD
+                    IdentifierExprNode  ID name: temp
+                    StringConstNode  value = , 
+                  CallExprNode  Function Name: toString
+                    ExprListNode
+                      ArrayExprNode
+                        IdentifierExprNode  ID name: data
+                        IdentifierExprNode  ID name: i
+        ExprStatNode
+          AssignExprNode
+            IdentifierExprNode  ID name: temp
+            BinaryExprNode  Op: ADD
+              IdentifierExprNode  ID name: temp
+              StringConstNode  value =  )
+        ReturnNode
+    *FunctionDeclaration: copy
+      BuiltInType: bool
+      FuncParamNode Type: vector    Name: rhs
+      BlockNode
+        IfNode
+          BinaryExprNode  Op: EQU
+            IdentifierExprNode  ID name: rhs
+            NullConstNode
+          ReturnNode
+        IfNode
+          BinaryExprNode  Op: EQU
+            MemberExprNode
+              IdentifierExprNode  ID name: rhs
+              CallExprNode  Function Name: getDim
+                ExprListNode
+            IntConstNode  value = 0
+          BlockNode
+            ExprStatNode
+              AssignExprNode
+                IdentifierExprNode  ID name: data
+                NullConstNode
+          BlockNode
+            ExprStatNode
+              AssignExprNode
+                IdentifierExprNode  ID name: data
+                New:   Type   : int  Size:  1
+            *VariableDeclaration: i
+              BuiltInType: int
+            ForNode
+              AssignExprNode
+                IdentifierExprNode  ID name: i
+                IntConstNode  value = 0
+              BinaryExprNode  Op: SLT
+                IdentifierExprNode  ID name: i
+                CallExprNode  Function Name: getDim
+                  ExprListNode
+              PrefixExprNode  Op: INC
+                IdentifierExprNode  ID name: i
+              BlockNode
+                ExprStatNode
+                  AssignExprNode
+                    ArrayExprNode
+                      IdentifierExprNode  ID name: data
+                      IdentifierExprNode  ID name: i
+                    ArrayExprNode
+                      MemberExprNode
+                        IdentifierExprNode  ID name: rhs
+                        mem = data
+                      IdentifierExprNode  ID name: i
+        ReturnNode
+    *VariableDeclaration: data
+      ArrayType: int
   *FunctionDeclaration: main
     BuiltInType: int
     BlockNode
-      *VariableDeclaration: mr
-        ClassType: TA
-      *VariableDeclaration: mars
-        ClassType: TA
-      ExprStatNode
+      *VariableDeclaration: x
+        ClassType: vector
+        New:   Type   : vector  Size:  0
+      *VariableDeclaration: a
+        ArrayType: int
+        New:   Type   : int  Size:  1
+      *VariableDeclaration: i
+        BuiltInType: int
+      ForNode
         AssignExprNode
-          IdentifierExprNode  ID name: mr
-          New:   Type   : TA  Size:  0
-      ExprStatNode
-        AssignExprNode
-          MemberExprNode
-            IdentifierExprNode  ID name: mr
-            mem = state
-          StringConstNode  value = the leading TA
-      ExprStatNode
-        AssignExprNode
-          MemberExprNode
-            IdentifierExprNode  ID name: mr
-            mem = anger
+          IdentifierExprNode  ID name: i
           IntConstNode  value = 0
+        BinaryExprNode  Op: SLT
+          IdentifierExprNode  ID name: i
+          IntConstNode  value = 10
+        PrefixExprNode  Op: INC
+          IdentifierExprNode  ID name: i
+        BlockNode
+          ExprStatNode
+            AssignExprNode
+              ArrayExprNode
+                IdentifierExprNode  ID name: a
+                IdentifierExprNode  ID name: i
+              BinaryExprNode  Op: MIN
+                IntConstNode  value = 9
+                IdentifierExprNode  ID name: i
       ExprStatNode
-        AssignExprNode
-          IdentifierExprNode  ID name: mars
-          New:   Type   : TA  Size:  0
+        MemberExprNode
+          IdentifierExprNode  ID name: x
+          CallExprNode  Function Name: init
+            ExprListNode
+              IdentifierExprNode  ID name: a
       ExprStatNode
-        AssignExprNode
-          MemberExprNode
-            IdentifierExprNode  ID name: mars
-            mem = state
-          StringConstNode  value = the striking TA
-      ExprStatNode
-        AssignExprNode
-          MemberExprNode
-            IdentifierExprNode  ID name: mars
-            mem = anger
-          IdentifierExprNode  ID name: init_anger
-      ExprStatNode
-        CallExprNode  Function Name: work
+        CallExprNode  Function Name: print
           ExprListNode
-            StringConstNode  value = MR
-            IdentifierExprNode  ID name: mr
+            StringConstNode  value = vector x: 
       ExprStatNode
-        CallExprNode  Function Name: work
+        CallExprNode  Function Name: println
           ExprListNode
-            StringConstNode  value = Mars
-            IdentifierExprNode  ID name: mars
+            MemberExprNode
+              IdentifierExprNode  ID name: x
+              CallExprNode  Function Name: tostring
+                ExprListNode
+      *VariableDeclaration: y
+        ClassType: vector
+        New:   Type   : vector  Size:  0
       ExprStatNode
-        CallExprNode  Function Name: work
+        MemberExprNode
+          IdentifierExprNode  ID name: y
+          CallExprNode  Function Name: copy
+            ExprListNode
+              IdentifierExprNode  ID name: x
+      IfNode
+        MemberExprNode
+          IdentifierExprNode  ID name: y
+          CallExprNode  Function Name: set
+            ExprListNode
+              IntConstNode  value = 3
+              IntConstNode  value = 817
+        BlockNode
+          ExprStatNode
+            CallExprNode  Function Name: println
+              ExprListNode
+                StringConstNode  value = excited!
+      ExprStatNode
+        CallExprNode  Function Name: print
           ExprListNode
-            StringConstNode  value = Mars
-            IdentifierExprNode  ID name: mars
+            StringConstNode  value = vector y: 
+      ExprStatNode
+        CallExprNode  Function Name: println
+          ExprListNode
+            MemberExprNode
+              IdentifierExprNode  ID name: y
+              CallExprNode  Function Name: tostring
+                ExprListNode
+      ExprStatNode
+        CallExprNode  Function Name: print
+          ExprListNode
+            StringConstNode  value = x + y: 
+      ExprStatNode
+        CallExprNode  Function Name: println
+          ExprListNode
+            MemberExprNode
+              MemberExprNode
+                IdentifierExprNode  ID name: x
+                CallExprNode  Function Name: add
+                  ExprListNode
+                    IdentifierExprNode  ID name: y
+              CallExprNode  Function Name: tostring
+                ExprListNode
+      ExprStatNode
+        CallExprNode  Function Name: print
+          ExprListNode
+            StringConstNode  value = x * y: 
+      ExprStatNode
+        CallExprNode  Function Name: println
+          ExprListNode
+            CallExprNode  Function Name: toString
+              ExprListNode
+                MemberExprNode
+                  IdentifierExprNode  ID name: x
+                  CallExprNode  Function Name: dot
+                    ExprListNode
+                      IdentifierExprNode  ID name: y
+      ExprStatNode
+        CallExprNode  Function Name: print
+          ExprListNode
+            StringConstNode  value = (1 << 3) * y: 
+      ExprStatNode
+        CallExprNode  Function Name: println
+          ExprListNode
+            MemberExprNode
+              MemberExprNode
+                IdentifierExprNode  ID name: y
+                CallExprNode  Function Name: scalarInPlaceMultiply
+                  ExprListNode
+                    BinaryExprNode  Op: L_SHIFT
+                      IntConstNode  value = 1
+                      IntConstNode  value = 3
+              CallExprNode  Function Name: tostring
+                ExprListNode
       ReturnNode

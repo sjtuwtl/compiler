@@ -3,48 +3,276 @@ __________________________________________
 
 
 define i64 @main()
-  [obj]= alloca  struct:C2;
-  [%r0]= alloca  Immediate:8
-  [%r0]= Malloc Immediate:4
-  Store [%r0] to [obj]
-  Store Immediate:10 to [Address: x:[obj]+ offset Immediate:0*i64]
-  Store Immediate:20 to [Address: y:[obj]+ offset Immediate:1*i64]
+ Store NULL to[N]
+ 
+  [%r0]= alloca  i64
+  [%r0] = Call @getInt(
+  Store [%r0] to [N]
   [%r1]= alloca  i64
-  [%r1] = [Address: x:[obj]+ offset Immediate:0*i64] SGT [Address: y:[obj]+ offset Immediate:1*i64]
-  Branch: [%r1] true: Label_0 false Label_1
-
-  Label_0
-  Store Immediate:1 to [%r1]
-  Jump: Label_2
-
-  Label_1
-  Store Immediate:0 to [%r1]
+  [%r2]= alloca  i64
+  [%r2] = [N] add Immediate:5
+  [%r1]= Malloc [%r2]
+  Store [%r2] to [Address: %r1_size:[%r1]+ offset Immediate:-1*i64]
+  Store [%r1] to [check]
+  [i]= alloca  i64
+  Store Immediate:0 to [i]
 
   Label_2
-  Store [%r1] to [Address: b:[obj]+ offset Immediate:2*i64]
-  [%r2] = [Address: b:[obj]+ offset Immediate:2*i64] EQU Immediate:1
-  Branch: [%r2] true: Label_3 false Label_4
+  [%r3]= alloca  i64
+  [%r3] = [i] SEQ [N]
+  Branch: [%r3] true: Label_3 false Label_4
 
   Label_3
-  Store Immediate:40 to [Address: z:[obj]+ offset Immediate:3*i64]
+  Store Immediate:1 to [%r3]
   Jump: Label_5
 
   Label_4
-  Store Immediate:80 to [Address: z:[obj]+ offset Immediate:3*i64]
-  Jump: Label_5
+  Store Immediate:0 to [%r3]
 
   Label_5
-  [%r3]= alloca  i64
-  [%r3] = [Address: x:[obj]+ offset Immediate:0*i64] add [Address: y:[obj]+ offset Immediate:1*i64]
-  [%r4]= alloca  i64
-  [%r4] = [%r3] add [Address: z:[obj]+ offset Immediate:3*i64]
-  Return: [%r4]
+  [%r4] = [%r3] EQU Immediate:1
+  Branch: [%r4] true: Label_0 false Label_1
+
+  Label_0
+  [%r6]= alloca  i64
+  Store [i] to [%r6]
+  [i] = [i] add Immediate:1
+  [%r7]= alloca  i64
+  Store [check] to [%r7]
+  Store Immediate:1 to [Address: check:[%r7]+ offset [%r6]*i64]
+  Jump: Label_2
+
+  Label_1
+  [phi]= alloca  [ArrayType: i64[] ]
+  [%r8]= alloca  i64
+  [%r9]= alloca  i64
+  [%r9] = [N] add Immediate:5
+  [%r8]= Malloc [%r9]
+  Store [%r9] to [Address: %r8_size:[%r8]+ offset Immediate:-1*i64]
+  Store [%r8] to [phi]
+  [P]= alloca  [ArrayType: i64[] ]
+  [%r10]= alloca  i64
+  [%r11]= alloca  i64
+  [%r11] = [N] add Immediate:5
+  [%r10]= Malloc [%r11]
+  Store [%r11] to [Address: %r10_size:[%r10]+ offset Immediate:-1*i64]
+  Store [%r10] to [P]
+  [%r12]= alloca  i64
+  Store [phi] to [%r12]
+  Store Immediate:1 to [Address: phi:[%r12]+ offset Immediate:1*i64]
+  Store Immediate:2 to [i]
+
+  Label_8
+
+  Label_6
+  [%r13]= alloca  i64
+  [%r13] = [i] SGT [N]
+  Branch: [%r13] true: Label_13 false Label_14
+
+  Label_13
+  Store Immediate:1 to [%r13]
+  Jump: Label_15
+
+  Label_14
+  Store Immediate:0 to [%r13]
+
+  Label_15
+  [%r14] = [%r13] EQU Immediate:1
+  Branch: [%r14] true: Label_10 false Label_11
+
+  Label_10
+  Jump: Label_7
+  Jump: Label_12
+
+  Label_11
+  Jump: Label_12
+
+  Label_12
+  [%r15]= alloca  i64
+  Store [check] to [%r15]
+  [%r16] = [Address: check:[%r15]+ offset [i]*i64] EQU Immediate:1
+  Branch: [%r16] true: Label_16 false Label_17
+
+  Label_16
+  [M] = [M] add Immediate:1
+  Store %r17 to [M]
+  [%r18]= alloca  i64
+  Store [P] to [%r18]
+  Store [i] to [Address: P:[%r18]+ offset [M]*i64]
+  [%r19]= alloca  i64
+  Store [phi] to [%r19]
+  [%r20]= alloca  i64
+  [%r20] = [i] sub Immediate:1
+  Store [%r20] to [Address: phi:[%r19]+ offset [i]*i64]
+  Jump: Label_18
+
+  Label_17
+  Jump: Label_18
+
+  Label_18
+  [k]= alloca  i64
+  Store [i] to [k]
+  [i]= alloca  i64
+  Store Immediate:1 to [i]
+
+  Label_21
+  [%r21]= alloca  i64
+  [%r21] = [i] SEQ [M]
+  Branch: [%r21] true: Label_27 false Label_28
+
+  Label_27
+  Store Immediate:1 to [%r21]
+  Jump: Label_29
+
+  Label_28
+  Store Immediate:0 to [%r21]
+
+  Label_29
+  [%r22] = [%r21] NEQ Immediate:0
+  Branch: [%r21] true: Label_23 false Label_25
+
+  Label_23
+  [%r23]= alloca  i64
+  Store [P] to [%r23]
+  [%r24]= alloca  i64
+  [%r24] = [k] imul [Address: P:[%r23]+ offset [i]*i64]
+  [%r25]= alloca  i64
+  [%r25] = [%r24] SEQ [N]
+  Branch: [%r25] true: Label_30 false Label_31
+
+  Label_30
+  Store Immediate:1 to [%r25]
+  Jump: Label_32
+
+  Label_31
+  Store Immediate:0 to [%r25]
+
+  Label_32
+  [%r26]= alloca  i64
+  [%r26] = [%r25] NEQ Immediate:0
+  Branch: [%r26] true: Label_24 false Label_25
+
+  Label_24
+  Store Immediate:1 to [%r26]
+  Jump: Label_26
+
+  Label_25
+  Store Immediate:0 to [%r26]
+
+  Label_26
+  [%r27] = [%r26] EQU Immediate:1
+  Branch: [%r27] true: Label_19 false Label_20
+
+  Label_19
+  [tmp]= alloca  i64
+  [%r28]= alloca  i64
+  Store [P] to [%r28]
+  [%r29]= alloca  i64
+  [%r29] = [k] imul [Address: P:[%r28]+ offset [i]*i64]
+  Store [%r29] to [tmp]
+  [%r30]= alloca  i64
+  [%r30] = [tmp] SGT [N]
+  Branch: [%r30] true: Label_36 false Label_37
+
+  Label_36
+  Store Immediate:1 to [%r30]
+  Jump: Label_38
+
+  Label_37
+  Store Immediate:0 to [%r30]
+
+  Label_38
+  [%r31] = [%r30] EQU Immediate:1
+  Branch: [%r31] true: Label_33 false Label_34
+
+  Label_33
+  Jump: Label_22
+  Jump: Label_35
+
+  Label_34
+  Jump: Label_35
+
+  Label_35
+  [%r32]= alloca  i64
+  Store [check] to [%r32]
+  Store Immediate:0 to [Address: check:[%r32]+ offset [tmp]*i64]
+  [%r33]= alloca  i64
+  Store [P] to [%r33]
+  [%r34]= alloca  i64
+  [%r34] = [k] mod [Address: P:[%r33]+ offset [i]*i64]
+  [%r35]= alloca  i64
+  [%r35] = [%r34] EQU Immediate:0
+  Branch: [%r35] true: Label_42 false Label_43
+
+  Label_42
+  Store Immediate:1 to [%r35]
+  Jump: Label_44
+
+  Label_43
+  Store Immediate:0 to [%r35]
+
+  Label_44
+  [%r36] = [%r35] EQU Immediate:1
+  Branch: [%r36] true: Label_39 false Label_40
+
+  Label_39
+  [%r37]= alloca  i64
+  Store [phi] to [%r37]
+  [%r38]= alloca  i64
+  Store [phi] to [%r38]
+  [%r39]= alloca  i64
+  Store [P] to [%r39]
+  [%r40]= alloca  i64
+  [%r40] = [Address: phi:[%r38]+ offset [k]*i64] imul [Address: P:[%r39]+ offset [i]*i64]
+  Store [%r40] to [Address: phi:[%r37]+ offset [tmp]*i64]
+  Jump: Label_20
+  Jump: Label_41
+
+  Label_40
+  [%r41]= alloca  i64
+  Store [P] to [%r41]
+  [%r42]= alloca  i64
+  [%r42] = [k] imul [Address: P:[%r41]+ offset [i]*i64]
+  [%r43]= alloca  i64
+  Store [phi] to [%r43]
+  [%r44]= alloca  i64
+  Store [phi] to [%r44]
+  [%r45]= alloca  i64
+  Store [P] to [%r45]
+  [%r46]= alloca  i64
+  [%r46] = [Address: P:[%r45]+ offset [i]*i64] sub Immediate:1
+  [%r47]= alloca  i64
+  [%r47] = [Address: phi:[%r44]+ offset [k]*i64] imul [%r46]
+  Store [%r47] to [Address: phi:[%r43]+ offset [%r42]*i64]
+  Jump: Label_41
+
+  Label_41
+
+  Label_22
+  [%r49]= alloca  i64
+  Store [i] to [%r49]
+  [i] = [i] add Immediate:1
+  Jump: Label_21
+
+  Label_20
+  [%r51]= alloca  i64
+  [%r52]= alloca  i64
+  Store [phi] to [%r52]
+  [%r51] = Call @toString([Address: phi:[%r52]+ offset [k]*i64])
+  Call @println([%r51])
+
+  Label_9
+  [i] = [i] add Immediate:1
+  Store %r53 to [i]
+  Jump: Label_8
+
+  Label_7
+  Return: Immediate:0
   Return
 
 
 __________________________________________
 ===================TYPE===================
-struct:C2= type {i64 i64 i64 i64}
 
 
 __________________________________________
