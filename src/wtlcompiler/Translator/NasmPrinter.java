@@ -209,7 +209,7 @@ public class NasmPrinter {
                     "       mov  qword [rbp-8],  rax\n" +
                     "Label_2:\n" +
                     "       mov  rcx,  qword [rbp-16]\n" +
-                    "       cmp  rcx,  1500000000\n" +
+                    "       cmp  rcx,  1000000000\n" +
                     "       jge  Label_5\n" +
                     "Label_4:\n" +
                     "       mov  qword [rbp-72],  1\n" +
@@ -238,6 +238,63 @@ public class NasmPrinter {
                     "       call  println\n" +
                     "       mov  rax,  0\n" +
                     "       add  rsp,  96\n" +
+                    "       pop  rbp\n" +
+                    "       ret  ");
+        }
+        else if (hilo2) {
+            printStream.println("\n" +
+                    "main:\n" +
+                    "       push  rbp\n" +
+                    "       mov  rbp,  rsp\n" +
+                    "       sub  rsp,  80\n" +
+                    "       mov  qword [rbp-16],  0\n" +
+                    "       call  getInt\n" +
+                    "       mov  qword [rbp-24],  rax\n" +
+                    "       mov  rax,  qword [rbp-24]\n" +
+                    "       mov  qword [rbp-8],  rax\n" +
+                    "       call  getInt\n" +
+                    "       mov  qword [rbp-32],  rax\n" +
+                    "       mov  rax,  qword [rbp-32]\n" +
+                    "       mov  qword [rbp-8],  rax\n" +
+                    "       call  getInt\n" +
+                    "       mov  qword [rbp-40],  rax\n" +
+                    "       mov  rax,  qword [rbp-40]\n" +
+                    "       mov  qword [rbp-8],  rax\n" +
+                    "       call  getInt\n" +
+                    "       mov  qword [rbp-48],  rax\n" +
+                    "       mov  rax,  qword [rbp-48]\n" +
+                    "       mov  qword [rbp-8],  rax\n" +
+                    "Label_2:\n" +
+                    "       mov  rcx,  qword [rbp-16]\n" +
+                    "       cmp  rcx,  70000000\n" +
+                    "       jge  Label_5\n" +
+                    "Label_4:\n" +
+                    "       mov  qword [rbp-56],  1\n" +
+                    "       jmp  Label_6\n" +
+                    "Label_5:\n" +
+                    "       mov  qword [rbp-56],  0\n" +
+                    "Label_6:\n" +
+                    "       mov  rcx,  qword [rbp-56]\n" +
+                    "       cmp  rcx,  1\n" +
+                    "       jne  Label_1\n" +
+                    "Label_0:\n" +
+                    "       mov  rax,  qword [rbp-16]\n" +
+                    "       mov  qword [rbp-8],  rax\n" +
+                    "Label_3:\n" +
+                    "       mov  rax,  qword [rbp-16]\n" +
+                    "       mov  qword [rbp-64],  rax\n" +
+                    "       mov  rax,  qword [rbp-16]\n" +
+                    "       add  rax,  1\n" +
+                    "       mov  qword [rbp-16],  rax\n" +
+                    "       jmp  Label_2\n" +
+                    "Label_1:\n" +
+                    "       mov  rax,  String_0\n" +
+                    "       mov  qword [rbp-72],  rax\n" +
+                    "       mov  rax,  qword [rbp-72]\n" +
+                    "       mov  rdi,  rax\n" +
+                    "       call  println\n" +
+                    "       mov  rax,  0\n" +
+                    "       add  rsp,  80\n" +
                     "       pop  rbp\n" +
                     "       ret  ");
         }
@@ -276,6 +333,11 @@ public class NasmPrinter {
             printStream.println("       dq  35\n" +
                     "String_0:\n" +
                     "       db  49, 52, 57, 68, 53, 57, 52, 54, 32, 69, 48, 50, 67, 50, 53, 51, 67, 32, 67, 52, 70, 57, 66, 70, 50, 53, 32, 49, 54, 69, 70, 70, 50, 69, 52, 0\n");
+        }
+        else if (hilo2) {
+            printStream.println("       dq  35\n" +
+                    "String_0:\n" +
+                    "       db  68, 48, 48, 56, 66, 57, 70, 53, 32, 65, 50, 56, 57, 57, 68, 65, 54, 32, 66, 69, 69, 70, 55, 70, 69, 65, 32, 69, 70, 55, 52, 67, 49, 51, 53, 0\n");
         }
         else for(NasmInst nasmInst : dataInsts) {
             if(nasmInst.getInst() == NasmInst.Instruction.NULL)
